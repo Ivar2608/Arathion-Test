@@ -48,6 +48,9 @@
                         'materialize': 'materialize 0.8s ease-out forwards', 
                         'dematerialize': 'dematerialize 0.4s ease-in forwards',
                         'glitch': 'glitch 1s linear infinite',
+                        'spin-slow': 'spin 4s linear infinite',
+                        'flicker': 'flicker 3s linear infinite',
+                        'pulse-core': 'pulse-core 2s ease-in-out infinite',
                     },
                     keyframes: {
                         materialize: {
@@ -62,6 +65,14 @@
                             '2%, 64%': { transform: 'translate(2px,0) skew(0deg)' },
                             '4%, 60%': { transform: 'translate(-2px,0) skew(0deg)' },
                             '62%': { transform: 'translate(0,0) skew(5deg)' },
+                        },
+                        flicker: {
+                            '0%, 19%, 21%, 23%, 25%, 54%, 56%, 100%': { opacity: 1 },
+                            '20%, 24%, 55%': { opacity: 0.4 }
+                        },
+                        'pulse-core': {
+                            '0%, 100%': { transform: 'scale(1)', opacity: 1 },
+                            '50%': { transform: 'scale(0.85)', opacity: 0.7 },
                         }
                     }
                 }
@@ -263,6 +274,9 @@
         .legal-content h4 { color: #00d9ff; font-weight: bold; margin-top: 1.25rem; font-family: 'Rajdhani', sans-serif; text-transform: uppercase; }
         .legal-content p, .legal-content ul { color: #cbd5e1; margin-bottom: 1rem; line-height: 1.6; }
         .legal-content ul { list-style-type: disc; padding-left: 1.5rem; }
+        
+        /* Zusätzliche Utilities, die in Tailwind fehlen */
+        .clip-path-slant { clip-path: polygon(10px 0, 100% 0, 100% calc(100% - 10px), calc(100% - 10px) 100%, 0 100%, 0 10px); }
     </style>
 </head>
 <body class="bg-aether-900 text-aether-500 selection:bg-aether-500 selection:text-black relative h-screen w-screen overflow-hidden">
@@ -997,6 +1011,66 @@
         let idleCurrent = 15; 
         let lastRandomChange = 0;
 
+        // --- AETHER PARTIKEL SYSTEM (Canvas) ---
+        const canvas = document.getElementById('bg-canvas');
+        const ctx = canvas.getContext('2d');
+        let particles = [];
+
+        function resizeCanvas() {
+            canvas.width = window.innerWidth;
+            canvas.height = window.innerHeight;
+        }
+        window.addEventListener('resize', resizeCanvas);
+        resizeCanvas(); // Initiale Größe
+
+        class Particle {
+            constructor() {
+                this.reset();
+                this.y = Math.random() * canvas.height; // Beim Start zufällig auf dem Screen verteilen
+            }
+            reset() {
+                this.x = Math.random() * canvas.width;
+                this.y = canvas.height + Math.random() * 100; // Startet leicht unter dem Bildschirm
+                this.size = Math.random() * 2 + 0.5;
+                this.speedX = (Math.random() - 0.5) * 0.3;
+                this.speedY = (Math.random() * -0.5) - 0.2; // Steigt langsam auf
+                this.opacity = Math.random() * 0.5 + 0.1;
+                // 80% Aether-Blau, 20% Bronze-Gold
+                this.color = Math.random() > 0.8 ? `rgba(217, 119, 6, ${this.opacity})` : `rgba(0, 217, 255, ${this.opacity})`;
+            }
+            update() {
+                this.x += this.speedX;
+                this.y += this.speedY;
+                
+                // Wenn Partikel oben aus dem Bild fliegen, unten neu starten
+                if (this.y < -10) {
+                    this.reset();
+                }
+            }
+            draw() {
+                ctx.fillStyle = this.color;
+                ctx.beginPath();
+                ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
+                ctx.fill();
+            }
+        }
+
+        function initParticles() {
+            particles = [];
+            for (let i = 0; i < 150; i++) { // Anzahl der Partikel
+                particles.push(new Particle());
+            }
+        }
+        initParticles();
+
+        function drawParticles() {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            particles.forEach(p => {
+                p.update();
+                p.draw();
+            });
+        }
+
         // --- GALERIE RENDERER ---
         function renderGallery() {
             const grid = document.getElementById('gallery-grid');
@@ -1037,6 +1111,9 @@
 
         // --- SINGLE UPDATE LOOP ---
         function updateLoop(timestamp) {
+            // Partikel in jedem Frame zeichnen
+            drawParticles();
+
             if (currentState === STATE.IDLE) {
                 updateIdle(timestamp);
             }
