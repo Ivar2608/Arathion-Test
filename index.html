@@ -222,14 +222,14 @@
         /* Page Layout */
         .page-container {
             position: absolute; top: 0; left: 0; width: 100%; height: 100%;
-            overflow-y: auto; padding-top: 5rem; padding-bottom: 5rem;
+            overflow-y: auto; padding-top: 6rem; padding-bottom: 6rem;
             /* Padding erhöht, damit der Text nicht unter den neuen mobilen Röhren liegt */
             padding-left: 2.5rem; padding-right: 2.5rem; 
             display: none; scrollbar-width: thin; scrollbar-color: #b45309 #0a1a2f;
         }
         
         @media (min-width: 768px) {
-            .page-container { padding-left: 6rem; padding-right: 6rem; }
+            .page-container { padding-left: 6rem; padding-right: 6rem; padding-top: 7rem; }
         }
 
         .page-active { display: block; animation: materialize 0.8s ease-out forwards; }
@@ -433,7 +433,7 @@
     <main class="relative w-full h-full z-10">
         <!-- Content Blocks (Home, Lore, etc.) -->
         <div id="home" class="page-container page-active">
-            <div class="min-h-full flex flex-col items-center justify-center px-4 relative">
+            <div class="py-12 md:py-20 flex flex-col items-center px-4 relative">
                 <div class="absolute top-1/4 left-10 w-1 h-32 bg-gradient-to-b from-transparent via-aether-500 to-transparent opacity-50 hidden lg:block"></div>
                 <div class="absolute bottom-1/4 right-10 w-1 h-32 bg-gradient-to-b from-transparent via-bronze-500 to-transparent opacity-50 hidden lg:block"></div>
                 <div class="max-w-5xl w-full text-center space-y-8 z-10">
@@ -1059,8 +1059,8 @@
         </div>
 
         <div id="connect" class="page-container">
-            <div class="min-h-full flex flex-col items-center justify-center px-4">
-                <h2 class="font-magic text-5xl text-white mb-12 text-glow-gold">Netzwerk Verbindung</h2>
+            <div class="py-12 md:py-20 flex flex-col items-center px-4">
+                <h2 class="font-magic text-5xl text-white mb-12 text-glow-gold text-center">Netzwerk Verbindung</h2>
                 <div class="grid md:grid-cols-2 gap-8 max-w-4xl w-full">
                     <div class="tech-panel p-8 text-center hover:bg-aether-900/80 transition-colors group cursor-pointer">
                         <div class="w-20 h-20 mx-auto bg-[#5865F2] rounded-full flex items-center justify-center mb-6 group-hover:scale-110 transition-transform shadow-[0_0_20px_#5865F2]"><i data-lucide="radio" class="w-10 h-10 text-white"></i></div>
