@@ -96,25 +96,36 @@
 
         /* --- AETHER PIPE SYSTEM --- */
         .pipe-system {
-            position: fixed; top: 0; bottom: 0; width: 80px; z-index: 45; 
+            position: fixed; top: 0; bottom: 0; width: 30px; z-index: 50; 
             pointer-events: none; display: flex; flex-direction: column; justify-content: center; align-items: center;
         }
+        @media (min-width: 768px) {
+            .pipe-system { width: 80px; }
+        }
+        
         .pipe-left { left: 0px; }
         .pipe-right { right: 0px; }
 
         .glass-tube {
-            width: 30px; height: 90%;
+            width: 12px; height: 100%;
             background: rgba(5, 10, 20, 0.5);
             border: 2px solid rgba(180, 83, 9, 0.6); border-radius: 999px;
             position: relative; overflow: hidden;
             box-shadow: inset 5px 0 20px rgba(0,0,0,0.9), inset -5px 0 20px rgba(0,0,0,0.9), 0 0 20px rgba(0, 217, 255, 0.15);
             backdrop-filter: blur(2px);
         }
+        @media (min-width: 768px) {
+            .glass-tube { width: 30px; height: 90%; }
+        }
+        
         /* Glass Highlight */
         .glass-tube::before {
-            content: ''; position: absolute; top: 0; left: 6px; bottom: 0; width: 4px;
+            content: ''; position: absolute; top: 0; left: 3px; bottom: 0; width: 2px;
             background: linear-gradient(to right, rgba(255,255,255,0.05), rgba(255,255,255,0.3)); z-index: 20;
             border-radius: 2px;
+        }
+        @media (min-width: 768px) {
+            .glass-tube::before { left: 6px; width: 4px; }
         }
 
         /* --- FLUID CONTAINER & BODY --- */
@@ -183,13 +194,19 @@
 
         /* Clamps */
         .pipe-clamp {
-            width: 54px; height: 16px;
+            width: 20px; height: 8px;
             background: linear-gradient(90deg, #2a1002, #b45309, #fcd34d, #b45309, #2a1002);
             border: 1px solid #451a03; margin: 0; position: absolute;
             box-shadow: 0 4px 10px rgba(0,0,0,0.9); z-index: 25; border-radius: 2px;
         }
-        .pipe-clamp::before { content: ''; position: absolute; top: 4px; left: 5px; width: 6px; height: 6px; background: #2a1002; border-radius: 50%; box-shadow: inset 0 0 2px #000; }
-        .pipe-clamp::after { content: ''; position: absolute; top: 4px; right: 5px; width: 6px; height: 6px; background: #2a1002; border-radius: 50%; box-shadow: inset 0 0 2px #000; }
+        .pipe-clamp::before { content: ''; position: absolute; top: 2px; left: 2px; width: 3px; height: 3px; background: #2a1002; border-radius: 50%; box-shadow: inset 0 0 2px #000; }
+        .pipe-clamp::after { content: ''; position: absolute; top: 2px; right: 2px; width: 3px; height: 3px; background: #2a1002; border-radius: 50%; box-shadow: inset 0 0 2px #000; }
+        
+        @media (min-width: 768px) {
+            .pipe-clamp { width: 54px; height: 16px; }
+            .pipe-clamp::before { top: 4px; left: 5px; width: 6px; height: 6px; }
+            .pipe-clamp::after { top: 4px; right: 5px; width: 6px; height: 6px; }
+        }
 
         /* Gallery */
         .holo-card {
@@ -206,7 +223,8 @@
         .page-container {
             position: absolute; top: 0; left: 0; width: 100%; height: 100%;
             overflow-y: auto; padding-top: 5rem; padding-bottom: 5rem;
-            padding-left: 0; padding-right: 0; 
+            /* Padding erhöht, damit der Text nicht unter den neuen mobilen Röhren liegt */
+            padding-left: 2.5rem; padding-right: 2.5rem; 
             display: none; scrollbar-width: thin; scrollbar-color: #b45309 #0a1a2f;
         }
         
@@ -273,9 +291,9 @@
     <div class="scanlines"></div>
 
     <!-- WIP MODAL -->
-    <div id="wip-modal" class="fixed inset-0 flex items-center justify-center p-4">
-        <div class="tech-panel p-8 max-w-lg w-full text-center relative border-2 border-bronze-500 shadow-[0_0_50px_rgba(180,83,9,0.3)]">
-            <i data-lucide="triangle-alert" class="w-16 h-16 text-bronze-400 mx-auto mb-4 animate-pulse"></i>
+    <div id="wip-modal" class="fixed inset-0 flex items-center justify-center p-4 z-[200]">
+        <div class="tech-panel p-6 md:p-8 max-w-lg w-full text-center relative border-2 border-bronze-500 shadow-[0_0_50px_rgba(180,83,9,0.3)]">
+            <i data-lucide="triangle-alert" class="w-12 h-12 md:w-16 md:h-16 text-bronze-400 mx-auto mb-4 animate-pulse"></i>
             <h2 class="font-magic text-3xl text-white mb-2 text-glow-gold">WORK IN PROGRESS</h2>
             <div class="h-[1px] w-full bg-bronze-500/50 my-4"></div>
             <p class="text-gray-300 mb-6 leading-relaxed font-tech">
@@ -288,7 +306,7 @@
     </div>
 
     <!-- PIPES LEFT -->
-    <div class="pipe-system pipe-left hidden md:flex" id="pipe-left">
+    <div class="pipe-system pipe-left flex opacity-60 md:opacity-100" id="pipe-left">
         <div class="glass-tube">
             <div class="aether-fluid">
                 <div class="wave-surface"></div>
@@ -300,17 +318,17 @@
             <div class="pipe-clamp" style="top: 85%"></div>
         </div>
         <!-- Gauge -->
-        <div class="absolute bottom-20 left-10 w-20 h-20 border-2 border-bronze-500 rounded-full bg-black/80 flex items-center justify-center shadow-[0_0_15px_#b45309] z-50">
+        <div class="absolute bottom-16 left-2 md:bottom-20 md:left-10 w-12 h-12 md:w-20 md:h-20 border-2 border-bronze-500 rounded-full bg-black/80 flex items-center justify-center shadow-[0_0_15px_#b45309] z-50">
             <div class="absolute w-full h-full rounded-full border border-bronze-800 opacity-50"></div>
             <div class="absolute left-1/2 bottom-1/2 w-0 h-0">
-                <div id="gauge-needle-left" class="w-1 h-9 bg-red-500 origin-bottom absolute bottom-0 left-0 -translate-x-1/2" style="transform: rotate(-90deg);"></div>
+                <div id="gauge-needle-left" class="w-0.5 h-5 md:w-1 md:h-9 bg-red-500 origin-bottom absolute bottom-0 left-0 -translate-x-1/2" style="transform: rotate(-90deg);"></div>
             </div>
-            <span class="absolute bottom-4 text-[10px] text-bronze-300 font-tech tracking-widest">PSI</span>
+            <span class="absolute bottom-2 md:bottom-4 text-[8px] md:text-[10px] text-bronze-300 font-tech tracking-widest">PSI</span>
         </div>
     </div>
 
     <!-- PIPES RIGHT -->
-    <div class="pipe-system pipe-right hidden md:flex" id="pipe-right">
+    <div class="pipe-system pipe-right flex opacity-60 md:opacity-100" id="pipe-right">
         <div class="glass-tube">
             <div class="aether-fluid">
                 <div class="wave-surface"></div>
@@ -397,18 +415,18 @@
 
     <!-- MOBILE MENU -->
     <div id="mobile-menu" class="fixed inset-0 z-40 bg-aether-900/95 backdrop-blur-xl hidden flex-col items-center justify-center space-y-8 animate-flicker">
-        <button onclick="toggleMobile(); switchPage('home')" class="text-2xl font-tech uppercase text-aether-400">Startdeck</button>
-        <button onclick="toggleMobile(); switchPage('classes')" class="text-2xl font-tech uppercase text-gray-400">Klassen</button>
-        <button onclick="toggleMobile(); switchPage('lore')" class="text-2xl font-tech uppercase text-gray-400">Archiv</button>
-        <button onclick="toggleMobile(); switchPage('gallery')" class="text-2xl font-tech uppercase text-gray-400">Visionen</button>
-        <button onclick="toggleMobile(); switchPage('rules')" class="text-2xl font-tech uppercase text-gray-400">Gesetze</button>
-        <button onclick="toggleMobile(); switchPage('faq')" class="text-2xl font-tech uppercase text-gray-400">FAQ</button>
-        <button onclick="toggleMobile(); switchPage('char')" class="text-2xl font-tech uppercase text-bronze-400">Identität</button>
-        <button onclick="toggleMobile(); switchPage('connect')" class="text-2xl font-tech uppercase text-white bg-bronze-600 px-6 py-2">Verbinden</button>
+        <button onclick="navigateFromMobile('home')" class="text-2xl font-tech uppercase text-aether-400 hover:scale-105 transition-transform">Startdeck</button>
+        <button onclick="navigateFromMobile('classes')" class="text-2xl font-tech uppercase text-gray-400 hover:text-white hover:scale-105 transition-transform">Klassen</button>
+        <button onclick="navigateFromMobile('lore')" class="text-2xl font-tech uppercase text-gray-400 hover:text-white hover:scale-105 transition-transform">Archiv</button>
+        <button onclick="navigateFromMobile('gallery')" class="text-2xl font-tech uppercase text-gray-400 hover:text-white hover:scale-105 transition-transform">Visionen</button>
+        <button onclick="navigateFromMobile('rules')" class="text-2xl font-tech uppercase text-gray-400 hover:text-white hover:scale-105 transition-transform">Gesetze</button>
+        <button onclick="navigateFromMobile('faq')" class="text-2xl font-tech uppercase text-gray-400 hover:text-white hover:scale-105 transition-transform">FAQ</button>
+        <button onclick="navigateFromMobile('char')" class="text-2xl font-tech uppercase text-bronze-400 hover:scale-105 transition-transform">Identität</button>
+        <button onclick="navigateFromMobile('connect')" class="text-2xl font-tech uppercase text-white bg-bronze-600 px-6 py-2 hover:scale-105 transition-transform">Verbinden</button>
         <div class="h-[1px] w-24 bg-gray-600"></div>
-        <button onclick="toggleMobile(); switchPage('legal-imprint')" class="text-xl font-tech uppercase text-gray-500 hover:text-white">Impressum</button>
-        <button onclick="toggleMobile(); switchPage('legal-privacy')" class="text-xl font-tech uppercase text-gray-500 hover:text-white">Datenschutz</button>
-        <button onclick="toggleMobile()" class="absolute top-6 right-6 text-gray-500"><i data-lucide="x" class="w-8 h-8"></i></button>
+        <button onclick="navigateFromMobile('legal-imprint')" class="text-xl font-tech uppercase text-gray-500 hover:text-white">Impressum</button>
+        <button onclick="navigateFromMobile('legal-privacy')" class="text-xl font-tech uppercase text-gray-500 hover:text-white">Datenschutz</button>
+        <button onclick="toggleMobile()" class="absolute top-6 right-6 text-gray-500 hover:text-white"><i data-lucide="x" class="w-8 h-8"></i></button>
     </div>
 
     <!-- MAIN -->
@@ -1456,6 +1474,26 @@
             const menu = document.getElementById('mobile-menu');
             if (menu.classList.contains('hidden')) { menu.classList.remove('hidden'); menu.classList.add('flex'); }
             else { menu.classList.add('hidden'); menu.classList.remove('flex'); }
+        }
+        
+        function navigateFromMobile(targetId) {
+            // Wenn man schon auf der Seite ist, nur das Menü schließen
+            if (currentState !== STATE.IDLE || targetId === currentPageId) {
+                toggleMobile();
+                return;
+            }
+            
+            // Animation starten (Röhren füllen sich über dem offenen Menü!)
+            switchPage(targetId);
+            
+            // Das mobile Menü erst verstecken, wenn der komplett schwarze Ladebildschirm da ist (nach 3.2s)
+            setTimeout(() => {
+                const menu = document.getElementById('mobile-menu');
+                if (menu && menu.classList.contains('flex')) {
+                    menu.classList.add('hidden');
+                    menu.classList.remove('flex');
+                }
+            }, 3200);
         }
 
         async function copyIP() {
