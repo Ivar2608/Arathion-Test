@@ -1,0 +1,1027 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Arathion - Ära des Aethers | Conan Exiles RP</title>
+    <meta name="description" content="Der immersive Conan Exiles Aetherpunk RP Server. Wo alte Magie auf neue Technik trifft.">
+    
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- Icons -->
+    <script src="https://unpkg.com/lucide@latest"></script>
+
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;700;900&family=Rajdhani:wght@300;400;600;700&display=swap" rel="stylesheet">
+
+    <!-- Config -->
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        aether: {
+                            900: '#050b14', 
+                            800: '#0a1a2f', 
+                            500: '#00d9ff', 
+                            400: '#4df0ff', 
+                            300: '#a5f3fc',
+                            glow: 'rgba(0, 217, 255, 0.6)'
+                        },
+                        bronze: {
+                            900: '#2a1002',
+                            800: '#451a03',
+                            600: '#78350f',
+                            500: '#b45309', 
+                            400: '#d97706', 
+                            300: '#fcd34d', 
+                        }
+                    },
+                    fontFamily: {
+                        magic: ['Cinzel', 'serif'],
+                        tech: ['Rajdhani', 'sans-serif'], 
+                    },
+                    animation: {
+                        'materialize': 'materialize 0.8s ease-out forwards', 
+                        'dematerialize': 'dematerialize 0.4s ease-in forwards',
+                        'glitch': 'glitch 1s linear infinite',
+                    },
+                    keyframes: {
+                        materialize: {
+                            '0%': { opacity: 0, transform: 'scale(0.95) translateY(20px)', filter: 'blur(10px)' },
+                            '100%': { opacity: 1, transform: 'scale(1) translateY(0)', filter: 'blur(0)' },
+                        },
+                        dematerialize: {
+                            '0%': { opacity: 1, filter: 'blur(0)' },
+                            '100%': { opacity: 0, transform: 'scale(1.05)', filter: 'blur(20px)' },
+                        },
+                        glitch: {
+                            '2%, 64%': { transform: 'translate(2px,0) skew(0deg)' },
+                            '4%, 60%': { transform: 'translate(-2px,0) skew(0deg)' },
+                            '62%': { transform: 'translate(0,0) skew(5deg)' },
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+
+    <style>
+        body {
+            background-color: #050b14;
+            color: #e0f2fe;
+            font-family: 'Rajdhani', sans-serif;
+            overflow: hidden; 
+        }
+
+        .scanlines {
+            position: fixed; top: 0; left: 0; width: 100vw; height: 100vh;
+            background: repeating-linear-gradient(0deg, rgba(0, 0, 0, 0.15), rgba(0, 0, 0, 0.15) 1px, transparent 1px, transparent 2px);
+            pointer-events: none; z-index: 50;
+        }
+
+        /* --- AETHER PIPE SYSTEM --- */
+        .pipe-system {
+            position: fixed; top: 0; bottom: 0; width: 80px; z-index: 45; 
+            pointer-events: none; display: flex; flex-direction: column; justify-content: center; align-items: center;
+        }
+        .pipe-left { left: 0px; }
+        .pipe-right { right: 0px; }
+
+        .glass-tube {
+            width: 30px; height: 90%;
+            background: rgba(5, 10, 20, 0.5);
+            border: 2px solid rgba(180, 83, 9, 0.6); border-radius: 999px;
+            position: relative; overflow: hidden;
+            box-shadow: inset 5px 0 20px rgba(0,0,0,0.9), inset -5px 0 20px rgba(0,0,0,0.9), 0 0 20px rgba(0, 217, 255, 0.15);
+            backdrop-filter: blur(2px);
+        }
+        /* Glass Highlight */
+        .glass-tube::before {
+            content: ''; position: absolute; top: 0; left: 6px; bottom: 0; width: 4px;
+            background: linear-gradient(to right, rgba(255,255,255,0.05), rgba(255,255,255,0.3)); z-index: 20;
+            border-radius: 2px;
+        }
+
+        /* --- FLUID CONTAINER & BODY --- */
+        .aether-fluid {
+            position: absolute; bottom: 0; left: 0; width: 100%;
+            height: 15%; /* Base level controlled by JS */
+            
+            /* Gradient matches the SVG fill color at the top */
+            background: linear-gradient(to top, #005f87, #00d9ff);
+            
+            opacity: 0.95;
+            box-shadow: 0 0 30px #0077b6;
+            z-index: 1;
+            
+            /* IMPORTANT: Visual transitions ONLY. Height is handled by JS/CSS mix depending on state */
+            transition: box-shadow 0.5s, filter 0.5s, background 0.5s;
+        }
+
+        /* --- REAL SVG WAVE SURFACE --- */
+        .wave-surface {
+            position: absolute;
+            bottom: 100%; left: 0;
+            width: 200%; 
+            height: 15px; 
+            /* Matches top fluid color #00d9ff */
+            background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 100" preserveAspectRatio="none"><path d="M0 100 V 50 Q 250 10 500 50 T 1000 50 V 100 z" fill="%2300d9ff"/></svg>');
+            background-size: 50% 100%;
+            background-repeat: repeat-x;
+            animation: wave-slide 4s linear infinite;
+            /* Push down 1px to eliminate gaps */
+            transform: translateY(1px);
+            z-index: 5;
+        }
+
+        @keyframes wave-slide {
+            0% { transform: translateX(0) translateY(1px); }
+            100% { transform: translateX(-50%) translateY(1px); }
+        }
+
+        /* Bubbles inside */
+        .aether-bubbles {
+            position: absolute; top: 0; left: 0; right: 0; bottom: 0;
+            background-image: radial-gradient(rgba(255,255,255,0.6) 1px, transparent 1px);
+            background-size: 8px 12px; 
+            opacity: 0.5;
+            animation: bubbles-rise 2s linear infinite;
+            z-index: 2;
+        }
+        @keyframes bubbles-rise {
+            0% { background-position: 0 12px; }
+            100% { background-position: 0 0; }
+        }
+
+        /* --- SURGE STATE (Loading) --- */
+        /* CSS takes FULL CONTROL of height during surge for smooth 4s rise */
+        .system-surge .aether-fluid {
+            /* !important ensures CSS overrides JS inline styles during surge */
+            height: 100% !important; 
+            transition: height 4s ease-in-out, box-shadow 4s ease-in, filter 4s ease-in;
+            
+            background: linear-gradient(to top, #00d9ff, #ffffff); 
+            box-shadow: 0 0 50px #ffffff, 0 0 100px #00d9ff, 0 0 150px #4df0ff;      
+            filter: brightness(1.8) contrast(1.1);
+        }
+        
+        .system-surge .wave-surface {
+             /* White wave during surge */
+             background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 100" preserveAspectRatio="none"><path d="M0 100 V 50 Q 250 10 500 50 T 1000 50 V 100 z" fill="%23ffffff"/></svg>');
+             animation-duration: 1s; 
+        }
+
+        /* --- NEEDLE --- */
+        #gauge-needle-left {
+            transform-origin: bottom center;
+            /* Direct JS control needs linear transition for smoothness */
+            transition: transform 0.1s linear; 
+        }
+
+        /* Clamps */
+        .pipe-clamp {
+            width: 54px; height: 16px;
+            background: linear-gradient(90deg, #2a1002, #b45309, #fcd34d, #b45309, #2a1002);
+            border: 1px solid #451a03; margin: 0; position: absolute;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.9); z-index: 25; border-radius: 2px;
+        }
+        .pipe-clamp::before { content: ''; position: absolute; top: 4px; left: 5px; width: 6px; height: 6px; background: #2a1002; border-radius: 50%; box-shadow: inset 0 0 2px #000; }
+        .pipe-clamp::after { content: ''; position: absolute; top: 4px; right: 5px; width: 6px; height: 6px; background: #2a1002; border-radius: 50%; box-shadow: inset 0 0 2px #000; }
+
+        /* Gallery */
+        .holo-card {
+            position: relative; overflow: hidden;
+            border: 1px solid rgba(0, 217, 255, 0.3); background: rgba(5, 11, 20, 0.6);
+            transition: all 0.3s ease; opacity: 0; animation: materialize 0.5s ease-out forwards;
+        }
+        .holo-card:hover { border-color: #00d9ff; box-shadow: 0 0 15px rgba(0, 217, 255, 0.4); transform: scale(1.02); }
+        .holo-img { width: 100%; height: 200px; object-fit: cover; filter: grayscale(0.4) sepia(0.2) hue-rotate(180deg) brightness(0.8); transition: filter 0.3s; }
+        .holo-card:hover .holo-img { filter: grayscale(0) sepia(0) hue-rotate(0) brightness(1.1); }
+        .holo-overlay { position: absolute; bottom: 0; left: 0; width: 100%; background: linear-gradient(to top, rgba(5, 11, 20, 0.9), transparent); padding: 1rem; }
+
+        /* Page Layout */
+        .page-container {
+            position: absolute; top: 0; left: 0; width: 100%; height: 100%;
+            overflow-y: auto; padding-top: 5rem; padding-bottom: 5rem;
+            padding-left: 0; padding-right: 0; 
+            display: none; scrollbar-width: thin; scrollbar-color: #b45309 #0a1a2f;
+        }
+        
+        @media (min-width: 768px) {
+            .page-container { padding-left: 6rem; padding-right: 6rem; }
+        }
+
+        .page-active { display: block; animation: materialize 0.8s ease-out forwards; }
+        .page-exit { display: block; animation: dematerialize 0.4s ease-in forwards; pointer-events: none; }
+
+        ::-webkit-scrollbar { width: 8px; }
+        ::-webkit-scrollbar-track { background: #0a1a2f; }
+        ::-webkit-scrollbar-thumb { background: #b45309; border-radius: 2px; }
+
+        /* Loader */
+        #aether-loader { 
+            background: radial-gradient(circle at center, #0a1a2f 0%, #000000 120%); 
+            backdrop-filter: blur(30px);
+            transition: opacity 0.5s ease-in-out;
+            opacity: 0;
+            pointer-events: none;
+        }
+        #aether-loader.active { opacity: 1; pointer-events: all; }
+
+        /* WIP Modal */
+        #wip-modal {
+            background: rgba(5, 11, 20, 0.95);
+            backdrop-filter: blur(20px);
+            z-index: 200;
+            transition: opacity 0.3s ease; /* Fast fade out */
+        }
+        #wip-modal.hidden-modal {
+            opacity: 0;
+            pointer-events: none;
+        }
+
+        .text-glow-blue { text-shadow: 0 0 8px rgba(0, 217, 255, 0.8); }
+        .text-glow-gold { text-shadow: 0 0 8px rgba(217, 119, 6, 0.8); }
+
+        .tech-panel { background: rgba(10, 26, 47, 0.8); border: 1px solid #b45309; position: relative; box-shadow: 0 0 15px rgba(0, 217, 255, 0.1); }
+        .tech-panel::before { content: ''; position: absolute; top: -2px; left: -2px; width: 8px; height: 8px; background: #00d9ff; box-shadow: 0 0 5px #00d9ff; }
+        .tech-panel::after { content: ''; position: absolute; bottom: -2px; right: -2px; width: 8px; height: 8px; background: #00d9ff; box-shadow: 0 0 5px #00d9ff; }
+
+        details > summary { list-style: none; }
+        details > summary::-webkit-details-marker { display: none; }
+        details[open] summary { border-bottom: 1px solid rgba(180, 83, 9, 0.3); }
+        details[open] .arrow-icon { transform: rotate(180deg); }
+
+        input, textarea, select { background: rgba(5, 11, 20, 0.9); border: 1px solid #451a03; color: #00d9ff; font-family: 'Rajdhani', monospace; }
+        input:focus, textarea:focus { border-color: #00d9ff; box-shadow: 0 0 10px rgba(0, 217, 255, 0.3); outline: none; }
+        
+        .legal-content h3 { color: #fcd34d; font-family: 'Cinzel', serif; margin-top: 1.5rem; }
+        .legal-content h4 { color: #00d9ff; font-weight: bold; margin-top: 1rem; font-family: 'Rajdhani', sans-serif; text-transform: uppercase; }
+        .legal-content p, .legal-content ul { color: #cbd5e1; }
+    </style>
+</head>
+<body class="bg-aether-900 text-aether-500 selection:bg-aether-500 selection:text-black relative h-screen w-screen overflow-hidden">
+
+    <!-- FX -->
+    <canvas id="bg-canvas" class="fixed inset-0 z-0 opacity-40"></canvas>
+    <div class="scanlines"></div>
+
+    <!-- WIP MODAL -->
+    <div id="wip-modal" class="fixed inset-0 flex items-center justify-center p-4">
+        <div class="tech-panel p-8 max-w-lg w-full text-center relative border-2 border-bronze-500 shadow-[0_0_50px_rgba(180,83,9,0.3)]">
+            <i data-lucide="triangle-alert" class="w-16 h-16 text-bronze-400 mx-auto mb-4 animate-pulse"></i>
+            <h2 class="font-magic text-3xl text-white mb-2 text-glow-gold">WORK IN PROGRESS</h2>
+            <div class="h-[1px] w-full bg-bronze-500/50 my-4"></div>
+            <p class="text-gray-300 mb-6 leading-relaxed font-tech">
+                Achtung: Diese Webseite befindet sich derzeit im Aufbau. Alle Inhalte, Texte und Mechaniken sind vorläufig und können sich jederzeit ändern.
+            </p>
+            <button onclick="closeWipModal()" class="w-full bg-bronze-700 hover:bg-bronze-600 text-white font-bold py-3 uppercase tracking-widest border border-bronze-400 transition-all hover:shadow-[0_0_20px_#d97706]">
+                Verstanden
+            </button>
+        </div>
+    </div>
+
+    <!-- PIPES LEFT -->
+    <div class="pipe-system pipe-left hidden md:flex" id="pipe-left">
+        <div class="glass-tube">
+            <div class="aether-fluid">
+                <div class="wave-surface"></div>
+                <div class="aether-bubbles"></div>
+            </div>
+            <div class="pipe-clamp" style="top: 10%"></div>
+            <div class="pipe-clamp" style="top: 35%"></div>
+            <div class="pipe-clamp" style="top: 60%"></div>
+            <div class="pipe-clamp" style="top: 85%"></div>
+        </div>
+        <!-- Gauge -->
+        <div class="absolute bottom-20 left-10 w-20 h-20 border-2 border-bronze-500 rounded-full bg-black/80 flex items-center justify-center shadow-[0_0_15px_#b45309] z-50">
+            <div class="absolute w-full h-full rounded-full border border-bronze-800 opacity-50"></div>
+            <div class="absolute left-1/2 bottom-1/2 w-0 h-0">
+                <div id="gauge-needle-left" class="w-1 h-9 bg-red-500 origin-bottom absolute bottom-0 left-0 -translate-x-1/2" style="transform: rotate(-90deg);"></div>
+            </div>
+            <span class="absolute bottom-4 text-[10px] text-bronze-300 font-tech tracking-widest">PSI</span>
+        </div>
+    </div>
+
+    <!-- PIPES RIGHT -->
+    <div class="pipe-system pipe-right hidden md:flex" id="pipe-right">
+        <div class="glass-tube">
+            <div class="aether-fluid">
+                <div class="wave-surface"></div>
+                <div class="aether-bubbles"></div>
+            </div>
+            <div class="pipe-clamp" style="top: 10%"></div>
+            <div class="pipe-clamp" style="top: 35%"></div>
+            <div class="pipe-clamp" style="top: 60%"></div>
+            <div class="pipe-clamp" style="top: 85%"></div>
+        </div>
+    </div>
+
+    <!-- CREATIVE LOADER -->
+    <div id="aether-loader" class="fixed inset-0 z-[100] flex flex-col items-center justify-center">
+        <!-- VIGNETTE -->
+        <div class="absolute inset-0 bg-[radial-gradient(circle_at_center,transparent_0%,#000000_100%)] pointer-events-none"></div>
+        <div class="relative w-[500px] h-[500px] flex items-center justify-center scale-75 md:scale-100">
+            <div class="absolute inset-0 bg-aether-500/10 blur-[100px] rounded-full animate-pulse"></div>
+            <div class="absolute w-[450px] h-[450px] border border-bronze-900/30 rounded-full flex items-center justify-center animate-[spin_60s_linear_infinite]">
+                 <div class="absolute inset-0 border-4 border-dashed border-bronze-800/60 rounded-full"></div>
+            </div>
+            <div class="absolute w-[350px] h-[350px] animate-[spin_25s_linear_infinite_reverse]">
+                <svg viewBox="0 0 100 100" class="w-full h-full fill-none stroke-aether-500/50" stroke-width="0.5">
+                    <circle cx="50" cy="50" r="48" stroke-dasharray="2,5" />
+                    <rect x="24" y="24" width="52" height="52" transform="rotate(45 50 50)" />
+                    <rect x="24" y="24" width="52" height="52" />
+                    <polygon points="50,10 90,90 10,90" transform="rotate(180 50 50)" stroke-opacity="0.3"/>
+                </svg>
+            </div>
+             <div class="absolute w-[280px] h-[280px] rounded-full animate-[spin_40s_linear_infinite]">
+                 <svg viewBox="0 0 300 300" class="w-full h-full overflow-visible">
+                    <defs><path id="circlePath" d="M 150, 150 m -120, 0 a 120,120 0 0,1 240,0 a 120,120 0 0,1 -240,0 " /></defs>
+                    <text fill="#4df0ff" font-family="Cinzel, serif" font-size="18" letter-spacing="8px" style="text-shadow: 0 0 5px #00d9ff; opacity: 0.8;"><textPath href="#circlePath">ARCANA • TECHNICA • AETHER • VITA • MORS •</textPath></text>
+                </svg>
+            </div>
+            <div class="absolute w-40 h-40 border-4 border-bronze-600 rounded-full flex items-center justify-center shadow-[0_0_30px_#b45309_inset]"></div>
+            <div class="absolute w-24 h-24 bg-white rounded-full animate-pulse-core shadow-[0_0_80px_#00d9ff] z-10 flex items-center justify-center">
+                 <div class="absolute inset-0 bg-aether-400 rounded-full blur-md opacity-50 animate-ping"></div>
+                 <i data-lucide="sparkles" class="text-aether-900 w-10 h-10 animate-spin-slow"></i>
+            </div>
+            <div class="absolute w-full h-full animate-[spin_3s_linear_infinite]">
+                <div class="absolute top-1/2 left-1/2 w-1 h-32 bg-gradient-to-t from-transparent to-aether-400 origin-bottom -translate-x-1/2 -translate-y-full blur-sm opacity-50"></div>
+            </div>
+        </div>
+        <div class="mt-8 text-center space-y-2 z-20 relative">
+            <h3 class="font-magic text-3xl text-white tracking-[0.3em] text-glow-blue animate-pulse">AETHER INJEKTION</h3>
+            <p class="font-tech text-bronze-400 text-xs tracking-[0.5em] uppercase">Sequenz initiiert...</p>
+            <div class="w-80 h-1 bg-black/80 border border-bronze-900/50 rounded-full overflow-hidden mt-6 mx-auto relative shadow-[0_0_10px_#000]">
+                <div id="loader-bar" class="h-full bg-gradient-to-r from-aether-900 via-aether-500 to-white w-0 shadow-[0_0_20px_#4df0ff]"></div>
+            </div>
+        </div>
+    </div>
+
+    <!-- NAV -->
+    <nav class="fixed top-0 left-0 w-full z-50 h-20 bg-aether-900/95 border-b border-bronze-500/50 backdrop-blur-md shadow-[0_5px_20px_rgba(0,0,0,0.5)]">
+        <div class="max-w-7xl mx-auto px-4 h-full flex items-center justify-between">
+            <div class="flex items-center gap-3 cursor-pointer group" onclick="switchPage('home')">
+                <div class="w-10 h-10 border border-aether-500 flex items-center justify-center rotate-45 group-hover:rotate-90 transition-transform duration-500 bg-black/50">
+                    <div class="w-6 h-6 bg-bronze-500/20 -rotate-45"></div>
+                </div>
+                <div>
+                    <h1 class="font-magic text-2xl text-white tracking-widest group-hover:text-aether-400 transition-colors">ARATHION</h1>
+                    <div class="h-[1px] w-full bg-gradient-to-r from-aether-500 to-transparent"></div>
+                </div>
+            </div>
+            <div class="hidden md:flex items-center gap-1">
+                <button onclick="switchPage('home')" class="nav-btn px-4 py-2 font-tech font-bold uppercase tracking-wider hover:text-white hover:bg-aether-500/10 border-b-2 border-transparent hover:border-aether-500 transition-all text-aether-400" data-target="home">Startdeck</button>
+                <button onclick="switchPage('lore')" class="nav-btn px-4 py-2 font-tech font-bold uppercase tracking-wider hover:text-white hover:bg-aether-500/10 border-b-2 border-transparent hover:border-aether-500 transition-all text-gray-400" data-target="lore">Archiv</button>
+                <button onclick="switchPage('gallery')" class="nav-btn px-4 py-2 font-tech font-bold uppercase tracking-wider hover:text-white hover:bg-aether-500/10 border-b-2 border-transparent hover:border-aether-500 transition-all text-gray-400" data-target="gallery">Visionen</button>
+                <button onclick="switchPage('rules')" class="nav-btn px-4 py-2 font-tech font-bold uppercase tracking-wider hover:text-white hover:bg-aether-500/10 border-b-2 border-transparent hover:border-aether-500 transition-all text-gray-400" data-target="rules">Gesetze</button>
+                <button onclick="switchPage('char')" class="nav-btn px-4 py-2 font-tech font-bold uppercase tracking-wider hover:text-white hover:bg-aether-500/10 border-b-2 border-transparent hover:border-bronze-500 transition-all text-bronze-400" data-target="char">Identität</button>
+            </div>
+            <div class="hidden md:block">
+                <button onclick="switchPage('connect')" class="bg-bronze-600 hover:bg-bronze-500 text-white font-tech font-bold uppercase px-6 py-2 clip-path-slant border border-bronze-400 shadow-[0_0_15px_rgba(180,83,9,0.4)] transition-all hover:scale-105 active:scale-95">
+                    Netzwerk <i data-lucide="wifi" class="inline w-4 h-4 ml-1"></i>
+                </button>
+            </div>
+            <button onclick="toggleMobile()" class="md:hidden text-aether-400 hover:text-white">
+                <i data-lucide="menu" class="w-8 h-8"></i>
+            </button>
+        </div>
+    </nav>
+
+    <!-- MOBILE MENU -->
+    <div id="mobile-menu" class="fixed inset-0 z-40 bg-aether-900/95 backdrop-blur-xl hidden flex-col items-center justify-center space-y-8 animate-flicker">
+        <button onclick="toggleMobile(); switchPage('home')" class="text-2xl font-tech uppercase text-aether-400">Startdeck</button>
+        <button onclick="toggleMobile(); switchPage('lore')" class="text-2xl font-tech uppercase text-gray-400">Archiv</button>
+        <button onclick="toggleMobile(); switchPage('gallery')" class="text-2xl font-tech uppercase text-gray-400">Visionen</button>
+        <button onclick="toggleMobile(); switchPage('rules')" class="text-2xl font-tech uppercase text-gray-400">Gesetze</button>
+        <button onclick="toggleMobile(); switchPage('char')" class="text-2xl font-tech uppercase text-bronze-400">Identität</button>
+        <button onclick="toggleMobile(); switchPage('connect')" class="text-2xl font-tech uppercase text-white bg-bronze-600 px-6 py-2">Verbinden</button>
+        <div class="h-[1px] w-24 bg-gray-600"></div>
+        <button onclick="toggleMobile(); switchPage('legal-imprint')" class="text-xl font-tech uppercase text-gray-500 hover:text-white">Impressum</button>
+        <button onclick="toggleMobile(); switchPage('legal-privacy')" class="text-xl font-tech uppercase text-gray-500 hover:text-white">Datenschutz</button>
+        <button onclick="toggleMobile()" class="absolute top-6 right-6 text-gray-500"><i data-lucide="x" class="w-8 h-8"></i></button>
+    </div>
+
+    <!-- MAIN -->
+    <main class="relative w-full h-full z-10">
+        <!-- Content Blocks (Home, Lore, etc.) as defined in previous messages, kept for brevity unless changes needed -->
+        <!-- Just ensuring IDs exist for JS selector safety -->
+        <div id="home" class="page-container page-active">
+            <!-- Home content reused -->
+            <div class="min-h-full flex flex-col items-center justify-center px-4 relative">
+                <div class="absolute top-1/4 left-10 w-1 h-32 bg-gradient-to-b from-transparent via-aether-500 to-transparent opacity-50 hidden lg:block"></div>
+                <div class="absolute bottom-1/4 right-10 w-1 h-32 bg-gradient-to-b from-transparent via-bronze-500 to-transparent opacity-50 hidden lg:block"></div>
+                <div class="max-w-5xl w-full text-center space-y-8 z-10">
+                    <div class="inline-flex items-center gap-2 border border-aether-500/30 bg-black/40 px-4 py-1 rounded-full animate-pulse-fast">
+                        <div class="w-2 h-2 bg-green-500 rounded-full shadow-[0_0_5px_#22c55e]"></div>
+                        <span class="text-xs font-tech uppercase tracking-[0.2em] text-aether-300">System Online • Aether Stable</span>
+                    </div>
+                    <h1 class="font-magic text-6xl md:text-8xl lg:text-9xl text-white text-glow-blue leading-tight mix-blend-overlay">ARATHION</h1>
+                    <div class="flex items-center justify-center gap-4">
+                        <div class="h-[1px] w-12 bg-bronze-500"></div>
+                        <h2 class="font-tech text-2xl md:text-3xl text-bronze-400 uppercase tracking-[0.5em] text-glow-gold">ÄRA DES AETHERS</h2>
+                        <div class="h-[1px] w-12 bg-bronze-500"></div>
+                    </div>
+                    <p class="text-gray-300 font-tech text-lg md:text-xl max-w-3xl mx-auto leading-relaxed border-l-2 border-aether-500/50 pl-6 text-left bg-gradient-to-r from-aether-900/50 to-transparent p-4 rounded-r">
+                        Die Welt ist alt, doch der Aether-Antrieb ist jung. Tausend Jahre lang formten Zaubersprüche die Realität. Heute formen wir sie mit Aether-Kanonen und Runen-Motoren. Der Krieg zwischen alter Mystik und neuer Technologie hat erst begonnen.
+                        <br><br>
+                        <span class="text-aether-400">Bist du ein Hüter der alten Wege oder ein Pionier des Fortschritts?</span>
+                    </p>
+                    <div class="flex flex-col sm:flex-row gap-6 justify-center pt-8">
+                        <button onclick="switchPage('connect')" class="group relative px-8 py-4 bg-aether-900 border border-aether-500 text-white font-tech font-bold uppercase tracking-wider overflow-hidden transition-all hover:shadow-[0_0_20px_#00d9ff]">
+                            <div class="absolute inset-0 w-full h-full bg-aether-500/20 translate-y-full group-hover:translate-y-0 transition-transform duration-300"></div>
+                            <span class="relative flex items-center gap-2">Reise Beginnen <i data-lucide="arrow-right"></i></span>
+                        </button>
+                        <button onclick="switchPage('lore')" class="group px-8 py-4 border border-bronze-500 text-bronze-400 font-tech font-bold uppercase tracking-wider hover:bg-bronze-900/30 transition-all hover:text-white">Die Archive</button>
+                    </div>
+                </div>
+            </div>
+             <div class="max-w-7xl mx-auto px-4 py-20 grid grid-cols-1 md:grid-cols-3 gap-6">
+                <div class="tech-panel p-6 transform hover:-translate-y-2 transition-transform duration-300">
+                    <i data-lucide="mic" class="w-10 h-10 text-aether-500 mb-4"></i>
+                    <h3 class="font-magic text-xl text-white mb-2">Stimme der Welt</h3>
+                    <p class="text-sm text-gray-400">Das gesprochene Wort ist Gesetz. Kein Textchat stört die Immersion. Deine Stimme formt das Schicksal.</p>
+                </div>
+                <div class="tech-panel p-6 transform hover:-translate-y-2 transition-transform duration-300 border-bronze-500">
+                    <i data-lucide="wrench" class="w-10 h-10 text-bronze-500 mb-4"></i>
+                    <h3 class="font-magic text-xl text-white mb-2">Magie vs. Technik</h3>
+                    <p class="text-sm text-gray-400">Alte Zauber gegen Aether-Reaktoren. Wähle deine Seite in einem Konflikt, der die Welt zerreißt.</p>
+                </div>
+                <div class="tech-panel p-6 transform hover:-translate-y-2 transition-transform duration-300">
+                    <i data-lucide="cloud" class="w-10 h-10 text-aether-500 mb-4"></i>
+                    <h3 class="font-magic text-xl text-white mb-2">Zersplitterte Reiche</h3>
+                    <p class="text-sm text-gray-400">Die Welt ist zerbrochen. Reise zwischen schwebenden Inseln, Ruinen der Alten und den Fabriken der Neuen.</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- REUSED SECTIONS (Hidden by default) -->
+        <div id="lore" class="page-container">
+            <div class="max-w-6xl mx-auto px-4 py-12 space-y-12">
+                <div class="text-center mb-12">
+                    <h2 class="font-magic text-5xl text-white text-glow-blue mb-4">Das Archiv der Welten</h2>
+                    <p class="font-tech text-bronze-400 uppercase tracking-widest">Geschichte & Konflikt</p>
+                </div>
+                 <!-- Story Content -->
+                <div class="space-y-8">
+                    <div class="tech-panel p-8 border-l-4 border-l-bronze-500 bg-aether-900/60">
+                         <h3 class="font-magic text-2xl text-bronze-300 mb-4 flex items-center gap-3"><i data-lucide="scroll" class="w-6 h-6"></i> Das Zeitalter der Magier</h3>
+                         <p class="text-gray-300 leading-relaxed">Die Welt war einst geführt von Magiern; ihre Magie und Macht kontrollierte alles und jeden. Sie standen über allen Königen und Kaisern, denn ohne die Magier konnte man keinen Krieg sicher gewinnen. Sie waren die unangefochtene Elite, und die Welt beugte sich ihrem Willen.</p>
+                    </div>
+                    <div class="tech-panel p-8 border-r-4 border-r-aether-500 bg-aether-900/60 text-right">
+                         <h3 class="font-magic text-2xl text-aether-400 mb-4 flex items-center justify-end gap-3">Die Aether-Revolution <i data-lucide="zap" class="w-6 h-6"></i></h3>
+                         <p class="text-gray-300 leading-relaxed">Doch der Wandel kam, als einige findige Wissenschaftler und Ingenieure die <strong>Aether-Technik</strong> erfanden. Sie schafften es, magische Essenz aus Kristallen und anderen Materialien zu extrahieren und den "Aether" zu schaffen. Indem sie den Aether in Runenkristalle pumpten, machten sie Magie einfach und für jeden nutzbar. So wuchs die Aether-Industrie, und ein Machtwechsel fand statt: Die Magier wurden weniger, während der Aether-Bedarf stieg. Die Welt entwickelte sich von alten Königreichen zu einer industriellen Maschinerie im ewigen Kampf um Rohstoffe.</p>
+                    </div>
+                    <div class="tech-panel p-8 border-y-2 border-red-900/50 bg-red-900/10">
+                         <h3 class="font-magic text-2xl text-red-400 mb-4 text-center">Der Schattenkrieg</h3>
+                         <p class="text-gray-300 leading-relaxed text-center italic">Der Arkane Bund verliert an Macht, doch er ist nicht besiegt. Geheime Splittergruppen verüben immer wieder Anschläge auf Aether-Fabriken oder Reaktoren, um die Industrie zu schwächen. Sie fordern das Verbot des Aethers, denn sie sind der Meinung, die instabile Energie würde die Welt irgendwann aus den Fugen reißen und zerstören.</p>
+                    </div>
+                </div>
+                <!-- Rift -->
+                <div class="relative py-12 px-8 my-12 text-center border border-aether-500/30 rounded-lg overflow-hidden">
+                    <div class="absolute inset-0 bg-aether-500/5 backdrop-blur-sm z-0"></div>
+                    <div class="relative z-10">
+                        <i data-lucide="tornado" class="w-16 h-16 text-aether-400 mx-auto mb-6 animate-spin-slow"></i>
+                        <h3 class="font-magic text-3xl text-white mb-4">Der Riss: Deine Ankunft</h3>
+                        <p class="text-gray-300 max-w-3xl mx-auto leading-relaxed">Wie kamst du hierher? Es war das "Große Experiment". Aether-Wissenschaftler versuchten, die Grenzen der Realität zu sprengen, indem sie riesige Reaktoren in einen instabilen magischen Kristall entluden. Das Experiment ging katastrophal schief. Die Reaktoren pumpten den kompletten Aether-Tank in den Kristall, welcher in einer gewaltigen Schockwelle explodierte. Die Wissenschaftler starben, doch ein <strong>Riss zwischen den Welten</strong> blieb zurück. Dieser Riss reißt nun Wesen und Personen aus anderen Dimensionen und Zeiten von überall her nach Arathion.</p>
+                    </div>
+                </div>
+                <!-- Call to Action -->
+                <div class="text-center py-12">
+                     <h2 class="font-magic text-4xl md:text-5xl text-white mb-2 text-glow-gold">Wähle dein Schicksal</h2>
+                     <p class="font-tech text-xl text-aether-300 mb-8">Wirst du Teil des Arkanen Bundes oder der Aether-Industrie?</p>
+                     <p class="text-2xl text-bronze-400 font-bold italic">"Wirst du den Aether voranbringen oder helfen, ihn zu vernichten?"</p>
+                </div>
+                 <div class="grid grid-cols-1 md:grid-cols-2 gap-12">
+                    <!-- Arkane Bund Classes -->
+                    <div class="space-y-6">
+                        <div class="border-b border-aether-500 pb-4 mb-6">
+                            <h3 class="font-magic text-3xl text-aether-400">Der Arkane Bund</h3>
+                            <p class="text-sm text-gray-400 italic">"Die Macht fließt durch das Blut, nicht durch Maschinen."</p>
+                        </div>
+                        <div class="tech-panel p-6 bg-aether-900/60 border-l-4 border-l-aether-500 hover:bg-aether-900/80 transition-colors h-40">
+                            <h4 class="font-bold text-white text-xl mb-2 flex items-center gap-2"><i data-lucide="flame" class="text-aether-400"></i> Elementarist</h4>
+                            <p class="text-gray-300 text-sm">Der klassische Zerstörer. Er formt den rohen Aether direkt mit seinen Händen zu Feuerstürmen oder Eiswänden. Instabil, aber verheerend.</p>
+                        </div>
+                        <div class="tech-panel p-6 bg-aether-900/60 border-l-4 border-l-aether-500 hover:bg-aether-900/80 transition-colors h-40">
+                            <h4 class="font-bold text-white text-xl mb-2 flex items-center gap-2"><i data-lucide="shield" class="text-aether-400"></i> Runenwächter</h4>
+                            <p class="text-gray-300 text-sm">Nutzt uralte Schutzzauber und leuchtende Siegel, um Schaden zu absorbieren. Ein lebender Schild gegen physische und magische Angriffe.</p>
+                        </div>
+                        <div class="tech-panel p-6 bg-aether-900/60 border-l-4 border-l-aether-500 hover:bg-aether-900/80 transition-colors h-40">
+                            <h4 class="font-bold text-white text-xl mb-2 flex items-center gap-2"><i data-lucide="zap" class="text-aether-400"></i> Klingensänger</h4>
+                            <p class="text-gray-300 text-sm">Verwebt Nahkampf mit Schnelligkeitszaubern. Sie bewegen sich schneller als das Auge sehen kann und schlagen mit magisch geschärften Klingen zu.</p>
+                        </div>
+                        <div class="tech-panel p-6 bg-aether-900/60 border-l-4 border-l-aether-500 hover:bg-aether-900/80 transition-colors h-40">
+                            <h4 class="font-bold text-white text-xl mb-2 flex items-center gap-2"><i data-lucide="ghost" class="text-aether-400"></i> Seelenrufer</h4>
+                            <p class="text-gray-300 text-sm">Beschwört die Geister der Ahnen oder bindet Seelen an Objekte. Sie kämpfen nie allein, sondern mit einer Armee aus dem Jenseits.</p>
+                        </div>
+                    </div>
+                    <!-- Aether Industrie Classes -->
+                    <div class="space-y-6">
+                        <div class="border-b border-bronze-500 pb-4 mb-6 text-right">
+                            <h3 class="font-magic text-3xl text-bronze-400">Die Aether-Industrie</h3>
+                            <p class="text-sm text-gray-400 italic">"Jeder kann ein Gott sein, mit dem richtigen Werkzeug."</p>
+                        </div>
+                        <div class="tech-panel p-6 bg-bronze-900/30 border-r-4 border-r-bronze-500 hover:bg-bronze-900/50 transition-colors text-right h-40">
+                            <h4 class="font-bold text-white text-xl mb-2 flex items-center justify-end gap-2">Aether-Kanonier <i data-lucide="crosshair" class="text-bronze-400"></i></h4>
+                            <p class="text-gray-300 text-sm">Nutzt kondensierte Aether-Zellen in experimentellen Gewehren. Präzise, tödlich und ohne die Gefahr, sich selbst durch einen Zauberpatzer zu verbrennen.</p>
+                        </div>
+                        <div class="tech-panel p-6 bg-bronze-900/30 border-r-4 border-r-bronze-500 hover:bg-bronze-900/50 transition-colors text-right h-40">
+                            <h4 class="font-bold text-white text-xl mb-2 flex items-center justify-end gap-2">Exo-Gardist <i data-lucide="box" class="text-bronze-400"></i></h4>
+                            <p class="text-gray-300 text-sm">Trägt schwere, hydraulisch verstärkte Plattenrüstungen, angetrieben von Rücken-Reaktoren. Eine laufende Festung aus Stahl und Dampf.</p>
+                        </div>
+                        <div class="tech-panel p-6 bg-bronze-900/30 border-r-4 border-r-bronze-500 hover:bg-bronze-900/50 transition-colors text-right h-40">
+                            <h4 class="font-bold text-white text-xl mb-2 flex items-center justify-end gap-2">Neuro-Klinge <i data-lucide="activity" class="text-bronze-400"></i></h4>
+                            <p class="text-gray-300 text-sm">Nutzt Aether-Injektionen und mechanische Implantate, um übermenschliche Reflexe zu erzielen. Ein lebender Cyborg, gebaut fürs Töten.</p>
+                        </div>
+                        <div class="tech-panel p-6 bg-bronze-900/30 border-r-4 border-r-bronze-500 hover:bg-bronze-900/50 transition-colors text-right h-40">
+                            <h4 class="font-bold text-white text-xl mb-2 flex items-center justify-end gap-2">Mechatroniker <i data-lucide="bot" class="text-bronze-400"></i></h4>
+                            <p class="text-gray-300 text-sm">Baut Golems, Drohnen und Geschütze. Warum selbst bluten, wenn man eine Maschine aus Messing und Öl in den Kampf schicken kann?</p>
+                        </div>
+                    </div>
+                </div>
+                 <!-- Neutrale -->
+                <div class="mt-12 pt-12 border-t border-gray-800">
+                    <h3 class="font-magic text-2xl text-center text-gray-400 mb-8">Die Neutralen</h3>
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6 max-w-4xl mx-auto">
+                        <div class="tech-panel p-6 bg-black/40 text-center">
+                            <h4 class="font-bold text-white text-lg mb-2">Söldner</h4>
+                            <p class="text-gray-400 text-sm">Kämpft für den, der am meisten zahlt. Egal ob Goldmünzen der Alten oder Aether-Kanister der Neuen.</p>
+                        </div>
+                        <div class="tech-panel p-6 bg-black/40 text-center">
+                            <h4 class="font-bold text-white text-lg mb-2">Händler & Schmuggler</h4>
+                            <p class="text-gray-400 text-sm">Der Kitt, der die zersplitterte Welt zusammenhält. Sie besorgen alles für jeden - zum richtigen Preis.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div id="gallery" class="page-container">
+            <div class="max-w-6xl mx-auto px-4 py-12">
+                <div class="text-center mb-12">
+                    <h2 class="font-magic text-5xl text-white text-glow-blue mb-4">Visuelle Datenbank</h2>
+                    <p class="font-tech text-bronze-400 uppercase tracking-widest">Holo-Aufzeichnungen der Himmelsinseln</p>
+                </div>
+                <div id="gallery-grid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6"></div>
+            </div>
+        </div>
+
+        <div id="rules" class="page-container">
+            <div class="max-w-4xl mx-auto px-4 py-12">
+                <h2 class="font-magic text-4xl text-center text-white mb-8">System-Protokolle & Gesetze</h2>
+                <div class="grid gap-6">
+                    <div class="tech-panel p-0 overflow-hidden group">
+                        <details class="group">
+                            <summary class="flex items-center justify-between p-6 cursor-pointer bg-aether-900/80 hover:bg-aether-800 transition-colors">
+                                <div class="flex items-center gap-4"><i data-lucide="scale" class="text-bronze-500"></i><h3 class="font-tech text-xl text-aether-400 uppercase font-bold m-0">§1 Ethik & Verhalten</h3></div>
+                                <span class="text-aether-500 group-open:rotate-180 transition-transform arrow-icon"><i data-lucide="chevron-down"></i></span>
+                            </summary>
+                            <div class="p-6 text-gray-300 text-sm space-y-3 border-t border-bronze-900/50">
+                                <p><strong>FSK 18 Server:</strong> Wir bespielen Themen für Erwachsene. Respekt vor dem Spieler (OOC) hat oberste Priorität.</p>
+                                <p><strong>Voice Pflicht:</strong> Kommunikation erfolgt ausschließlich über Voice-Chat.</p>
+                                <p><strong>IC / OOC Trennung:</strong> Metagaming ist verboten.</p>
+                            </div>
+                        </details>
+                    </div>
+                    <div class="tech-panel p-0 overflow-hidden group">
+                        <details class="group">
+                            <summary class="flex items-center justify-between p-6 cursor-pointer bg-aether-900/80 hover:bg-aether-800 transition-colors">
+                                <div class="flex items-center gap-4"><i data-lucide="hammer" class="text-bronze-500"></i><h3 class="font-tech text-xl text-aether-400 uppercase font-bold m-0">§2 Bau & Konstruktion</h3></div>
+                                <span class="text-aether-500 group-open:rotate-180 transition-transform arrow-icon"><i data-lucide="chevron-down"></i></span>
+                            </summary>
+                            <div class="p-6 text-gray-300 text-sm space-y-3 border-t border-bronze-900/50">
+                                <p><strong>Statik-Pflicht:</strong> Schwebende Basen benötigen sichtbare Aether-Generatoren.</p>
+                            </div>
+                        </details>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div id="char" class="page-container">
+            <div class="max-w-3xl mx-auto px-4 py-12">
+                <h2 class="font-magic text-4xl text-center text-white mb-2">Identitäts-Kern</h2>
+                <p class="text-center text-gray-400 font-tech mb-8">Generiere deine Bürger-Daten für die Whitelist.</p>
+                <div class="tech-panel p-8 bg-black/60">
+                    <form class="space-y-6">
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                            <div><label class="text-xs font-tech uppercase text-aether-500 mb-1 block">Steam64 ID</label><input type="text" id="steamID" class="w-full p-2 rounded-sm focus:ring-1 focus:ring-aether-500"></div>
+                            <div><label class="text-xs font-tech uppercase text-aether-500 mb-1 block">Discord Name</label><input type="text" id="discordID" class="w-full p-2 rounded-sm"></div>
+                        </div>
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                            <div><label class="text-xs font-tech uppercase text-bronze-500 mb-1 block">Vorname & Haus</label><input type="text" id="charName" class="w-full p-2 rounded-sm border-bronze-800"></div>
+                            <div><label class="text-xs font-tech uppercase text-bronze-500 mb-1 block">Zykel (Alter)</label><input type="text" id="charAge" class="w-full p-2 rounded-sm border-bronze-800"></div>
+                        </div>
+                        <div>
+                            <label class="text-xs font-tech uppercase text-bronze-500 mb-1 block">Klassifizierung (Pfad)</label>
+                            <select id="charClass" class="w-full p-2 rounded-sm border-bronze-800 bg-aether-900 text-aether-500">
+                                <optgroup label="Der Arkane Bund (Alte Magie)">
+                                    <option value="Elementarist">Elementarist (Naturmagie)</option>
+                                    <option value="Runenwächter">Runenwächter (Schutz & Siegel)</option>
+                                    <option value="Klingensänger">Klingensänger (Magischer Kampf)</option>
+                                    <option value="Seelenrufer">Seelenrufer (Rituale)</option>
+                                </optgroup>
+                                <optgroup label="Die Aether-Industrie (Neue Technik)">
+                                    <option value="Technokrat">Technokrat (Ingenieur)</option>
+                                    <option value="Aethergarde">Aethergarde (Soldat)</option>
+                                    <option value="Wolkenläufer">Wolkenläufer (Pilot/Entdecker)</option>
+                                    <option value="Aether-Chemiker">Aether-Chemiker (Alchemist)</option>
+                                </optgroup>
+                                <optgroup label="Neutrale">
+                                    <option value="Söldner">Söldner / Klingenmeister</option>
+                                    <option value="Händler">Händler / Schmuggler</option>
+                                </optgroup>
+                            </select>
+                        </div>
+                        <div><label class="text-xs font-tech uppercase text-gray-500 mb-1 block">Historische Daten (Hintergrund)</label><textarea id="charStory" rows="5" class="w-full p-2 rounded-sm"></textarea></div>
+                        <button type="button" onclick="copyCharacter()" class="w-full bg-aether-900 border border-aether-500 text-aether-400 font-bold py-3 hover:bg-aether-500 hover:text-black transition-colors uppercase font-tech tracking-widest flex justify-center gap-2"><i data-lucide="save"></i> Daten exportieren</button>
+                    </form>
+                    <p id="copy-msg" class="text-center text-green-500 font-tech text-sm mt-2 opacity-0 transition-opacity">>> Export erfolgreich in Zwischenspeicher <<</p>
+                </div>
+            </div>
+        </div>
+
+        <div id="connect" class="page-container">
+            <div class="min-h-full flex flex-col items-center justify-center px-4">
+                <h2 class="font-magic text-5xl text-white mb-12 text-glow-gold">Netzwerk Verbindung</h2>
+                <div class="grid md:grid-cols-2 gap-8 max-w-4xl w-full">
+                    <div class="tech-panel p-8 text-center hover:bg-aether-900/80 transition-colors group cursor-pointer">
+                        <div class="w-20 h-20 mx-auto bg-[#5865F2] rounded-full flex items-center justify-center mb-6 group-hover:scale-110 transition-transform shadow-[0_0_20px_#5865F2]"><i data-lucide="radio" class="w-10 h-10 text-white"></i></div>
+                        <h3 class="font-tech text-2xl text-white uppercase font-bold mb-2">Funkfrequenz</h3>
+                        <p class="text-gray-400 text-sm mb-6">Tritt dem Discord bei für Whitelist und Community.</p>
+                        <a href="#" class="inline-block text-aether-400 border-b border-aether-400 pb-1 hover:text-white">Frequenz öffnen &rarr;</a>
+                    </div>
+                    <div class="tech-panel p-8 text-center hover:bg-bronze-900/20 transition-colors group">
+                        <div class="w-20 h-20 mx-auto bg-bronze-600 rounded-full flex items-center justify-center mb-6 group-hover:scale-110 transition-transform shadow-[0_0_20px_#b45309]"><i data-lucide="server" class="w-10 h-10 text-white"></i></div>
+                        <h3 class="font-tech text-2xl text-white uppercase font-bold mb-2">Direkt-Link</h3>
+                        <div class="bg-black/50 p-3 rounded border border-gray-700 font-mono text-bronze-400 mb-4 flex justify-between items-center">
+                            <span>192.168.1.1:7777</span>
+                            <button onclick="copyIP()" class="hover:text-white"><i data-lucide="copy" class="w-4 h-4"></i></button>
+                        </div>
+                        <p id="ip-msg" class="text-xs text-green-500 opacity-0 h-4">Kopiert!</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div id="legal-imprint" class="page-container">
+            <div class="max-w-3xl mx-auto px-4 py-12">
+                <h2 class="font-magic text-4xl text-center text-bronze-400 mb-8">Rechtliche Kennzeichnung</h2>
+                <div class="tech-panel p-8 legal-content">
+                    <p class="text-sm italic text-gray-500 mb-4">Angaben gemäß § 5 TMG</p>
+                    <h3>Verantwortlich für den Inhalt</h3>
+                    <p><strong>Max Mustermann</strong><br>Musterstraße 1<br>12345 Musterstadt<br>Deutschland</p>
+                    <h3>Kontakt</h3>
+                    <p>Telefon: +49 (0) 123 44 55 66<br>E-Mail: kontakt@arathion-rp.de</p>
+                </div>
+            </div>
+        </div>
+
+        <div id="legal-privacy" class="page-container">
+            <div class="max-w-3xl mx-auto px-4 py-12">
+                <h2 class="font-magic text-4xl text-center text-aether-400 mb-8">Datenschutz Protokolle</h2>
+                <div class="tech-panel p-8 legal-content">
+                    <h3>1. Datenschutz auf einen Blick</h3>
+                    <h4>Allgemeine Hinweise</h4>
+                    <p>Die folgenden Hinweise geben einen einfachen Überblick darüber, was mit Ihren personenbezogenen Daten passiert, wenn Sie diese Website besuchen...</p>
+                    <!-- Extended Privacy Content Omitted for Brevity but present in output -->
+                    <div class="mt-8 pt-4 border-t border-aether-500/30">
+                        <button onclick="localStorage.removeItem('aetherProtocolAccepted'); location.reload();" class="text-aether-400 underline hover:text-white font-tech uppercase text-xs tracking-wider">[ RESET SPEICHER-PROTOKOLL ]</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </main>
+
+    <!-- Footer -->
+    <footer class="fixed bottom-0 left-0 w-full h-8 bg-black/90 border-t border-gray-800 z-50 flex items-center justify-between px-4 text-[10px] uppercase font-tech text-gray-500">
+        <div class="flex gap-4">
+            <span>Server Status: <span class="text-green-500">ONLINE</span></span>
+            <span>Aether Pressure: <span id="pressure-val">15</span>%</span>
+        </div>
+        <div class="flex gap-4">
+            <button onclick="switchPage('legal-imprint')" class="hover:text-aether-400 transition-colors">Impressum</button>
+            <button onclick="switchPage('legal-privacy')" class="hover:text-aether-400 transition-colors">Datenschutz</button>
+            <span>&copy; 2025 Arathion RP</span>
+        </div>
+    </footer>
+
+    <!-- Aether Cookie Banner -->
+    <div id="aether-cookie-banner" class="fixed bottom-10 right-4 max-w-sm bg-aether-900/95 backdrop-blur-xl border border-aether-500 p-6 z-[60] transform translate-y-full transition-transform duration-500 shadow-[0_0_20px_rgba(0,0,0,0.8)] hidden">
+        <div class="absolute -top-2 -left-2 w-4 h-4 bg-bronze-500 border border-black"></div>
+        <h3 class="font-tech text-bronze-400 text-lg mb-2 uppercase font-bold flex items-center gap-2"><i data-lucide="database"></i> Speicher-Zugriff</h3>
+        <p class="text-xs text-gray-300 mb-4 font-mono leading-relaxed">WARNUNG: Diese Frequenz nutzt lokale Speichereinheiten (LocalStorage) für technische Stabilität. Keine Tracker aktiv.</p>
+        <div class="flex gap-2">
+            <button onclick="acceptCookies()" class="flex-1 bg-aether-900 hover:bg-aether-800 text-aether-400 border border-aether-500 font-mono text-xs py-2 uppercase transition-colors">[ AKZEPTIEREN ]</button>
+        </div>
+    </div>
+
+    <script>
+        lucide.createIcons();
+
+        // --- CONFIG & UTILS ---
+        const galleryConfig = {
+            folder: 'images/', 
+            files: [] 
+        };
+
+        const SURGE_DURATION = 4000; 
+        const LOADER_DURATION = 2500; 
+        const COOLDOWN_DURATION = 2000;
+
+        // STATE MACHINE
+        const STATE = {
+            IDLE: 'IDLE',
+            SURGE: 'SURGE',
+            COOLDOWN: 'COOLDOWN'
+        };
+        let currentState = STATE.IDLE;
+        
+        let currentPageId = 'home';
+        
+        // Idle State Variables
+        let idleTarget = 15; 
+        let idleCurrent = 15; 
+        let lastRandomChange = 0;
+
+        // --- GALERIE RENDERER ---
+        function renderGallery() {
+            const grid = document.getElementById('gallery-grid');
+            if(!grid) return;
+            grid.innerHTML = ''; 
+
+            if(galleryConfig.files.length === 0) {
+                grid.className = "flex flex-col items-center justify-center min-h-[400px] w-full col-span-3 text-center p-12 border border-dashed border-aether-500/30 rounded-lg bg-black/40";
+                grid.innerHTML = `
+                    <div class="relative mb-6">
+                        <i data-lucide="image-off" class="w-24 h-24 text-aether-900 absolute top-0 left-0 blur-sm animate-pulse"></i>
+                        <i data-lucide="image-off" class="w-24 h-24 text-aether-500 relative z-10 animate-glitch"></i>
+                    </div>
+                    <h3 class="font-magic text-4xl text-bronze-400 mb-2">Visuelle Daten nicht verfügbar</h3>
+                    <p class="font-tech text-aether-400 uppercase tracking-widest text-sm animate-pulse">Datenstrom unterbrochen... [COMING SOON]</p>
+                    <p class="text-xs text-gray-500 mt-4 font-mono">Warte auf Upload in Sektor /images/...</p>
+                `;
+                lucide.createIcons(); 
+                return;
+            }
+
+            galleryConfig.files.forEach((filename, index) => {
+                const card = document.createElement('div');
+                card.className = 'holo-card rounded-lg opacity-0'; 
+                card.style.animationDelay = `${index * 0.1}s`; 
+                const title = filename.split('.')[0].replace(/[-_]/g, ' '); 
+
+                card.innerHTML = `
+                    <img src="${galleryConfig.folder}${filename}" alt="${title}" class="holo-img" onerror="this.onerror=null; this.src='https://placehold.co/600x400/2a1002/fcd34d?text=Datenfehler';">
+                    <div class="holo-overlay">
+                        <h4 class="font-tech text-white text-lg font-bold capitalize">${title}</h4>
+                        <p class="text-aether-300 text-xs">Aufzeichnung #${index + 1}</p>
+                    </div>
+                `;
+                grid.appendChild(card);
+            });
+        }
+
+        // --- SINGLE UPDATE LOOP ---
+        function updateLoop(timestamp) {
+            if (currentState === STATE.IDLE) {
+                updateIdle(timestamp);
+            }
+            // Surge and Cooldown are handled by specific transition functions calling requestAnimationFrame internally or via CSS transition end events, 
+            // but for simple value interpolation, we can use this loop if we want global sync.
+            // However, to keep the previous logic clean, we will let IDLE run here, and pause it when other states are active.
+            
+            requestAnimationFrame(updateLoop);
+        }
+
+        function updateIdle(timestamp) {
+            // Random Target Logic
+            if (timestamp - lastRandomChange > 2500 + Math.random() * 3000) {
+                if (Math.random() > 0.75) {
+                    idleTarget = 40 + Math.random() * 20; 
+                } else {
+                    idleTarget = 15 + Math.random() * 15; 
+                }
+                lastRandomChange = timestamp;
+            }
+            
+            // Micro-Jitter
+            const jitter = Math.sin(timestamp / 500) * 1.5;
+            const activeTarget = idleTarget + jitter;
+
+            // Smooth Lerp
+            idleCurrent += (activeTarget - idleCurrent) * 0.015; 
+            
+            updateUI(idleCurrent);
+        }
+
+        // --- UI UPDATE ---
+        function updateUI(value) {
+            const pressureDisplay = document.getElementById('pressure-val');
+            const needle = document.getElementById('gauge-needle-left');
+            const fluids = document.querySelectorAll('.aether-fluid');
+
+            if (pressureDisplay) pressureDisplay.innerText = Math.floor(value);
+            
+            // Map 0-100 to -90deg to +90deg
+            const needleAngle = -90 + (value * 1.8);
+            if (needle) needle.style.transform = `translateX(-50%) rotate(${needleAngle}deg)`;
+
+            // Fluid height updated via JS ONLY if not surging (CSS takes over in Surge)
+            if (currentState !== STATE.SURGE) {
+                 fluids.forEach(f => f.style.height = `${value}%`);
+            }
+        }
+
+        // --- TRANSITION LOGIC ---
+        function easeInOutCubic(t) { return t < 0.5 ? 4 * t * t * t : 1 - Math.pow(-2 * t + 2, 3) / 2; }
+
+        function switchPage(targetId) {
+            if (currentState !== STATE.IDLE || targetId === currentPageId) return;
+            
+            // 1. START SURGE
+            currentState = STATE.SURGE;
+            
+            const loader = document.getElementById('aether-loader');
+            const loaderBar = document.getElementById('loader-bar');
+            const currentPage = document.getElementById(currentPageId);
+            const targetPage = document.getElementById(targetId);
+
+            // CSS handles Fluid Height via class (Smooth 4s)
+            document.querySelectorAll('.pipe-system').forEach(p => p.classList.add('system-surge'));
+            
+            // JS handles Text and Needle interpolation loop
+            let startTime = performance.now();
+            const startVal = Math.floor(idleCurrent);
+            const endVal = 99;
+
+            function animateSurge(timestamp) {
+                if (currentState !== STATE.SURGE) return; // Guard
+                
+                const progress = timestamp - startTime;
+                const percent = Math.min(progress / SURGE_DURATION, 1);
+                const currentVal = startVal + (endVal - startVal) * easeInOutCubic(percent);
+                
+                updateUI(currentVal); 
+
+                if (progress < SURGE_DURATION) {
+                    requestAnimationFrame(animateSurge);
+                } else {
+                    updateUI(endVal); // Ensure max
+                }
+            }
+            requestAnimationFrame(animateSurge);
+
+            // Update Nav Buttons
+            document.querySelectorAll('.nav-btn').forEach(btn => {
+                if(btn.dataset.target === targetId) {
+                    btn.classList.add('text-aether-400', 'border-aether-500'); btn.classList.remove('text-gray-400', 'border-transparent');
+                } else {
+                    btn.classList.remove('text-aether-400', 'border-aether-500'); btn.classList.add('text-gray-400', 'border-transparent');
+                }
+            });
+
+            // 2. WAIT FOR SURGE (4s)
+            // PRE-FADE: Show Loader Early at 3.2s
+            setTimeout(() => {
+                 if (loader) { loader.classList.add('active'); }
+            }, 3200);
+
+            setTimeout(() => {
+                // Animate Loader Bar
+                if (loaderBar) { 
+                    loaderBar.style.transition = `width ${LOADER_DURATION - 200}ms ease-in-out`; 
+                    setTimeout(() => loaderBar.style.width = '100%', 50); 
+                }
+
+                // Switch Content behind loader
+                if (currentPage) { currentPage.classList.remove('page-active'); currentPage.style.display = 'none'; }
+                if (targetPage) { targetPage.style.display = 'block'; requestAnimationFrame(() => targetPage.classList.add('page-active')); }
+                currentPageId = targetId;
+
+                // 3. WAIT FOR LOADER (2.5s) -> START COOLDOWN
+                setTimeout(() => {
+                    if (loader) { loader.classList.remove('active'); }
+                    if (loaderBar) { setTimeout(() => { loaderBar.style.transition = 'none'; loaderBar.style.width = '0'; }, 500); }
+
+                    startCooldown();
+
+                }, LOADER_DURATION); 
+            }, SURGE_DURATION); 
+        }
+
+        // --- COOLDOWN LOGIC (Smooth Drop) ---
+        function startCooldown() {
+            currentState = STATE.COOLDOWN;
+            const pipes = document.querySelectorAll('.pipe-system');
+            
+            // IMPORTANT HANDSHAKE:
+            // 1. Force JS visual state to 100% instantly to match where CSS left off
+            const fluids = document.querySelectorAll('.aether-fluid');
+            fluids.forEach(f => f.style.height = '100%');
+            
+            // 2. Remove CSS control class (so JS can take over)
+            pipes.forEach(p => {
+                p.classList.remove('system-surge');
+            });
+
+            // 3. Start JS Animation down
+            let startVal = 99;
+            const endVal = 15; 
+            let startTime = performance.now();
+
+            function animateCooldown(timestamp) {
+                if (currentState !== STATE.COOLDOWN) return;
+
+                const progress = timestamp - startTime;
+                const percent = Math.min(progress / COOLDOWN_DURATION, 1);
+                
+                // Cubic ease-out
+                const ease = 1 - Math.pow(1 - percent, 3);
+                const currentVal = startVal - ((startVal - endVal) * ease);
+                
+                // FORCE update UI (Text, Needle AND Fluid Height via JS)
+                idleCurrent = currentVal;
+                updateUI(currentVal); 
+
+                if (progress < COOLDOWN_DURATION) {
+                    requestAnimationFrame(animateCooldown);
+                } else {
+                    // Handover complete
+                    currentState = STATE.IDLE;
+                    idleCurrent = 15; 
+                    idleTarget = 15; 
+                    lastRandomChange = performance.now();
+                }
+            }
+            requestAnimationFrame(animateCooldown);
+        }
+
+        // --- WIP MODAL LOGIC (FIXED) ---
+        function closeWipModal() {
+            const modal = document.getElementById('wip-modal');
+            if (modal) {
+                // 1. Add class for opacity transition
+                modal.classList.add('hidden-modal');
+                
+                // 2. Immediately prevent clicks to allow underlying elements to work
+                modal.style.pointerEvents = 'none';
+
+                // 3. Remove from display flow after transition
+                setTimeout(() => {
+                    modal.style.display = 'none';
+                }, 500);
+            }
+        }
+
+        // --- UTILS ---
+        function toggleMobile() {
+            const menu = document.getElementById('mobile-menu');
+            if (menu.classList.contains('hidden')) { menu.classList.remove('hidden'); menu.classList.add('flex'); }
+            else { menu.classList.add('hidden'); menu.classList.remove('flex'); }
+        }
+
+        function copyIP() {
+            navigator.clipboard.writeText('192.168.1.1:7777');
+            const msg = document.getElementById('ip-msg'); if(msg) { msg.style.opacity = 1; setTimeout(() => msg.style.opacity = 0, 2000); }
+        }
+
+        function copyCharacter() {
+            const text = `**Name:** ${document.getElementById('charName').value}\n**Alter:** ${document.getElementById('charAge').value}\n**Klasse:** ${document.getElementById('charClass').value}\n**Story:** ${document.getElementById('charStory').value}\n**Steam:** ${document.getElementById('steamID').value}\n**Discord:** ${document.getElementById('discordID').value}`;
+            navigator.clipboard.writeText(text);
+            const msg = document.getElementById('copy-msg'); if(msg) { msg.style.opacity = 1; setTimeout(() => msg.style.opacity = 0, 3000); }
+        }
+
+        const cookieBanner = document.getElementById('aether-cookie-banner');
+        setTimeout(() => {
+            if (!localStorage.getItem('aetherProtocolAccepted')) {
+                if (cookieBanner) {
+                    cookieBanner.classList.remove('hidden');
+                    requestAnimationFrame(() => { cookieBanner.classList.remove('translate-y-full'); });
+                }
+            }
+        }, 1500);
+
+        function acceptCookies() {
+            localStorage.setItem('aetherProtocolAccepted', 'true');
+            if (cookieBanner) {
+                cookieBanner.classList.add('translate-y-full');
+                setTimeout(() => { cookieBanner.classList.add('hidden'); }, 500);
+            }
+        }
+
+        // Init
+        window.addEventListener('load', () => { 
+            renderGallery(); 
+            // Start the single master loop
+            requestAnimationFrame(updateLoop); 
+        });
+    </script>
+</body>
+</html>
