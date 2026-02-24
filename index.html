@@ -12,7 +12,7 @@
     <!-- Icons -->
     <script src="https://unpkg.com/lucide@latest"></script>
 
-    <!-- Fonts -->
+    <!-- Fonts (Hinweis: Für 100% DSGVO-Sicherheit am besten lokal hosten) -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;700;900&family=Rajdhani:wght@300;400;600;700&display=swap" rel="stylesheet">
@@ -259,9 +259,10 @@
         input, textarea, select { background: rgba(5, 11, 20, 0.9); border: 1px solid #451a03; color: #00d9ff; font-family: 'Rajdhani', monospace; }
         input:focus, textarea:focus { border-color: #00d9ff; box-shadow: 0 0 10px rgba(0, 217, 255, 0.3); outline: none; }
         
-        .legal-content h3 { color: #fcd34d; font-family: 'Cinzel', serif; margin-top: 1.5rem; }
-        .legal-content h4 { color: #00d9ff; font-weight: bold; margin-top: 1rem; font-family: 'Rajdhani', sans-serif; text-transform: uppercase; }
-        .legal-content p, .legal-content ul { color: #cbd5e1; }
+        .legal-content h3 { color: #fcd34d; font-family: 'Cinzel', serif; margin-top: 1.5rem; margin-bottom: 0.5rem; font-size: 1.25rem;}
+        .legal-content h4 { color: #00d9ff; font-weight: bold; margin-top: 1.25rem; font-family: 'Rajdhani', sans-serif; text-transform: uppercase; }
+        .legal-content p, .legal-content ul { color: #cbd5e1; margin-bottom: 1rem; line-height: 1.6; }
+        .legal-content ul { list-style-type: disc; padding-left: 1.5rem; }
     </style>
 </head>
 <body class="bg-aether-900 text-aether-500 selection:bg-aether-500 selection:text-black relative h-screen w-screen overflow-hidden">
@@ -408,10 +409,8 @@
 
     <!-- MAIN -->
     <main class="relative w-full h-full z-10">
-        <!-- Content Blocks (Home, Lore, etc.) as defined in previous messages, kept for brevity unless changes needed -->
-        <!-- Just ensuring IDs exist for JS selector safety -->
+        <!-- Content Blocks (Home, Lore, etc.) -->
         <div id="home" class="page-container page-active">
-            <!-- Home content reused -->
             <div class="min-h-full flex flex-col items-center justify-center px-4 relative">
                 <div class="absolute top-1/4 left-10 w-1 h-32 bg-gradient-to-b from-transparent via-aether-500 to-transparent opacity-50 hidden lg:block"></div>
                 <div class="absolute bottom-1/4 right-10 w-1 h-32 bg-gradient-to-b from-transparent via-bronze-500 to-transparent opacity-50 hidden lg:block"></div>
@@ -459,14 +458,12 @@
             </div>
         </div>
 
-        <!-- REUSED SECTIONS (Hidden by default) -->
         <div id="lore" class="page-container">
             <div class="max-w-6xl mx-auto px-4 py-12 space-y-12">
                 <div class="text-center mb-12">
                     <h2 class="font-magic text-5xl text-white text-glow-blue mb-4">Das Archiv der Welten</h2>
                     <p class="font-tech text-bronze-400 uppercase tracking-widest">Geschichte & Konflikt</p>
                 </div>
-                 <!-- Story Content -->
                 <div class="space-y-8">
                     <div class="tech-panel p-8 border-l-4 border-l-bronze-500 bg-aether-900/60">
                          <h3 class="font-magic text-2xl text-bronze-300 mb-4 flex items-center gap-3"><i data-lucide="scroll" class="w-6 h-6"></i> Das Zeitalter der Magier</h3>
@@ -575,27 +572,95 @@
             <div class="max-w-4xl mx-auto px-4 py-12">
                 <h2 class="font-magic text-4xl text-center text-white mb-8">System-Protokolle & Gesetze</h2>
                 <div class="grid gap-6">
+                    <!-- §1 Grundsatz & Ethik -->
                     <div class="tech-panel p-0 overflow-hidden group">
                         <details class="group">
                             <summary class="flex items-center justify-between p-6 cursor-pointer bg-aether-900/80 hover:bg-aether-800 transition-colors">
-                                <div class="flex items-center gap-4"><i data-lucide="scale" class="text-bronze-500"></i><h3 class="font-tech text-xl text-aether-400 uppercase font-bold m-0">§1 Ethik & Verhalten</h3></div>
+                                <div class="flex items-center gap-4"><i data-lucide="scale" class="text-bronze-500"></i><h3 class="font-tech text-xl text-aether-400 uppercase font-bold m-0">§1 Grundsatz & Ethik</h3></div>
                                 <span class="text-aether-500 group-open:rotate-180 transition-transform arrow-icon"><i data-lucide="chevron-down"></i></span>
                             </summary>
                             <div class="p-6 text-gray-300 text-sm space-y-3 border-t border-bronze-900/50">
-                                <p><strong>FSK 18 Server:</strong> Wir bespielen Themen für Erwachsene. Respekt vor dem Spieler (OOC) hat oberste Priorität.</p>
-                                <p><strong>Voice Pflicht:</strong> Kommunikation erfolgt ausschließlich über Voice-Chat.</p>
-                                <p><strong>IC / OOC Trennung:</strong> Metagaming ist verboten.</p>
+                                <p><strong>Grundsatz:</strong> "Sei kein Idiot" & "Schütze dein Leben". IC und OOC sind strikt zu trennen!</p>
+                                <p><strong>FSK 18:</strong> Die Teilnahme am Spielbetrieb sowie dem Discord ist nur mit Vollendung des 18. Lebensjahres erlaubt.</p>
+                                <p><strong>Voice RP:</strong> Klarer Fokus auf Voice-RP. Schreib-RP ist nur in Ausnahmefällen (überfüllte Szenen, emotionale Ausnahmesituationen oder Technikprobleme) gestattet.</p>
+                                <p><strong>Ethik:</strong> Respektvolles Miteinander. Beleidigen, Hetze und Mobbing (egal ob im RP oder OOC) sind strikt untersagt.</p>
+                                <p><strong>Inaktivität:</strong> Wer ohne triftige Abmeldung länger als 14 Tage inaktiv ist, verliert seine Whitelist.</p>
                             </div>
                         </details>
                     </div>
+                    
+                    <!-- §2 Bauregeln & Clans -->
                     <div class="tech-panel p-0 overflow-hidden group">
                         <details class="group">
                             <summary class="flex items-center justify-between p-6 cursor-pointer bg-aether-900/80 hover:bg-aether-800 transition-colors">
-                                <div class="flex items-center gap-4"><i data-lucide="hammer" class="text-bronze-500"></i><h3 class="font-tech text-xl text-aether-400 uppercase font-bold m-0">§2 Bau & Konstruktion</h3></div>
+                                <div class="flex items-center gap-4"><i data-lucide="hammer" class="text-bronze-500"></i><h3 class="font-tech text-xl text-aether-400 uppercase font-bold m-0">§2 Bauregeln & Clans</h3></div>
                                 <span class="text-aether-500 group-open:rotate-180 transition-transform arrow-icon"><i data-lucide="chevron-down"></i></span>
                             </summary>
                             <div class="p-6 text-gray-300 text-sm space-y-3 border-t border-bronze-900/50">
-                                <p><strong>Statik-Pflicht:</strong> Schwebende Basen benötigen sichtbare Aether-Generatoren.</p>
+                                <ul class="list-disc pl-4 space-y-2">
+                                    <li><strong>Clans:</strong> Maximale Mitgliederzahl liegt bei 40.</li>
+                                    <li><strong>Bauort:</strong> Muss zwingend über ein Supportticket angemeldet und genehmigt werden.</li>
+                                    <li><strong>Baulimits (pro Clan/Kachel):</strong> Max. 3000 Bauteile und 1000 Dekoteile.</li>
+                                    <li><strong>Persönliche Limits:</strong> Max. 250 Dekoteile, 2 Rüstungspuppen, 1 Glockentier und 1 Katze pro Person.</li>
+                                    <li><strong>Werkbänke:</strong> Größenanpassung nur in realistischem (RP) Rahmen. Größer/kleiner ziehen um Platz zu sparen ist verboten. Max. 2 Werkbänke gleicher Art & 2 Öfen pro Clan.</li>
+                                </ul>
+                            </div>
+                        </details>
+                    </div>
+
+                    <!-- §3 Begleiter & Thralls -->
+                    <div class="tech-panel p-0 overflow-hidden group">
+                        <details class="group">
+                            <summary class="flex items-center justify-between p-6 cursor-pointer bg-aether-900/80 hover:bg-aether-800 transition-colors">
+                                <div class="flex items-center gap-4"><i data-lucide="users" class="text-bronze-500"></i><h3 class="font-tech text-xl text-aether-400 uppercase font-bold m-0">§3 Begleiter & Thralls</h3></div>
+                                <span class="text-aether-500 group-open:rotate-180 transition-transform arrow-icon"><i data-lucide="chevron-down"></i></span>
+                            </summary>
+                            <div class="p-6 text-gray-300 text-sm space-y-3 border-t border-bronze-900/50">
+                                <ul class="list-disc pl-4 space-y-2">
+                                    <li><strong>Personen Limit:</strong> 2 Reittiere, 4 Tiere, 6 Thralls, 2 Golems.</li>
+                                    <li><strong>Clan Limit:</strong> Max. 20 Tiere, 30 Thralls, 4 Golems (davon max. 2 Farm Golems).</li>
+                                    <li><strong>Boni:</strong> Tierzüchter/Sklavenhändler erhalten pro Clan +5 extra Tiere/Thralls.</li>
+                                    <li><strong>Wichtig:</strong> Jeder Thrall benötigt zwingend ein eigenes Bett! Magischen Thralls dürfen Plaketten nicht entnommen werden.</li>
+                                    <li><strong>AoC Thralls:</strong> Nur nach vorheriger Absprache mit dem Team (Ticket) gestattet. Ohne Genehmigung ist ihr Einsatz verboten!</li>
+                                </ul>
+                            </div>
+                        </details>
+                    </div>
+
+                    <!-- §4 RP-Regeln & Kampf -->
+                    <div class="tech-panel p-0 overflow-hidden group">
+                        <details class="group">
+                            <summary class="flex items-center justify-between p-6 cursor-pointer bg-aether-900/80 hover:bg-aether-800 transition-colors">
+                                <div class="flex items-center gap-4"><i data-lucide="swords" class="text-bronze-500"></i><h3 class="font-tech text-xl text-aether-400 uppercase font-bold m-0">§4 RP-Regeln & Kampf</h3></div>
+                                <span class="text-aether-500 group-open:rotate-180 transition-transform arrow-icon"><i data-lucide="chevron-down"></i></span>
+                            </summary>
+                            <div class="p-6 text-gray-300 text-sm space-y-3 border-t border-bronze-900/50">
+                                <p><strong>PvP & Diebstahl:</strong> PvP nur mit RP-Hintergrund! Angriffe auf Thralls/Pets gelten als PvP. Diebstahl ist in realistischen Mengen erlaubt (PoI hinterlassen, Ticket öffnen). Diebstahl von Magie/Plot-Gegenständen ist strengstens untersagt.</p>
+                                <p><strong>Identität & Maskierung:</strong> Maskierte dürfen nicht anhand der Stimme erkannt werden. Tatkräftige Beweise (besondere Tattoos, Narben, Kleidung) sind erforderlich. Voicechanger bedürfen einer Genehmigung.</p>
+                                <p><strong>Knock-System (Kranken RP):</strong> Bis zu 4x Bewusstlosigkeit möglich, danach Enginetod. Nach Knocks muss zwingend ein Heiler aufgesucht und Kranken-RP gespielt werden. Wer den Enginetod erleidet, wird von der Leere korrumpiert (Sonder-Ängste müssen 7 Tage ausgespielt werden).</p>
+                                <p><strong>Magie & Rassen:</strong> Magie unterteilt sich in Feuer, Wasser, Luft, Erde (sowie Licht, Schatten, Arkan, Seele). Keine Blut-, Heilige- oder Unheilige Magie. Magische Waffen dürfen nur von Charakteren mit entsprechender magischer Fähigkeit geführt werden.</p>
+                                <p><strong>Alte-Freunde-Regel:</strong> Charaktere können nur verknüpft werden, wenn beide Namen bereits bei Einreichung in den Storys hinterlegt wurden.</p>
+                            </div>
+                        </details>
+                    </div>
+
+                    <!-- §5 Verbotenes & Strafen -->
+                    <div class="tech-panel p-0 overflow-hidden group">
+                        <details class="group">
+                            <summary class="flex items-center justify-between p-6 cursor-pointer bg-aether-900/80 hover:bg-aether-800 transition-colors">
+                                <div class="flex items-center gap-4"><i data-lucide="alert-triangle" class="text-bronze-500"></i><h3 class="font-tech text-xl text-aether-400 uppercase font-bold m-0">§5 Verbotenes & Strafen</h3></div>
+                                <span class="text-aether-500 group-open:rotate-180 transition-transform arrow-icon"><i data-lucide="chevron-down"></i></span>
+                            </summary>
+                            <div class="p-6 text-gray-300 text-sm space-y-3 border-t border-bronze-900/50">
+                                <p><strong>Verbotene Aktionen:</strong> Missbrauch von Flugfähigkeiten zur Flucht aus dem Kampf, Ausnutzen von Engine-Bugs/Glitches, RDM, Power-RP, Metagaming, Stream Sniping, Fail-RP. Ausgeloggte oder AFK-Spieler dürfen nicht angegriffen/ausgeraubt werden.</p>
+                                <p><strong>Verbotene Items/Perks:</strong> Flask of Repair, Trank des Tierinstinkts, Perk "Lastentier", Bau von Magie-Altären durch Nicht-Magier. Betreten der Stadt "Vel Arom" ist verboten.</p>
+                                <p><strong>Strafenkatalog:</strong></p>
+                                <ul class="list-decimal pl-4 space-y-1 text-bronze-400 font-bold">
+                                    <li>Verstoß: <span class="text-gray-300 font-normal">Auf Level 1 gesetzt</span></li>
+                                    <li>Verstoß: <span class="text-gray-300 font-normal">Char Tod & Start mit Level 1</span></li>
+                                    <li>Verstoß: <span class="text-gray-300 font-normal">2 Wochen Whitelist-Entzug, Char Tod & Start mit Level 1</span></li>
+                                    <li>Verstoß: <span class="text-gray-300 font-normal">Perma-Ausschluss für mind. 1 Season (3 Monate)</span></li>
+                                </ul>
                             </div>
                         </details>
                     </div>
@@ -660,7 +725,7 @@
                         <div class="w-20 h-20 mx-auto bg-bronze-600 rounded-full flex items-center justify-center mb-6 group-hover:scale-110 transition-transform shadow-[0_0_20px_#b45309]"><i data-lucide="server" class="w-10 h-10 text-white"></i></div>
                         <h3 class="font-tech text-2xl text-white uppercase font-bold mb-2">Direkt-Link</h3>
                         <div class="bg-black/50 p-3 rounded border border-gray-700 font-mono text-bronze-400 mb-4 flex justify-between items-center">
-                            <span>192.168.1.1:7777</span>
+                            <span>178.63.47.190:7777</span>
                             <button onclick="copyIP()" class="hover:text-white"><i data-lucide="copy" class="w-4 h-4"></i></button>
                         </div>
                         <p id="ip-msg" class="text-xs text-green-500 opacity-0 h-4">Kopiert!</p>
@@ -669,27 +734,71 @@
             </div>
         </div>
 
+        <!-- ================= IMPRESSUM ================= -->
         <div id="legal-imprint" class="page-container">
             <div class="max-w-3xl mx-auto px-4 py-12">
                 <h2 class="font-magic text-4xl text-center text-bronze-400 mb-8">Rechtliche Kennzeichnung</h2>
                 <div class="tech-panel p-8 legal-content">
-                    <p class="text-sm italic text-gray-500 mb-4">Angaben gemäß § 5 TMG</p>
+                    <p class="text-sm italic text-gray-500 mb-6">Angaben gemäß § 5 TMG / § 18 MStV</p>
+                    
                     <h3>Verantwortlich für den Inhalt</h3>
-                    <p><strong>Max Mustermann</strong><br>Musterstraße 1<br>12345 Musterstadt<br>Deutschland</p>
+                    <p>
+                        [DEIN VORNAME DEIN NACHNAME]<br>
+                        [DEINE STRAßE UND HAUSNUMMER]<br>
+                        [DEINE PLZ DEIN WOHNORT]<br>
+                        Deutschland
+                    </p>
+                    
                     <h3>Kontakt</h3>
-                    <p>Telefon: +49 (0) 123 44 55 66<br>E-Mail: kontakt@arathion-rp.de</p>
+                    <p>
+                        E-Mail: [DEINE E-MAIL ADRESSE]<br>
+                        Discord: [OPTIONAL DEIN DISCORD NAME]
+                    </p>
+
+                    <h3>Projekt-Hinweis</h3>
+                    <p>
+                        Dies ist ein rein privates, nicht-kommerzielles Fan-Projekt im Rahmen des Spiels "Conan Exiles". Wir verfolgen keinerlei finanzielle Interessen. Alle Einnahmen (falls zutreffend über Spenden) fließen zu 100% in die Serverkosten.
+                    </p>
+
+                    <h3>Haftung für Links</h3>
+                    <p>
+                        Unser Angebot enthält Links zu externen Websites Dritter, auf deren Inhalte wir keinen Einfluss haben. Deshalb können wir für diese fremden Inhalte auch keine Gewähr übernehmen. Für die Inhalte der verlinkten Seiten ist stets der jeweilige Anbieter oder Betreiber der Seiten verantwortlich.
+                    </p>
                 </div>
             </div>
         </div>
 
+        <!-- ================= DATENSCHUTZ ================= -->
         <div id="legal-privacy" class="page-container">
             <div class="max-w-3xl mx-auto px-4 py-12">
                 <h2 class="font-magic text-4xl text-center text-aether-400 mb-8">Datenschutz Protokolle</h2>
                 <div class="tech-panel p-8 legal-content">
                     <h3>1. Datenschutz auf einen Blick</h3>
                     <h4>Allgemeine Hinweise</h4>
-                    <p>Die folgenden Hinweise geben einen einfachen Überblick darüber, was mit Ihren personenbezogenen Daten passiert, wenn Sie diese Website besuchen...</p>
-                    <!-- Extended Privacy Content Omitted for Brevity but present in output -->
+                    <p>Die folgenden Hinweise geben einen einfachen Überblick darüber, was mit Ihren personenbezogenen Daten passiert, wenn Sie unsere Website besuchen. Personenbezogene Daten sind alle Daten, mit denen Sie persönlich identifiziert werden können.</p>
+                    
+                    <h4>Verantwortliche Stelle</h4>
+                    <p>Die Datenverarbeitung auf dieser Website erfolgt durch den Websitebetreiber. Dessen Kontaktdaten können Sie dem Impressum dieser Website entnehmen.</p>
+
+                    <h3>2. Hosting (GitHub Pages)</h3>
+                    <p>Wir hosten unsere Website bei GitHub Pages. Anbieter ist die GitHub Inc., 88 Colin P Kelly Jr St, San Francisco, CA 94107, USA (nachfolgend: GitHub).</p>
+                    <p>Wenn Sie unsere Website besuchen, erfasst GitHub verschiedene Logfiles inklusive Ihrer IP-Adressen. Diese Daten werden von GitHub erhoben, um die Funktionsfähigkeit und Sicherheit der Server zu gewährleisten. Die Verwendung von GitHub Pages erfolgt auf Grundlage von Art. 6 Abs. 1 lit. f DSGVO. Wir haben ein berechtigtes Interesse an einer möglichst zuverlässigen Darstellung und Bereitstellung unseres reinen Hobby-Projekts.</p>
+                    
+                    <h3>3. Datenerfassung auf dieser Website</h3>
+                    <h4>Lokale Speicherung (LocalStorage)</h4>
+                    <p>Unsere Website nutzt zur Speicherung Ihrer Entscheidung bezüglich des "Speicher-Zugriffs" (Cookie/Info-Banner) die Technologie des "Local Storage" (Lokaler Speicher) Ihres Browsers. Hierbei wird lediglich ein technischer Wert (`aetherProtocolAccepted`) in Ihrem Browser abgelegt. Es werden <strong>keine</strong> Tracking-Mechanismen oder Analyse-Cookies verwendet. Dies dient der technischen Bereitstellung der Seitenfunktionen. Sie können Ihren lokalen Speicher jederzeit in den Einstellungen Ihres Browsers leeren.</p>
+                    
+                    <h4>Formular "Identitäts-Kern"</h4>
+                    <p>Das auf der Website bereitgestellte Formular zur Charakter-Erstellung ("Identitäts-Kern") dient ausschließlich dazu, die von Ihnen eingegebenen Texte zu strukturieren und in die <strong>lokale Zwischenablage (Clipboard)</strong> Ihres Gerätes zu kopieren. Es findet <strong>keine</strong> Datenübertragung an unseren Server oder an Dritte statt. Alle eingegebenen Daten verbleiben auf Ihrem Endgerät.</p>
+
+                    <h3>4. Plugins und externe Tools</h3>
+                    <h4>Google Web Fonts</h4>
+                    <p>Diese Seite nutzt zur einheitlichen Darstellung von Schriftarten so genannte Web Fonts, die von Google bereitgestellt werden. Beim Aufruf einer Seite lädt Ihr Browser die benötigten Web Fonts in ihren Browsercache, um Texte und Schriftarten korrekt anzuzeigen. Zu diesem Zweck muss der von Ihnen verwendete Browser Verbindung zu den Servern von Google aufnehmen. Hierdurch erlangt Google Kenntnis darüber, dass über Ihre IP-Adresse diese Website aufgerufen wurde.</p>
+                    <p>Die Nutzung von Google Web Fonts erfolgt im Interesse einer einheitlichen und ansprechenden Darstellung unserer Online-Angebote. Dies stellt ein berechtigtes Interesse im Sinne von Art. 6 Abs. 1 lit. f DSGVO dar.</p>
+                    
+                    <h4>Tailwind CSS & Lucide Icons (CDNs)</h4>
+                    <p>Wir verwenden Content Delivery Networks (CDNs) zum Laden von Frameworks (Tailwind) und Symbolen (Lucide). Dies dient der schnellen und sicheren Bereitstellung unserer Webseite (Art. 6 Abs. 1 lit. f DSGVO). Dabei wird eine Verbindung zwischen Ihrem Browser und den Servern der CDN-Anbieter hergestellt, wodurch diese Ihre IP-Adresse erfahren.</p>
+
                     <div class="mt-8 pt-4 border-t border-aether-500/30">
                         <button onclick="localStorage.removeItem('aetherProtocolAccepted'); location.reload();" class="text-aether-400 underline hover:text-white font-tech uppercase text-xs tracking-wider">[ RESET SPEICHER-PROTOKOLL ]</button>
                     </div>
@@ -793,10 +902,6 @@
             if (currentState === STATE.IDLE) {
                 updateIdle(timestamp);
             }
-            // Surge and Cooldown are handled by specific transition functions calling requestAnimationFrame internally or via CSS transition end events, 
-            // but for simple value interpolation, we can use this loop if we want global sync.
-            // However, to keep the previous logic clean, we will let IDLE run here, and pause it when other states are active.
-            
             requestAnimationFrame(updateLoop);
         }
 
@@ -988,7 +1093,7 @@
         }
 
         function copyIP() {
-            navigator.clipboard.writeText('192.168.1.1:7777');
+            navigator.clipboard.writeText('178.63.47.190:7777');
             const msg = document.getElementById('ip-msg'); if(msg) { msg.style.opacity = 1; setTimeout(() => msg.style.opacity = 0, 2000); }
         }
 
