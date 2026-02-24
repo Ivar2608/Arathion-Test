@@ -380,6 +380,7 @@
                 <button onclick="switchPage('lore')" class="nav-btn px-4 py-2 font-tech font-bold uppercase tracking-wider hover:text-white hover:bg-aether-500/10 border-b-2 border-transparent hover:border-aether-500 transition-all text-gray-400" data-target="lore">Archiv</button>
                 <button onclick="switchPage('gallery')" class="nav-btn px-4 py-2 font-tech font-bold uppercase tracking-wider hover:text-white hover:bg-aether-500/10 border-b-2 border-transparent hover:border-aether-500 transition-all text-gray-400" data-target="gallery">Visionen</button>
                 <button onclick="switchPage('rules')" class="nav-btn px-4 py-2 font-tech font-bold uppercase tracking-wider hover:text-white hover:bg-aether-500/10 border-b-2 border-transparent hover:border-aether-500 transition-all text-gray-400" data-target="rules">Gesetze</button>
+                <button onclick="switchPage('faq')" class="nav-btn px-4 py-2 font-tech font-bold uppercase tracking-wider hover:text-white hover:bg-aether-500/10 border-b-2 border-transparent hover:border-aether-500 transition-all text-gray-400" data-target="faq">FAQ</button>
                 <button onclick="switchPage('char')" class="nav-btn px-4 py-2 font-tech font-bold uppercase tracking-wider hover:text-white hover:bg-aether-500/10 border-b-2 border-transparent hover:border-bronze-500 transition-all text-bronze-400" data-target="char">Identität</button>
             </div>
             <div class="hidden md:block">
@@ -399,6 +400,7 @@
         <button onclick="toggleMobile(); switchPage('lore')" class="text-2xl font-tech uppercase text-gray-400">Archiv</button>
         <button onclick="toggleMobile(); switchPage('gallery')" class="text-2xl font-tech uppercase text-gray-400">Visionen</button>
         <button onclick="toggleMobile(); switchPage('rules')" class="text-2xl font-tech uppercase text-gray-400">Gesetze</button>
+        <button onclick="toggleMobile(); switchPage('faq')" class="text-2xl font-tech uppercase text-gray-400">FAQ</button>
         <button onclick="toggleMobile(); switchPage('char')" class="text-2xl font-tech uppercase text-bronze-400">Identität</button>
         <button onclick="toggleMobile(); switchPage('connect')" class="text-2xl font-tech uppercase text-white bg-bronze-600 px-6 py-2">Verbinden</button>
         <div class="h-[1px] w-24 bg-gray-600"></div>
@@ -664,6 +666,142 @@
                             </div>
                         </details>
                     </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- ================= FAQ ================= -->
+        <div id="faq" class="page-container">
+            <div class="max-w-4xl mx-auto px-4 py-12">
+                <div class="text-center mb-12">
+                    <h2 class="font-magic text-4xl text-white mb-4 text-glow-blue">Häufige Fragen & Systeme</h2>
+                    <p class="font-tech text-bronze-400 uppercase tracking-widest">Wissensdatenbank & Mod-Kollektion</p>
+                </div>
+
+                <!-- Mod List Button -->
+                <div class="flex justify-center mb-12">
+                    <a href="https://steamcommunity.com/sharedfiles/filedetails/?id=3615903129" target="_blank" rel="noopener noreferrer" class="group relative px-8 py-4 bg-bronze-900/40 border border-bronze-500 text-white font-tech font-bold uppercase tracking-wider overflow-hidden transition-all hover:shadow-[0_0_20px_#d97706] flex items-center gap-3 cursor-pointer">
+                        <div class="absolute inset-0 w-full h-full bg-bronze-500/20 translate-y-full group-hover:translate-y-0 transition-transform duration-300"></div>
+                        <i data-lucide="package" class="w-6 h-6 text-bronze-400 relative z-10"></i>
+                        <span class="relative z-10">Steam Mod-Kollektion Öffnen</span>
+                        <i data-lucide="external-link" class="w-4 h-4 text-gray-400 group-hover:text-white transition-colors relative z-10"></i>
+                    </a>
+                </div>
+
+                <div class="grid gap-6">
+                    <!-- Begriffserklärung -->
+                    <div class="tech-panel p-0 overflow-hidden group">
+                        <details class="group">
+                            <summary class="flex items-center justify-between p-6 cursor-pointer bg-aether-900/80 hover:bg-aether-800 transition-colors">
+                                <div class="flex items-center gap-4"><i data-lucide="book-open" class="text-bronze-500"></i><h3 class="font-tech text-xl text-aether-400 uppercase font-bold m-0">Begriffserklärung</h3></div>
+                                <span class="text-aether-500 group-open:rotate-180 transition-transform arrow-icon"><i data-lucide="chevron-down"></i></span>
+                            </summary>
+                            <div class="p-6 text-gray-300 text-sm space-y-3 border-t border-bronze-900/50">
+                                <ul class="space-y-2">
+                                    <li><strong class="text-aether-300">OOC (Out of Character):</strong> Du bespielst deinen Charakter gerade nicht.</li>
+                                    <li><strong class="text-aether-300">IC (In Character):</strong> Du befindest dich in deiner Rolle.</li>
+                                    <li><strong class="text-aether-300">Metagaming:</strong> Das Verwenden von Infos im RP, die du OOC erhalten hast (z.B. aus Streams). Verboten!</li>
+                                    <li><strong class="text-aether-300">Backseat Gaming:</strong> Anderen OOC vorschreiben, was sie IC tun sollen.</li>
+                                    <li><strong class="text-aether-300">Stream Sniping:</strong> Standorte oder Infos aus Streams IC verwenden.</li>
+                                    <li><strong class="text-aether-300">Fail-RP:</strong> Unlogisches RP, das eine reale Person so nicht machen/sagen würde.</li>
+                                    <li><strong class="text-aether-300">R-D-M (Random Death Match):</strong> Absichtliches Töten ohne triftigen RP-Hintergrund.</li>
+                                    <li><strong class="text-aether-300">Power-RP:</strong> Dem Gegenüber keine Reaktionsmöglichkeit oder Wahl lassen.</li>
+                                </ul>
+                            </div>
+                        </details>
+                    </div>
+
+                    <!-- Charakter & Einstellungen -->
+                    <div class="tech-panel p-0 overflow-hidden group">
+                        <details class="group">
+                            <summary class="flex items-center justify-between p-6 cursor-pointer bg-aether-900/80 hover:bg-aether-800 transition-colors">
+                                <div class="flex items-center gap-4"><i data-lucide="settings" class="text-bronze-500"></i><h3 class="font-tech text-xl text-aether-400 uppercase font-bold m-0">Spiel-Einstellungen & Accessoires</h3></div>
+                                <span class="text-aether-500 group-open:rotate-180 transition-transform arrow-icon"><i data-lucide="chevron-down"></i></span>
+                            </summary>
+                            <div class="p-6 text-gray-300 text-sm space-y-3 border-t border-bronze-900/50">
+                                <p><strong class="text-bronze-300">Accessoires:</strong> Insofern Accessoires über SHIFT + B auszurüsten sind, ist dieses Menü auch zu nutzen!</p>
+                                <p><strong class="text-bronze-300">Foot Print (Fußabdrücke):</strong><br>1. <code>Shift+B</code> (Tot! Einstellungen) -> <code>Bodies</code><br>2. <code>Current Body</code> bearbeiten (Stift-Icon)<br>3. <code>Body</code> -> <code>Footprint</code> wählen (Bare, Generic Shoes, High Heels, Wide Heel).</p>
+                                <p><strong class="text-bronze-300">Tot! Chat Fix (Fenster durchsichtig):</strong><br>Wenn du mit der Maus reinklicken musst: Gehe in die Escape-Einstellungen -> 'Steuerung' -> 'Kommunikation'. Setze für den <em>Globalchat</em> eine Taste ein, die du nie benutzt. Setze für <em>'Chat Fenster Ein/Ausblenden'</em> die <code>[Enter]</code> Taste ein.</p>
+                                <p><strong class="text-bronze-300">Scripted Lights (Tag/Nacht Lichter):</strong><br>Platziere die Lichtquelle, halte <code>E</code> gedrückt und wähle 'Scripted Light'. Trage als Namen <strong>Nachtlicht</strong> ein. Zum Verschieben muss es zerstört und neu platziert werden. Check erfolgt alle 5 Minuten.</p>
+                            </div>
+                        </details>
+                    </div>
+
+                    <!-- Kranken RP & Enginetod -->
+                    <div class="tech-panel p-0 overflow-hidden group">
+                        <details class="group">
+                            <summary class="flex items-center justify-between p-6 cursor-pointer bg-aether-900/80 hover:bg-aether-800 transition-colors">
+                                <div class="flex items-center gap-4"><i data-lucide="heart-pulse" class="text-bronze-500"></i><h3 class="font-tech text-xl text-aether-400 uppercase font-bold m-0">Kranken-RP & Enginetod</h3></div>
+                                <span class="text-aether-500 group-open:rotate-180 transition-transform arrow-icon"><i data-lucide="chevron-down"></i></span>
+                            </summary>
+                            <div class="p-6 text-gray-300 text-sm space-y-3 border-t border-bronze-900/50">
+                                <p><strong>Das Knocksystem:</strong> Bis zu 4x Bewusstlosigkeit, danach folgt der Enginetod. Nach jedem Knock MUSS ein Heiler aufgesucht und RP betrieben werden!</p>
+                                <ul class="list-disc pl-4 space-y-1">
+                                    <li><strong>1x Knock:</strong> Sehr leicht verletzt (Kratzer, blaue Flecken).</li>
+                                    <li><strong>2x Knock:</strong> Leicht verletzt (Prellungen, Schnittwunden).</li>
+                                    <li><strong>3x Knock:</strong> Mittelschwer (Knochenbrüche, tiefe Wunden). Kranken-RP am Folgetag.</li>
+                                    <li><strong>4x Knock:</strong> Schwer verletzt (Enorme Verletzungen). Kranken-RP für zwei Folgetage.</li>
+                                    <li><strong>5x Knock (Enginetod):</strong> Der Charakter wird von der Leere korrumpiert (Seelenschaden). Du erhältst per Ticket für 7 Tage "Ängste", die aktiv ausgespielt werden müssen (z.B. Angst in Stille, Panik bei Waffen).</li>
+                                </ul>
+                                <p class="italic text-gray-400">Hinweis: Wiederholungstäter beim "Sterben" erhalten serverseitige Mali bis hin zum Chartod. Jede Heilung wird von uns per Log kontrolliert.</p>
+                            </div>
+                        </details>
+                    </div>
+
+                    <!-- Heiler System -->
+                    <div class="tech-panel p-0 overflow-hidden group">
+                        <details class="group">
+                            <summary class="flex items-center justify-between p-6 cursor-pointer bg-aether-900/80 hover:bg-aether-800 transition-colors">
+                                <div class="flex items-center gap-4"><i data-lucide="cross" class="text-bronze-500"></i><h3 class="font-tech text-xl text-aether-400 uppercase font-bold m-0">Heiler-System & Befehle</h3></div>
+                                <span class="text-aether-500 group-open:rotate-180 transition-transform arrow-icon"><i data-lucide="chevron-down"></i></span>
+                            </summary>
+                            <div class="p-6 text-gray-300 text-sm space-y-3 border-t border-bronze-900/50">
+                                <p>Verletzte am Boden können <strong>nur von Heilern</strong> aufgehoben werden. Andere können sie nur aus der Gefahrenzone ziehen. Es gibt gewisse "Liegezeiten" ab dem Knock, habt etwas Geduld im RP.</p>
+                                <p><strong>Befehle für Heiler (Chat):</strong></p>
+                                <ul class="list-disc pl-4 space-y-1">
+                                    <li><code>/helfen</code> -> Spieler auswählen -> Angezeigtes Wort eingeben, um aufzuhelfen.</li>
+                                    <li><code>/heilen</code> -> Spieler auswählen -> Knock wird zurückgesetzt.</li>
+                                    <li><code>/HBericht</code> -> Öffnet das IC-Heilerbuch zum Dokumentieren (ersetzt den alten DC-Kanal).</li>
+                                </ul>
+                            </div>
+                        </details>
+                    </div>
+
+                    <!-- Sprachen & Völker -->
+                    <div class="tech-panel p-0 overflow-hidden group">
+                        <details class="group">
+                            <summary class="flex items-center justify-between p-6 cursor-pointer bg-aether-900/80 hover:bg-aether-800 transition-colors">
+                                <div class="flex items-center gap-4"><i data-lucide="message-square" class="text-bronze-500"></i><h3 class="font-tech text-xl text-aether-400 uppercase font-bold m-0">Sprachen & Völker</h3></div>
+                                <span class="text-aether-500 group-open:rotate-180 transition-transform arrow-icon"><i data-lucide="chevron-down"></i></span>
+                            </summary>
+                            <div class="p-6 text-gray-300 text-sm space-y-3 border-t border-bronze-900/50">
+                                <p>Sprachen zu lernen erfordert Hingabe und stetiges Ausspielen. Vier Sprachen sind jedoch besonders und keine humanoiden Dialekte, sie können auch nicht geschrieben werden:</p>
+                                <ul class="list-disc pl-4 space-y-1">
+                                    <li><strong>Lupin:</strong> Sprache der Hundeartigen (Bellen, Knurren).</li>
+                                    <li><strong>Felorisch:</strong> Sprache der Katzenartigen (Miauen, Schnurren).</li>
+                                    <li><strong>Arakai:</strong> Sprache der Vögel (Zwitschern, Krächzen).</li>
+                                    <li><strong>Nymvalisch:</strong> Sprache der Natur (Pflanzen & Kleintiere). Sehr subtile, geräuschlose oder fast unhörbare Kommunikation.</li>
+                                </ul>
+                                <p class="text-bronze-400 mt-2 text-xs uppercase">Befehl: <code>/char</code> aktualisiert/debuggt deinen Charakter!</p>
+                            </div>
+                        </details>
+                    </div>
+
+                    <!-- Entwicklung & Forschung -->
+                    <div class="tech-panel p-0 overflow-hidden group">
+                        <details class="group">
+                            <summary class="flex items-center justify-between p-6 cursor-pointer bg-aether-900/80 hover:bg-aether-800 transition-colors">
+                                <div class="flex items-center gap-4"><i data-lucide="flask-conical" class="text-bronze-500"></i><h3 class="font-tech text-xl text-aether-400 uppercase font-bold m-0">Entwicklung & Forschung</h3></div>
+                                <span class="text-aether-500 group-open:rotate-180 transition-transform arrow-icon"><i data-lucide="chevron-down"></i></span>
+                            </summary>
+                            <div class="p-6 text-gray-300 text-sm space-y-3 border-t border-bronze-900/50">
+                                <p><strong>Training:</strong> Muss <em>aktiv im RP</em> ausgespielt werden (nicht nur offline "ich war heute 2h rennen"). Bei viel qualitativem Ausspielen ist eine Aufwertung per Ticket möglich.</p>
+                                <p><strong>Forschung & Beruf:</strong> Forschungen müssen IC durch Interaktion, Austausch und Experimente erarbeitet werden. Ihr seid meist auf andere angewiesen. Wenn ihr meint, reif für einen Durchbruch zu sein, öffnet ein Supportticket.</p>
+                                <p class="text-red-400 italic">Hinweis: KI-generierte Texte (z.B. ChatGPT) ersetzen keine RP-Erfahrung! Sie dürfen maximal zur Korrektur genutzt werden.</p>
+                            </div>
+                        </details>
+                    </div>
+
                 </div>
             </div>
         </div>
