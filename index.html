@@ -222,14 +222,24 @@
         /* Page Layout */
         .page-container {
             position: absolute; top: 0; left: 0; width: 100%; height: 100%;
-            overflow-y: auto; padding-top: 6rem; padding-bottom: 6rem;
+            overflow-y: auto; padding-bottom: 6rem;
             /* Padding erhöht, damit der Text nicht unter den neuen mobilen Röhren liegt */
             padding-left: 2.5rem; padding-right: 2.5rem; 
             display: none; scrollbar-width: thin; scrollbar-color: #b45309 #0a1a2f;
         }
         
+        /* FIX: Pseudo-Element statt padding-top, da mobile Browser (v.a. iOS Safari) padding beim Scrollen oft verschlucken! */
+        .page-container::before {
+            content: '';
+            display: block;
+            height: 120px; /* Garantiert festen Platzhalter für den Header (Header ist 80px) */
+            width: 100%;
+            flex-shrink: 0;
+        }
+
         @media (min-width: 768px) {
-            .page-container { padding-left: 6rem; padding-right: 6rem; padding-top: 7rem; }
+            .page-container { padding-left: 6rem; padding-right: 6rem; }
+            .page-container::before { height: 140px; }
         }
 
         .page-active { display: block; animation: materialize 0.8s ease-out forwards; }
