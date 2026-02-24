@@ -12,7 +12,7 @@
     <!-- Icons -->
     <script src="https://unpkg.com/lucide@latest"></script>
 
-    <!-- Fonts (Hinweis: Für 100% DSGVO-Sicherheit am besten lokal hosten) -->
+    <!-- Fonts (Hinweis: Für 100% DSGVO-Sicherheit bei kommerziellen Projekten lokal hosten. Für Hobby-Projekte mit Berechtigtem Interesse okay.) -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;700;900&family=Rajdhani:wght@300;400;600;700&display=swap" rel="stylesheet">
@@ -120,16 +120,11 @@
         /* --- FLUID CONTAINER & BODY --- */
         .aether-fluid {
             position: absolute; bottom: 0; left: 0; width: 100%;
-            height: 15%; /* Base level controlled by JS */
-            
-            /* Gradient matches the SVG fill color at the top */
+            height: 15%; 
             background: linear-gradient(to top, #005f87, #00d9ff);
-            
             opacity: 0.95;
             box-shadow: 0 0 30px #0077b6;
             z-index: 1;
-            
-            /* IMPORTANT: Visual transitions ONLY. Height is handled by JS/CSS mix depending on state */
             transition: box-shadow 0.5s, filter 0.5s, background 0.5s;
         }
 
@@ -139,12 +134,10 @@
             bottom: 100%; left: 0;
             width: 200%; 
             height: 15px; 
-            /* Matches top fluid color #00d9ff */
             background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 100" preserveAspectRatio="none"><path d="M0 100 V 50 Q 250 10 500 50 T 1000 50 V 100 z" fill="%2300d9ff"/></svg>');
             background-size: 50% 100%;
             background-repeat: repeat-x;
             animation: wave-slide 4s linear infinite;
-            /* Push down 1px to eliminate gaps */
             transform: translateY(1px);
             z-index: 5;
         }
@@ -169,19 +162,15 @@
         }
 
         /* --- SURGE STATE (Loading) --- */
-        /* CSS takes FULL CONTROL of height during surge for smooth 4s rise */
         .system-surge .aether-fluid {
-            /* !important ensures CSS overrides JS inline styles during surge */
             height: 100% !important; 
             transition: height 4s ease-in-out, box-shadow 4s ease-in, filter 4s ease-in;
-            
             background: linear-gradient(to top, #00d9ff, #ffffff); 
             box-shadow: 0 0 50px #ffffff, 0 0 100px #00d9ff, 0 0 150px #4df0ff;      
             filter: brightness(1.8) contrast(1.1);
         }
         
         .system-surge .wave-surface {
-             /* White wave during surge */
              background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 100" preserveAspectRatio="none"><path d="M0 100 V 50 Q 250 10 500 50 T 1000 50 V 100 z" fill="%23ffffff"/></svg>');
              animation-duration: 1s; 
         }
@@ -189,7 +178,6 @@
         /* --- NEEDLE --- */
         #gauge-needle-left {
             transform-origin: bottom center;
-            /* Direct JS control needs linear transition for smoothness */
             transition: transform 0.1s linear; 
         }
 
@@ -248,7 +236,7 @@
             background: rgba(5, 11, 20, 0.95);
             backdrop-filter: blur(20px);
             z-index: 200;
-            transition: opacity 0.3s ease; /* Fast fade out */
+            transition: opacity 0.3s ease; 
         }
         #wip-modal.hidden-modal {
             opacity: 0;
@@ -275,7 +263,6 @@
         .legal-content p, .legal-content ul { color: #cbd5e1; margin-bottom: 1rem; line-height: 1.6; }
         .legal-content ul { list-style-type: disc; padding-left: 1.5rem; }
         
-        /* Zusätzliche Utilities, die in Tailwind fehlen */
         .clip-path-slant { clip-path: polygon(10px 0, 100% 0, 100% calc(100% - 10px), calc(100% - 10px) 100%, 0 100%, 0 10px); }
     </style>
 </head>
@@ -338,7 +325,6 @@
 
     <!-- CREATIVE LOADER -->
     <div id="aether-loader" class="fixed inset-0 z-[100] flex flex-col items-center justify-center">
-        <!-- VIGNETTE -->
         <div class="absolute inset-0 bg-[radial-gradient(circle_at_center,transparent_0%,#000000_100%)] pointer-events-none"></div>
         <div class="relative w-[500px] h-[500px] flex items-center justify-center scale-75 md:scale-100">
             <div class="absolute inset-0 bg-aether-500/10 blur-[100px] rounded-full animate-pulse"></div>
@@ -505,78 +491,10 @@
                         <p class="text-gray-300 max-w-3xl mx-auto leading-relaxed">Wie kamst du hierher? Es war das "Große Experiment". Aether-Wissenschaftler versuchten, die Grenzen der Realität zu sprengen, indem sie riesige Reaktoren in einen instabilen magischen Kristall entluden. Das Experiment ging katastrophal schief. Die Reaktoren pumpten den kompletten Aether-Tank in den Kristall, welcher in einer gewaltigen Schockwelle explodierte. Die Wissenschaftler starben, doch ein <strong>Riss zwischen den Welten</strong> blieb zurück. Dieser Riss reißt nun Wesen und Personen aus anderen Dimensionen und Zeiten von überall her nach Arathion.</p>
                     </div>
                 </div>
-                <!-- Call to Action -->
-                <div class="text-center py-12">
-                     <h2 class="font-magic text-4xl md:text-5xl text-white mb-2 text-glow-gold">Wähle dein Schicksal</h2>
-                     <p class="font-tech text-xl text-aether-300 mb-8">Wirst du Teil des Arkanen Bundes oder der Aether-Industrie?</p>
-                     <p class="text-2xl text-bronze-400 font-bold italic">"Wirst du den Aether voranbringen oder helfen, ihn zu vernichten?"</p>
-                </div>
-                 <div class="grid grid-cols-1 md:grid-cols-2 gap-12">
-                    <!-- Arkane Bund Classes -->
-                    <div class="space-y-6">
-                        <div class="border-b border-aether-500 pb-4 mb-6">
-                            <h3 class="font-magic text-3xl text-aether-400">Der Arkane Bund</h3>
-                            <p class="text-sm text-gray-400 italic">"Die Macht fließt durch das Blut, nicht durch Maschinen."</p>
-                        </div>
-                        <div class="tech-panel p-6 bg-aether-900/60 border-l-4 border-l-aether-500 hover:bg-aether-900/80 transition-colors h-40">
-                            <h4 class="font-bold text-white text-xl mb-2 flex items-center gap-2"><i data-lucide="flame" class="text-aether-400"></i> Elementarist</h4>
-                            <p class="text-gray-300 text-sm">Der klassische Zerstörer. Er formt den rohen Aether direkt mit seinen Händen zu Feuerstürmen oder Eiswänden. Instabil, aber verheerend.</p>
-                        </div>
-                        <div class="tech-panel p-6 bg-aether-900/60 border-l-4 border-l-aether-500 hover:bg-aether-900/80 transition-colors h-40">
-                            <h4 class="font-bold text-white text-xl mb-2 flex items-center gap-2"><i data-lucide="shield" class="text-aether-400"></i> Runenwächter</h4>
-                            <p class="text-gray-300 text-sm">Nutzt uralte Schutzzauber und leuchtende Siegel, um Schaden zu absorbieren. Ein lebender Schild gegen physische und magische Angriffe.</p>
-                        </div>
-                        <div class="tech-panel p-6 bg-aether-900/60 border-l-4 border-l-aether-500 hover:bg-aether-900/80 transition-colors h-40">
-                            <h4 class="font-bold text-white text-xl mb-2 flex items-center gap-2"><i data-lucide="zap" class="text-aether-400"></i> Klingensänger</h4>
-                            <p class="text-gray-300 text-sm">Verwebt Nahkampf mit Schnelligkeitszaubern. Sie bewegen sich schneller als das Auge sehen kann und schlagen mit magisch geschärften Klingen zu.</p>
-                        </div>
-                        <div class="tech-panel p-6 bg-aether-900/60 border-l-4 border-l-aether-500 hover:bg-aether-900/80 transition-colors h-40">
-                            <h4 class="font-bold text-white text-xl mb-2 flex items-center gap-2"><i data-lucide="ghost" class="text-aether-400"></i> Seelenrufer</h4>
-                            <p class="text-gray-300 text-sm">Beschwört die Geister der Ahnen oder bindet Seelen an Objekte. Sie kämpfen nie allein, sondern mit einer Armee aus dem Jenseits.</p>
-                        </div>
-                    </div>
-                    <!-- Aether Industrie Classes -->
-                    <div class="space-y-6">
-                        <div class="border-b border-bronze-500 pb-4 mb-6 text-right">
-                            <h3 class="font-magic text-3xl text-bronze-400">Die Aether-Industrie</h3>
-                            <p class="text-sm text-gray-400 italic">"Jeder kann ein Gott sein, mit dem richtigen Werkzeug."</p>
-                        </div>
-                        <div class="tech-panel p-6 bg-bronze-900/30 border-r-4 border-r-bronze-500 hover:bg-bronze-900/50 transition-colors text-right h-40">
-                            <h4 class="font-bold text-white text-xl mb-2 flex items-center justify-end gap-2">Aether-Kanonier <i data-lucide="crosshair" class="text-bronze-400"></i></h4>
-                            <p class="text-gray-300 text-sm">Nutzt kondensierte Aether-Zellen in experimentellen Gewehren. Präzise, tödlich und ohne die Gefahr, sich selbst durch einen Zauberpatzer zu verbrennen.</p>
-                        </div>
-                        <div class="tech-panel p-6 bg-bronze-900/30 border-r-4 border-r-bronze-500 hover:bg-bronze-900/50 transition-colors text-right h-40">
-                            <h4 class="font-bold text-white text-xl mb-2 flex items-center justify-end gap-2">Exo-Gardist <i data-lucide="box" class="text-bronze-400"></i></h4>
-                            <p class="text-gray-300 text-sm">Trägt schwere, hydraulisch verstärkte Plattenrüstungen, angetrieben von Rücken-Reaktoren. Eine laufende Festung aus Stahl und Dampf.</p>
-                        </div>
-                        <div class="tech-panel p-6 bg-bronze-900/30 border-r-4 border-r-bronze-500 hover:bg-bronze-900/50 transition-colors text-right h-40">
-                            <h4 class="font-bold text-white text-xl mb-2 flex items-center justify-end gap-2">Neuro-Klinge <i data-lucide="activity" class="text-bronze-400"></i></h4>
-                            <p class="text-gray-300 text-sm">Nutzt Aether-Injektionen und mechanische Implantate, um übermenschliche Reflexe zu erzielen. Ein lebender Cyborg, gebaut fürs Töten.</p>
-                        </div>
-                        <div class="tech-panel p-6 bg-bronze-900/30 border-r-4 border-r-bronze-500 hover:bg-bronze-900/50 transition-colors text-right h-40">
-                            <h4 class="font-bold text-white text-xl mb-2 flex items-center justify-end gap-2">Mechatroniker <i data-lucide="bot" class="text-bronze-400"></i></h4>
-                            <p class="text-gray-300 text-sm">Baut Golems, Drohnen und Geschütze. Warum selbst bluten, wenn man eine Maschine aus Messing und Öl in den Kampf schicken kann?</p>
-                        </div>
-                    </div>
-                </div>
-                 <!-- Neutrale -->
-                <div class="mt-12 pt-12 border-t border-gray-800">
-                    <h3 class="font-magic text-2xl text-center text-gray-400 mb-8">Die Neutralen</h3>
-                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6 max-w-4xl mx-auto">
-                        <div class="tech-panel p-6 bg-black/40 text-center">
-                            <h4 class="font-bold text-white text-lg mb-2">Söldner</h4>
-                            <p class="text-gray-400 text-sm">Kämpft für den, der am meisten zahlt. Egal ob Goldmünzen der Alten oder Aether-Kanister der Neuen.</p>
-                        </div>
-                        <div class="tech-panel p-6 bg-black/40 text-center">
-                            <h4 class="font-bold text-white text-lg mb-2">Händler & Schmuggler</h4>
-                            <p class="text-gray-400 text-sm">Der Kitt, der die zersplitterte Welt zusammenhält. Sie besorgen alles für jeden - zum richtigen Preis.</p>
-                        </div>
-                    </div>
-                </div>
             </div>
         </div>
 
-        <!-- ================= RASSEN & KLASSEN (NEU) ================= -->
+        <!-- ================= RASSEN & KLASSEN ================= -->
         <div id="classes" class="page-container">
             <div class="max-w-6xl mx-auto px-4 py-12 space-y-12">
                 <div class="text-center mb-12">
@@ -1081,7 +999,7 @@
                         <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
                             <div>
                                 <label class="text-xs font-tech uppercase text-bronze-500 mb-1 block">Hauptberuf</label>
-                                <select id="charMainProf" class="w-full p-2 rounded-sm border-bronze-800 bg-aether-900 text-gray-400">
+                                <select id="charMainProf" class="w-full p-2 rounded-sm border-bronze-800 bg-aether-900 text-aether-500">
                                     <option value="Ohne Beruf">- Ohne Beruf -</option>
                                     <option value="Waffenschmied">Waffenschmied</option>
                                     <option value="Rüstschmied">Rüstschmied</option>
@@ -1092,7 +1010,7 @@
                             </div>
                             <div>
                                 <label class="text-xs font-tech uppercase text-bronze-500 mb-1 block">Nebenberuf</label>
-                                <select id="charSubProf" class="w-full p-2 rounded-sm border-bronze-800 bg-aether-900 text-gray-400">
+                                <select id="charSubProf" class="w-full p-2 rounded-sm border-bronze-800 bg-aether-900 text-aether-500">
                                     <option value="Ohne Beruf">- Ohne Beruf -</option>
                                     <option value="Sklavenhändler">Sklavenhändler</option>
                                     <option value="Gärtner">Gärtner</option>
@@ -1103,7 +1021,7 @@
                             </div>
                             <div>
                                 <label class="text-xs font-tech uppercase text-bronze-500 mb-1 block">RP-Beruf</label>
-                                <select id="charRpProf" class="w-full p-2 rounded-sm border-bronze-800 bg-aether-900 text-gray-400">
+                                <select id="charRpProf" class="w-full p-2 rounded-sm border-bronze-800 bg-aether-900 text-aether-500">
                                     <option value="Ohne Beruf">- Ohne Beruf -</option>
                                     <option value="Golembauer">Golembauer</option>
                                     <option value="Söldner">Söldner</option>
@@ -1153,17 +1071,17 @@
                     <p class="text-sm italic text-gray-500 mb-6">Angaben gemäß § 5 TMG / § 18 MStV</p>
                     
                     <h3>Verantwortlich für den Inhalt</h3>
-                    <p>
-                        [DEIN VORNAME DEIN NACHNAME]<br>
-                        [DEINE STRAßE UND HAUSNUMMER]<br>
-                        [DEINE PLZ DEIN WOHNORT]<br>
+                    <p class="text-aether-300 font-bold border-l-2 border-red-500 pl-4 py-2 bg-red-900/10">
+                        [BITTE HIER DEIN VORNAME UND NACHNAME EINTRAGEN]<br>
+                        [BITTE HIER DEINE STRAßE UND HAUSNUMMER EINTRAGEN]<br>
+                        [BITTE HIER DEINE PLZ UND WOHNORT EINTRAGEN]<br>
                         Deutschland
                     </p>
                     
                     <h3>Kontakt</h3>
-                    <p>
-                        E-Mail: [DEINE E-MAIL ADRESSE]<br>
-                        Discord: [OPTIONAL DEIN DISCORD NAME]
+                    <p class="text-aether-300 font-bold border-l-2 border-red-500 pl-4 py-2 bg-red-900/10">
+                        E-Mail: [BITTE HIER DEINE E-MAIL ADRESSE EINTRAGEN]<br>
+                        Discord: [OPTIONAL DEIN DISCORD NAME EINTRAGEN]
                     </p>
 
                     <h3>Projekt-Hinweis</h3>
@@ -1210,6 +1128,9 @@
                     <h4>Tailwind CSS & Lucide Icons (CDNs)</h4>
                     <p>Wir verwenden Content Delivery Networks (CDNs) zum Laden von Frameworks (Tailwind) und Symbolen (Lucide). Dies dient der schnellen und sicheren Bereitstellung unserer Webseite (Art. 6 Abs. 1 lit. f DSGVO). Dabei wird eine Verbindung zwischen Ihrem Browser und den Servern der CDN-Anbieter hergestellt, wodurch diese Ihre IP-Adresse erfahren.</p>
 
+                    <h3>5. Externe Links & Plattformen</h3>
+                    <p>Unsere Website enthält Links zu externen Websites und Plattformen Dritter (z. B. Steam, Discord). Wenn Sie diese Links anklicken, verlassen Sie unsere Seite und werden auf die Server der jeweiligen Anbieter weitergeleitet. Bei der Nutzung dieser externen Plattformen gelten ausschließlich deren jeweilige Datenschutzbestimmungen. Wir haben keinen Einfluss darauf, welche Daten dort erhoben oder verarbeitet werden, und übermitteln von unserer Seite aus keine personenbezogenen Daten an diese Anbieter, solange Sie nicht aktiv auf die Links klicken.</p>
+
                     <div class="mt-8 pt-4 border-t border-aether-500/30">
                         <button onclick="localStorage.removeItem('aetherProtocolAccepted'); location.reload();" class="text-aether-400 underline hover:text-white font-tech uppercase text-xs tracking-wider">[ RESET SPEICHER-PROTOKOLL ]</button>
                     </div>
@@ -1228,7 +1149,7 @@
         <div class="flex gap-4">
             <button onclick="switchPage('legal-imprint')" class="hover:text-aether-400 transition-colors">Impressum</button>
             <button onclick="switchPage('legal-privacy')" class="hover:text-aether-400 transition-colors">Datenschutz</button>
-            <span>&copy; 2025 Arathion RP</span>
+            <span>&copy; 2026 Arathion RP</span>
         </div>
     </footer>
 
@@ -1280,28 +1201,26 @@
             canvas.height = window.innerHeight;
         }
         window.addEventListener('resize', resizeCanvas);
-        resizeCanvas(); // Initiale Größe
+        resizeCanvas();
 
         class Particle {
             constructor() {
                 this.reset();
-                this.y = Math.random() * canvas.height; // Beim Start zufällig auf dem Screen verteilen
+                this.y = Math.random() * canvas.height; 
             }
             reset() {
                 this.x = Math.random() * canvas.width;
-                this.y = canvas.height + Math.random() * 100; // Startet leicht unter dem Bildschirm
+                this.y = canvas.height + Math.random() * 100;
                 this.size = Math.random() * 2 + 0.5;
                 this.speedX = (Math.random() - 0.5) * 0.3;
-                this.speedY = (Math.random() * -0.5) - 0.2; // Steigt langsam auf
+                this.speedY = (Math.random() * -0.5) - 0.2;
                 this.opacity = Math.random() * 0.5 + 0.1;
-                // 80% Aether-Blau, 20% Bronze-Gold
                 this.color = Math.random() > 0.8 ? `rgba(217, 119, 6, ${this.opacity})` : `rgba(0, 217, 255, ${this.opacity})`;
             }
             update() {
                 this.x += this.speedX;
                 this.y += this.speedY;
                 
-                // Wenn Partikel oben aus dem Bild fliegen, unten neu starten
                 if (this.y < -10) {
                     this.reset();
                 }
@@ -1316,7 +1235,7 @@
 
         function initParticles() {
             particles = [];
-            for (let i = 0; i < 150; i++) { // Anzahl der Partikel
+            for (let i = 0; i < 150; i++) { 
                 particles.push(new Particle());
             }
         }
@@ -1370,7 +1289,6 @@
 
         // --- SINGLE UPDATE LOOP ---
         function updateLoop(timestamp) {
-            // Partikel in jedem Frame zeichnen
             drawParticles();
 
             if (currentState === STATE.IDLE) {
@@ -1380,7 +1298,6 @@
         }
 
         function updateIdle(timestamp) {
-            // Random Target Logic
             if (timestamp - lastRandomChange > 2500 + Math.random() * 3000) {
                 if (Math.random() > 0.75) {
                     idleTarget = 40 + Math.random() * 20; 
@@ -1390,11 +1307,9 @@
                 lastRandomChange = timestamp;
             }
             
-            // Micro-Jitter
             const jitter = Math.sin(timestamp / 500) * 1.5;
             const activeTarget = idleTarget + jitter;
 
-            // Smooth Lerp
             idleCurrent += (activeTarget - idleCurrent) * 0.015; 
             
             updateUI(idleCurrent);
@@ -1408,11 +1323,9 @@
 
             if (pressureDisplay) pressureDisplay.innerText = Math.floor(value);
             
-            // Map 0-100 to -90deg to +90deg
             const needleAngle = -90 + (value * 1.8);
             if (needle) needle.style.transform = `translateX(-50%) rotate(${needleAngle}deg)`;
 
-            // Fluid height updated via JS ONLY if not surging (CSS takes over in Surge)
             if (currentState !== STATE.SURGE) {
                  fluids.forEach(f => f.style.height = `${value}%`);
             }
@@ -1424,7 +1337,6 @@
         function switchPage(targetId) {
             if (currentState !== STATE.IDLE || targetId === currentPageId) return;
             
-            // 1. START SURGE
             currentState = STATE.SURGE;
             
             const loader = document.getElementById('aether-loader');
@@ -1432,16 +1344,14 @@
             const currentPage = document.getElementById(currentPageId);
             const targetPage = document.getElementById(targetId);
 
-            // CSS handles Fluid Height via class (Smooth 4s)
             document.querySelectorAll('.pipe-system').forEach(p => p.classList.add('system-surge'));
             
-            // JS handles Text and Needle interpolation loop
             let startTime = performance.now();
             const startVal = Math.floor(idleCurrent);
             const endVal = 99;
 
             function animateSurge(timestamp) {
-                if (currentState !== STATE.SURGE) return; // Guard
+                if (currentState !== STATE.SURGE) return; 
                 
                 const progress = timestamp - startTime;
                 const percent = Math.min(progress / SURGE_DURATION, 1);
@@ -1452,12 +1362,11 @@
                 if (progress < SURGE_DURATION) {
                     requestAnimationFrame(animateSurge);
                 } else {
-                    updateUI(endVal); // Ensure max
+                    updateUI(endVal); 
                 }
             }
             requestAnimationFrame(animateSurge);
 
-            // Update Nav Buttons
             document.querySelectorAll('.nav-btn').forEach(btn => {
                 if(btn.dataset.target === targetId) {
                     btn.classList.add('text-aether-400', 'border-aether-500'); btn.classList.remove('text-gray-400', 'border-transparent');
@@ -1466,25 +1375,20 @@
                 }
             });
 
-            // 2. WAIT FOR SURGE (4s)
-            // PRE-FADE: Show Loader Early at 3.2s
             setTimeout(() => {
                  if (loader) { loader.classList.add('active'); }
             }, 3200);
 
             setTimeout(() => {
-                // Animate Loader Bar
                 if (loaderBar) { 
                     loaderBar.style.transition = `width ${LOADER_DURATION - 200}ms ease-in-out`; 
                     setTimeout(() => loaderBar.style.width = '100%', 50); 
                 }
 
-                // Switch Content behind loader
                 if (currentPage) { currentPage.classList.remove('page-active'); currentPage.style.display = 'none'; }
                 if (targetPage) { targetPage.style.display = 'block'; requestAnimationFrame(() => targetPage.classList.add('page-active')); }
                 currentPageId = targetId;
 
-                // 3. WAIT FOR LOADER (2.5s) -> START COOLDOWN
                 setTimeout(() => {
                     if (loader) { loader.classList.remove('active'); }
                     if (loaderBar) { setTimeout(() => { loaderBar.style.transition = 'none'; loaderBar.style.width = '0'; }, 500); }
@@ -1495,22 +1399,18 @@
             }, SURGE_DURATION); 
         }
 
-        // --- COOLDOWN LOGIC (Smooth Drop) ---
+        // --- COOLDOWN LOGIC ---
         function startCooldown() {
             currentState = STATE.COOLDOWN;
             const pipes = document.querySelectorAll('.pipe-system');
             
-            // IMPORTANT HANDSHAKE:
-            // 1. Force JS visual state to 100% instantly to match where CSS left off
             const fluids = document.querySelectorAll('.aether-fluid');
             fluids.forEach(f => f.style.height = '100%');
             
-            // 2. Remove CSS control class (so JS can take over)
             pipes.forEach(p => {
                 p.classList.remove('system-surge');
             });
 
-            // 3. Start JS Animation down
             let startVal = 99;
             const endVal = 15; 
             let startTime = performance.now();
@@ -1521,18 +1421,15 @@
                 const progress = timestamp - startTime;
                 const percent = Math.min(progress / COOLDOWN_DURATION, 1);
                 
-                // Cubic ease-out
                 const ease = 1 - Math.pow(1 - percent, 3);
                 const currentVal = startVal - ((startVal - endVal) * ease);
                 
-                // FORCE update UI (Text, Needle AND Fluid Height via JS)
                 idleCurrent = currentVal;
                 updateUI(currentVal); 
 
                 if (progress < COOLDOWN_DURATION) {
                     requestAnimationFrame(animateCooldown);
                 } else {
-                    // Handover complete
                     currentState = STATE.IDLE;
                     idleCurrent = 15; 
                     idleTarget = 15; 
@@ -1542,17 +1439,12 @@
             requestAnimationFrame(animateCooldown);
         }
 
-        // --- WIP MODAL LOGIC (FIXED) ---
+        // --- WIP MODAL LOGIC ---
         function closeWipModal() {
             const modal = document.getElementById('wip-modal');
             if (modal) {
-                // 1. Add class for opacity transition
                 modal.classList.add('hidden-modal');
-                
-                // 2. Immediately prevent clicks to allow underlying elements to work
                 modal.style.pointerEvents = 'none';
-
-                // 3. Remove from display flow after transition
                 setTimeout(() => {
                     modal.style.display = 'none';
                 }, 500);
@@ -1566,15 +1458,27 @@
             else { menu.classList.add('hidden'); menu.classList.remove('flex'); }
         }
 
-        function copyIP() {
-            navigator.clipboard.writeText('178.63.47.190:7777');
-            const msg = document.getElementById('ip-msg'); if(msg) { msg.style.opacity = 1; setTimeout(() => msg.style.opacity = 0, 2000); }
+        async function copyIP() {
+            try {
+                await navigator.clipboard.writeText('178.63.47.190:7777');
+                const msg = document.getElementById('ip-msg'); 
+                if(msg) { msg.style.opacity = 1; setTimeout(() => msg.style.opacity = 0, 2000); }
+            } catch (err) {
+                alert("Bitte markiere und kopiere die IP manuell: 178.63.47.190:7777");
+            }
         }
 
-        function copyCharacter() {
+        async function copyCharacter() {
             const text = `**Name:** ${document.getElementById('charName').value}\n**Alter:** ${document.getElementById('charAge').value}\n**Rasse:** ${document.getElementById('charRace').value}\n**Klasse:** ${document.getElementById('charClass').value}\n**Hauptberuf:** ${document.getElementById('charMainProf').value}\n**Nebenberuf:** ${document.getElementById('charSubProf').value}\n**RP-Beruf:** ${document.getElementById('charRpProf').value}\n**Story:** ${document.getElementById('charStory').value}\n**Steam:** ${document.getElementById('steamID').value}\n**Discord:** ${document.getElementById('discordID').value}`;
-            navigator.clipboard.writeText(text);
-            const msg = document.getElementById('copy-msg'); if(msg) { msg.style.opacity = 1; setTimeout(() => msg.style.opacity = 0, 3000); }
+            
+            try {
+                await navigator.clipboard.writeText(text);
+                const msg = document.getElementById('copy-msg'); 
+                if(msg) { msg.style.opacity = 1; setTimeout(() => msg.style.opacity = 0, 3000); }
+            } catch (err) {
+                alert("Fehler beim Kopieren in die Zwischenablage. Bitte markiere den Text manuell und drücke Strg+C.");
+                console.error("Clipboard Error:", err);
+            }
         }
 
         const cookieBanner = document.getElementById('aether-cookie-banner');
@@ -1598,7 +1502,6 @@
         // Init
         window.addEventListener('load', () => { 
             renderGallery(); 
-            // Start the single master loop
             requestAnimationFrame(updateLoop); 
         });
     </script>
