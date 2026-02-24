@@ -391,6 +391,7 @@
             </div>
             <div class="hidden md:flex items-center gap-1">
                 <button onclick="switchPage('home')" class="nav-btn px-4 py-2 font-tech font-bold uppercase tracking-wider hover:text-white hover:bg-aether-500/10 border-b-2 border-transparent hover:border-aether-500 transition-all text-aether-400" data-target="home">Startdeck</button>
+                <button onclick="switchPage('classes')" class="nav-btn px-4 py-2 font-tech font-bold uppercase tracking-wider hover:text-white hover:bg-aether-500/10 border-b-2 border-transparent hover:border-aether-500 transition-all text-gray-400" data-target="classes">Klassen</button>
                 <button onclick="switchPage('lore')" class="nav-btn px-4 py-2 font-tech font-bold uppercase tracking-wider hover:text-white hover:bg-aether-500/10 border-b-2 border-transparent hover:border-aether-500 transition-all text-gray-400" data-target="lore">Archiv</button>
                 <button onclick="switchPage('gallery')" class="nav-btn px-4 py-2 font-tech font-bold uppercase tracking-wider hover:text-white hover:bg-aether-500/10 border-b-2 border-transparent hover:border-aether-500 transition-all text-gray-400" data-target="gallery">Visionen</button>
                 <button onclick="switchPage('rules')" class="nav-btn px-4 py-2 font-tech font-bold uppercase tracking-wider hover:text-white hover:bg-aether-500/10 border-b-2 border-transparent hover:border-aether-500 transition-all text-gray-400" data-target="rules">Gesetze</button>
@@ -411,6 +412,7 @@
     <!-- MOBILE MENU -->
     <div id="mobile-menu" class="fixed inset-0 z-40 bg-aether-900/95 backdrop-blur-xl hidden flex-col items-center justify-center space-y-8 animate-flicker">
         <button onclick="toggleMobile(); switchPage('home')" class="text-2xl font-tech uppercase text-aether-400">Startdeck</button>
+        <button onclick="toggleMobile(); switchPage('classes')" class="text-2xl font-tech uppercase text-gray-400">Klassen</button>
         <button onclick="toggleMobile(); switchPage('lore')" class="text-2xl font-tech uppercase text-gray-400">Archiv</button>
         <button onclick="toggleMobile(); switchPage('gallery')" class="text-2xl font-tech uppercase text-gray-400">Visionen</button>
         <button onclick="toggleMobile(); switchPage('rules')" class="text-2xl font-tech uppercase text-gray-400">Gesetze</button>
@@ -569,6 +571,122 @@
                             <h4 class="font-bold text-white text-lg mb-2">Händler & Schmuggler</h4>
                             <p class="text-gray-400 text-sm">Der Kitt, der die zersplitterte Welt zusammenhält. Sie besorgen alles für jeden - zum richtigen Preis.</p>
                         </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- ================= RASSEN & KLASSEN (NEU) ================= -->
+        <div id="classes" class="page-container">
+            <div class="max-w-6xl mx-auto px-4 py-12 space-y-12">
+                <div class="text-center mb-12">
+                    <h2 class="font-magic text-5xl text-white text-glow-blue mb-4">Biologische & Pfad-Datenbank</h2>
+                    <p class="font-tech text-bronze-400 uppercase tracking-widest">Rassen-Register & Klassen-Spezifikationen</p>
+                </div>
+
+                <!-- Rassen -->
+                <div class="tech-panel p-8 bg-black/50">
+                    <h3 class="font-magic text-3xl text-aether-400 mb-6 flex items-center gap-3"><i data-lucide="dna" class="w-8 h-8"></i> Übersicht der Rassen</h3>
+                    <p class="text-gray-400 text-sm mb-6">Wähle weise, denn dein Blut bestimmt deinen Weg. Aktuell in den Archiven von Arathion verzeichnete und spielbare Rassen:</p>
+                    <div class="flex flex-wrap gap-3">
+                        <span class="px-4 py-2 border border-aether-500/50 bg-aether-900/80 text-white font-tech tracking-wider uppercase rounded-sm hover:bg-aether-500 hover:text-black transition-colors cursor-default">Elfen</span>
+                        <span class="px-4 py-2 border border-aether-500/50 bg-aether-900/80 text-white font-tech tracking-wider uppercase rounded-sm hover:bg-aether-500 hover:text-black transition-colors cursor-default">Zwerge</span>
+                        <span class="px-4 py-2 border border-aether-500/50 bg-aether-900/80 text-white font-tech tracking-wider uppercase rounded-sm hover:bg-aether-500 hover:text-black transition-colors cursor-default">Orks</span>
+                        <span class="px-4 py-2 border border-aether-500/50 bg-aether-900/80 text-white font-tech tracking-wider uppercase rounded-sm hover:bg-aether-500 hover:text-black transition-colors cursor-default">Halblinge</span>
+                        <span class="px-4 py-2 border border-aether-500/50 bg-aether-900/80 text-white font-tech tracking-wider uppercase rounded-sm hover:bg-aether-500 hover:text-black transition-colors cursor-default">Gnome</span>
+                        <span class="px-4 py-2 border border-aether-500/50 bg-aether-900/80 text-white font-tech tracking-wider uppercase rounded-sm hover:bg-aether-500 hover:text-black transition-colors cursor-default">Gobline</span>
+                        <span class="px-4 py-2 border border-aether-500/50 bg-aether-900/80 text-white font-tech tracking-wider uppercase rounded-sm hover:bg-aether-500 hover:text-black transition-colors cursor-default">Riesen</span>
+                        <span class="px-4 py-2 border border-aether-500/50 bg-aether-900/80 text-white font-tech tracking-wider uppercase rounded-sm hover:bg-aether-500 hover:text-black transition-colors cursor-default">Trolle</span>
+                        <span class="px-4 py-2 border border-aether-500/50 bg-aether-900/80 text-white font-tech tracking-wider uppercase rounded-sm hover:bg-aether-500 hover:text-black transition-colors cursor-default">Tierwesen</span>
+                        <span class="px-4 py-2 border border-aether-500/50 bg-aether-900/80 text-white font-tech tracking-wider uppercase rounded-sm hover:bg-aether-500 hover:text-black transition-colors cursor-default">Dimensionales</span>
+                        <span class="px-4 py-2 border border-aether-500/50 bg-aether-900/80 text-white font-tech tracking-wider uppercase rounded-sm hover:bg-aether-500 hover:text-black transition-colors cursor-default">Menschen</span>
+                        <span class="px-4 py-2 border border-bronze-500/50 bg-bronze-900/50 text-bronze-300 font-tech tracking-wider uppercase rounded-sm hover:bg-bronze-500 hover:text-white transition-colors cursor-default shadow-[0_0_10px_rgba(180,83,9,0.3)]">Cyborg</span>
+                    </div>
+                </div>
+
+                <!-- Klassen -->
+                <div>
+                    <h3 class="font-magic text-4xl text-white mb-8 border-b-2 border-bronze-500/50 pb-2 inline-block">Die Pfade (Klassen)</h3>
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                        
+                        <!-- Wandler -->
+                        <div class="tech-panel p-6 bg-aether-900/60 hover:border-aether-400 transition-all flex flex-col h-full">
+                            <h4 class="font-bold text-white text-2xl mb-3 flex items-center gap-3"><i data-lucide="paw-print" class="text-aether-400 w-8 h-8"></i> Wandler</h4>
+                            <p class="text-gray-300 text-sm mb-4 flex-grow leading-relaxed">Wandler sind Meister der Anpassung, deren Körper so wandelbar sind wie die Zeitrisse selbst. Sie können ihre Gestalt in die verschiedensten Kreaturen oder Bestien verändern, um im Kampf an vorderster Front zu bestehen oder lautlos zu spähen. Diese Vielseitigkeit macht sie unberechenbar: Wo eben noch ein Mensch stand, kann im nächsten Moment eine reißende Bestie angreifen. Ihr Weg ist einer der Instinkte und der tiefen Verbundenheit zur inneren Natur.</p>
+                            <div class="space-y-2 text-xs font-tech uppercase tracking-wider bg-black/50 p-3 border border-aether-500/30 rounded-sm">
+                                <p class="text-bronze-400"><span class="text-gray-500">Rüstung:</span> leichte bis mittlere Rüstung</p>
+                                <p class="text-aether-400"><span class="text-gray-500">Kampfart:</span> Nahkampf - Shapeshift</p>
+                            </div>
+                        </div>
+
+                        <!-- Jäger -->
+                        <div class="tech-panel p-6 bg-aether-900/60 hover:border-aether-400 transition-all flex flex-col h-full">
+                            <h4 class="font-bold text-white text-2xl mb-3 flex items-center gap-3"><i data-lucide="crosshair" class="text-aether-400 w-8 h-8"></i> Jäger</h4>
+                            <p class="text-gray-300 text-sm mb-4 flex-grow leading-relaxed">Jäger sind die unbestrittenen Meister des Fernkampfs und des Überlebens in der Wildnis. Ob mit dem traditionellen Langbogen oder einer modifizierten Waffe aus einem Zeitriss – sie treffen ihr Ziel mit tödlicher Präzision aus der Distanz. Sie verstehen es, das Gelände zu nutzen, Fallen zu stellen und die Spuren ihrer Feinde zu lesen. Ein Jäger in Arathion ist oft ein einsamer Wolf, der den ersten und letzten Schuss eines Kampfes abgibt.</p>
+                            <div class="space-y-2 text-xs font-tech uppercase tracking-wider bg-black/50 p-3 border border-aether-500/30 rounded-sm">
+                                <p class="text-bronze-400"><span class="text-gray-500">Rüstung:</span> leichte bis mittlere Rüstung</p>
+                                <p class="text-aether-400"><span class="text-gray-500">Kampfart:</span> Fernkampf - mit Begleiter</p>
+                            </div>
+                        </div>
+
+                        <!-- Assassine -->
+                        <div class="tech-panel p-6 bg-aether-900/60 hover:border-aether-400 transition-all flex flex-col h-full">
+                            <h4 class="font-bold text-white text-2xl mb-3 flex items-center gap-3"><i data-lucide="swords" class="text-aether-400 w-8 h-8"></i> Assassine</h4>
+                            <p class="text-gray-300 text-sm mb-4 flex-grow leading-relaxed">Der Assassine ist die Verkörperung des lautlosen Todes. In den Schatten Arathions zu Hause, nutzen sie Schnelligkeit, Tarnung und Gifte, um ihre Ziele auszuschalten, bevor der Kampf überhaupt begonnen hat. Sie meiden das offene Schlachtfeld und setzen stattdessen auf präzise Stiche in die Schwachstellen ihrer Gegner. Für einen Assassinen ist Ehre zweitrangig – nur das Ergebnis zählt, und das ist meistens ein lautloses Ende im Dunkeln.</p>
+                            <div class="space-y-2 text-xs font-tech uppercase tracking-wider bg-black/50 p-3 border border-aether-500/30 rounded-sm">
+                                <p class="text-bronze-400"><span class="text-gray-500">Rüstung:</span> leichte bis mittlere Rüstung</p>
+                                <p class="text-aether-400"><span class="text-gray-500">Kampfart:</span> Nahkampf - Fernkampf</p>
+                            </div>
+                        </div>
+
+                        <!-- Magier -->
+                        <div class="tech-panel p-6 bg-aether-900/60 hover:border-aether-400 transition-all flex flex-col h-full">
+                            <h4 class="font-bold text-white text-2xl mb-3 flex items-center gap-3"><i data-lucide="sparkles" class="text-aether-400 w-8 h-8"></i> Magier</h4>
+                            <p class="text-gray-300 text-sm mb-4 flex-grow leading-relaxed">Magier sind Gelehrte, die die instabilen Energien der Welt manipulieren. Sie beherrschen sowohl die zerstörerischen Elemente als auch arkane Manipulationen, um das Schlachtfeld zu kontrollieren. Ein Magier kann Feuer regnen lassen oder die Realität krümmen, doch diese Macht ist gefährlich. Wer die arkane Energie nicht mit eisernem Willen führt, läuft Gefahr, von der Magie, die er beschwört, selbst verzehrt zu werden.</p>
+                            <div class="p-3 mb-4 bg-red-900/30 border border-red-500/50 rounded-sm">
+                                <p class="text-red-400 text-xs font-bold uppercase tracking-wider"><i data-lucide="alert-triangle" class="inline w-4 h-4 mr-1"></i> ACHTUNG:</p>
+                                <p class="text-gray-300 text-xs mt-1">Wer die Seelenmagie wählt, hat keine andere Wahl, als sich mit Spinnen auseinander zu setzen! Dies liegt am AOC System. Wir empfehlen also dies mit einer so enorm ausgeprägten Arachnophobie zu vermeiden!</p>
+                            </div>
+                            <div class="space-y-2 text-xs font-tech uppercase tracking-wider bg-black/50 p-3 border border-aether-500/30 rounded-sm">
+                                <p class="text-bronze-400"><span class="text-gray-500">Rüstung:</span> leichte Rüstung</p>
+                                <p class="text-aether-400"><span class="text-gray-500">Kampfart:</span> Fernkampf - Magie</p>
+                            </div>
+                        </div>
+
+                        <!-- Krieger -->
+                        <div class="tech-panel p-6 bg-aether-900/60 hover:border-bronze-400 transition-all flex flex-col h-full border-bronze-800">
+                            <h4 class="font-bold text-white text-2xl mb-3 flex items-center gap-3"><i data-lucide="shield" class="text-bronze-400 w-8 h-8"></i> Krieger</h4>
+                            <p class="text-gray-300 text-sm mb-4 flex-grow leading-relaxed">Der Krieger ist das stählerne Rückgrat einer jeden Gruppe. Ob in schwerer Platte mit Schild oder als rücksichtsloser Schadenskämpfer mit zwei Äxten – sie suchen den direkten Kontakt zum Feind. Ein Krieger in Arathion verlässt sich auf jahrelanges Training, pure Kraft und unerschütterlichen Mut. Sie sind es, die den Ansturm abfangen und die Linie halten, wenn alles andere im Chaos der Magie und der Zeitrisse zu versinken droht.</p>
+                            <div class="space-y-2 text-xs font-tech uppercase tracking-wider bg-black/50 p-3 border border-bronze-500/30 rounded-sm">
+                                <p class="text-bronze-400"><span class="text-gray-500">Rüstung:</span> mittlere bis schwere Rüstung</p>
+                                <p class="text-aether-400"><span class="text-gray-500">Kampfart:</span> Nahkampf</p>
+                            </div>
+                        </div>
+
+                        <!-- Vampir -->
+                        <div class="tech-panel p-6 bg-aether-900/60 hover:border-red-400 transition-all flex flex-col h-full border-red-900/50">
+                            <h4 class="font-bold text-white text-2xl mb-3 flex items-center gap-3"><i data-lucide="droplet" class="text-red-500 w-8 h-8"></i> Vampir</h4>
+                            <p class="text-gray-300 text-sm mb-4 flex-grow leading-relaxed">Vampire sind zeitlose Raubtiere, die oft durch uralte Risse nach Arathion gelangten. Sie besitzen übermenschliche Reflexe, enorme Kraft und die Fähigkeit, sich nach Verletzungen rasch zu regenerieren – solange sie ihren Durst nach Lebenskraft stillen. In der Gesellschaft Arathions sind sie oft elegante, aber gefürchtete Außenseiter. Ihr Dasein ist ein ständiger Kampf zwischen ihrer menschlichen Vernunft und dem ewigen Hunger der Nacht.</p>
+                            <div class="space-y-2 text-xs font-tech uppercase tracking-wider bg-black/50 p-3 border border-red-500/30 rounded-sm">
+                                <p class="text-bronze-400"><span class="text-gray-500">Rüstung:</span> leichte bis mittlere Rüstung</p>
+                                <p class="text-aether-400"><span class="text-gray-500">Kampfart:</span> Nahkampf</p>
+                            </div>
+                        </div>
+
+                        <!-- Werwesen -->
+                        <div class="tech-panel p-6 bg-aether-900/60 hover:border-gray-400 transition-all flex flex-col h-full md:col-span-2 lg:col-span-1 lg:col-start-2">
+                            <h4 class="font-bold text-white text-2xl mb-3 flex items-center gap-3"><i data-lucide="moon" class="text-gray-400 w-8 h-8"></i> Werwesen</h4>
+                            <p class="text-gray-300 text-sm mb-4 flex-grow leading-relaxed">Werwesen tragen einen unbändigen Fluch in sich, der sie in hybride Bestien verwandelt. In ihrer verwandelten Form sind sie eine Urgewalt aus Muskeln, Krallen und Zähnen, die kaum aufzuhalten ist. Sie zeichnen sich durch extreme Widerstandskraft und animalische Wildheit aus. Während sie in Menschengestalt oft ruhig wirken, brodelt unter der Oberfläche stets der Instinkt der Jagd, der nur darauf wartet, im Kampf entfesselt zu werden.</p>
+                            <div class="p-3 mb-4 bg-gray-900/80 border border-gray-500/50 rounded-sm">
+                                <p class="text-gray-300 text-xs font-bold uppercase tracking-wider"><i data-lucide="alert-triangle" class="inline w-4 h-4 mr-1"></i> ACHTUNG:</p>
+                                <p class="text-gray-400 text-xs mt-1">In gewandelter Form kann der Charakter nicht sprechen!</p>
+                            </div>
+                            <div class="space-y-2 text-xs font-tech uppercase tracking-wider bg-black/50 p-3 border border-gray-500/30 rounded-sm">
+                                <p class="text-bronze-400"><span class="text-gray-500">Rüstung:</span> leichte bis mittlere Rüstung</p>
+                                <p class="text-aether-400"><span class="text-gray-500">Kampfart:</span> Nahkampf - Werwolfwandlung über Indrids</p>
+                            </div>
+                        </div>
+
                     </div>
                 </div>
             </div>
@@ -834,26 +952,36 @@
                             <div><label class="text-xs font-tech uppercase text-bronze-500 mb-1 block">Vorname & Haus</label><input type="text" id="charName" class="w-full p-2 rounded-sm border-bronze-800"></div>
                             <div><label class="text-xs font-tech uppercase text-bronze-500 mb-1 block">Zykel (Alter)</label><input type="text" id="charAge" class="w-full p-2 rounded-sm border-bronze-800"></div>
                         </div>
-                        <div>
-                            <label class="text-xs font-tech uppercase text-bronze-500 mb-1 block">Klassifizierung (Pfad)</label>
-                            <select id="charClass" class="w-full p-2 rounded-sm border-bronze-800 bg-aether-900 text-aether-500">
-                                <optgroup label="Der Arkane Bund (Alte Magie)">
-                                    <option value="Elementarist">Elementarist (Naturmagie)</option>
-                                    <option value="Runenwächter">Runenwächter (Schutz & Siegel)</option>
-                                    <option value="Klingensänger">Klingensänger (Magischer Kampf)</option>
-                                    <option value="Seelenrufer">Seelenrufer (Rituale)</option>
-                                </optgroup>
-                                <optgroup label="Die Aether-Industrie (Neue Technik)">
-                                    <option value="Technokrat">Technokrat (Ingenieur)</option>
-                                    <option value="Aethergarde">Aethergarde (Soldat)</option>
-                                    <option value="Wolkenläufer">Wolkenläufer (Pilot/Entdecker)</option>
-                                    <option value="Aether-Chemiker">Aether-Chemiker (Alchemist)</option>
-                                </optgroup>
-                                <optgroup label="Neutrale">
-                                    <option value="Söldner">Söldner / Klingenmeister</option>
-                                    <option value="Händler">Händler / Schmuggler</option>
-                                </optgroup>
-                            </select>
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                            <div>
+                                <label class="text-xs font-tech uppercase text-bronze-500 mb-1 block">Rasse / Spezies</label>
+                                <select id="charRace" class="w-full p-2 rounded-sm border-bronze-800 bg-aether-900 text-aether-500">
+                                    <option value="Menschen">Menschen</option>
+                                    <option value="Elfen">Elfen</option>
+                                    <option value="Zwerge">Zwerge</option>
+                                    <option value="Orks">Orks</option>
+                                    <option value="Halblinge">Halblinge</option>
+                                    <option value="Gnome">Gnome</option>
+                                    <option value="Gobline">Gobline</option>
+                                    <option value="Riesen">Riesen</option>
+                                    <option value="Trolle">Trolle</option>
+                                    <option value="Tierwesen">Tierwesen</option>
+                                    <option value="Dimensionales">Dimensionales</option>
+                                    <option value="Cyborg">Cyborg</option>
+                                </select>
+                            </div>
+                            <div>
+                                <label class="text-xs font-tech uppercase text-bronze-500 mb-1 block">Klassifizierung (Pfad)</label>
+                                <select id="charClass" class="w-full p-2 rounded-sm border-bronze-800 bg-aether-900 text-aether-500">
+                                    <option value="Wandler">Wandler</option>
+                                    <option value="Jäger">Jäger</option>
+                                    <option value="Assassine">Assassine</option>
+                                    <option value="Magier">Magier</option>
+                                    <option value="Krieger">Krieger</option>
+                                    <option value="Vampir">Vampir</option>
+                                    <option value="Werwesen">Werwesen</option>
+                                </select>
+                            </div>
                         </div>
                         <div><label class="text-xs font-tech uppercase text-gray-500 mb-1 block">Historische Daten (Hintergrund)</label><textarea id="charStory" rows="5" class="w-full p-2 rounded-sm"></textarea></div>
                         <button type="button" onclick="copyCharacter()" class="w-full bg-aether-900 border border-aether-500 text-aether-400 font-bold py-3 hover:bg-aether-500 hover:text-black transition-colors uppercase font-tech tracking-widest flex justify-center gap-2"><i data-lucide="save"></i> Daten exportieren</button>
@@ -1313,7 +1441,7 @@
         }
 
         function copyCharacter() {
-            const text = `**Name:** ${document.getElementById('charName').value}\n**Alter:** ${document.getElementById('charAge').value}\n**Klasse:** ${document.getElementById('charClass').value}\n**Story:** ${document.getElementById('charStory').value}\n**Steam:** ${document.getElementById('steamID').value}\n**Discord:** ${document.getElementById('discordID').value}`;
+            const text = `**Name:** ${document.getElementById('charName').value}\n**Alter:** ${document.getElementById('charAge').value}\n**Rasse:** ${document.getElementById('charRace').value}\n**Klasse:** ${document.getElementById('charClass').value}\n**Story:** ${document.getElementById('charStory').value}\n**Steam:** ${document.getElementById('steamID').value}\n**Discord:** ${document.getElementById('discordID').value}`;
             navigator.clipboard.writeText(text);
             const msg = document.getElementById('copy-msg'); if(msg) { msg.style.opacity = 1; setTimeout(() => msg.style.opacity = 0, 3000); }
         }
