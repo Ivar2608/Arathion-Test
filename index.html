@@ -12,7 +12,7 @@
     <!-- Icons -->
     <script src="https://unpkg.com/lucide@latest"></script>
 
-    <!-- Fonts (Hinweis: Für 100% DSGVO-Sicherheit bei kommerziellen Projekten lokal hosten. Für Hobby-Projekte mit Berechtigtem Interesse okay.) -->
+    <!-- Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;700;900&family=Rajdhani:wght@300;400;600;700&display=swap" rel="stylesheet">
@@ -49,7 +49,6 @@
                         'dematerialize': 'dematerialize 0.4s ease-in forwards',
                         'glitch': 'glitch 1s linear infinite',
                         'spin-slow': 'spin 4s linear infinite',
-                        'flicker': 'flicker 3s linear infinite',
                         'pulse-core': 'pulse-core 2s ease-in-out infinite',
                     },
                     keyframes: {
@@ -65,10 +64,6 @@
                             '2%, 64%': { transform: 'translate(2px,0) skew(0deg)' },
                             '4%, 60%': { transform: 'translate(-2px,0) skew(0deg)' },
                             '62%': { transform: 'translate(0,0) skew(5deg)' },
-                        },
-                        flicker: {
-                            '0%, 19%, 21%, 23%, 25%, 54%, 56%, 100%': { opacity: 1 },
-                            '20%, 24%, 55%': { opacity: 0.4 }
                         },
                         'pulse-core': {
                             '0%, 100%': { transform: 'scale(1)', opacity: 1 },
@@ -223,16 +218,15 @@
         .page-container {
             position: absolute; top: 0; left: 0; width: 100%; height: 100%;
             overflow-y: auto; padding-bottom: 6rem;
-            /* Padding erhöht, damit der Text nicht unter den neuen mobilen Röhren liegt */
             padding-left: 2.5rem; padding-right: 2.5rem; 
             display: none; scrollbar-width: thin; scrollbar-color: #b45309 #0a1a2f;
         }
         
-        /* FIX: Pseudo-Element statt padding-top, da mobile Browser (v.a. iOS Safari) padding beim Scrollen oft verschlucken! */
+        /* Pseudo-Element statt padding-top für reibungsloses Mobile-Scrolling */
         .page-container::before {
             content: '';
             display: block;
-            height: 120px; /* Garantiert festen Platzhalter für den Header (Header ist 80px) */
+            height: 120px; 
             width: 100%;
             flex-shrink: 0;
         }
@@ -263,7 +257,6 @@
         #wip-modal {
             background: rgba(5, 11, 20, 0.95);
             backdrop-filter: blur(20px);
-            z-index: 200;
             transition: opacity 0.3s ease; 
         }
         #wip-modal.hidden-modal {
@@ -296,7 +289,7 @@
 </head>
 <body class="bg-aether-900 text-aether-500 selection:bg-aether-500 selection:text-black relative h-screen w-screen overflow-hidden">
 
-    <!-- FX -->
+    <!-- FX Canvas -->
     <canvas id="bg-canvas" class="fixed inset-0 z-0 opacity-40"></canvas>
     <div class="scanlines"></div>
 
@@ -423,8 +416,9 @@
         </div>
     </nav>
 
-    <!-- MOBILE MENU (Flackern entfernt, weicher Fade-in hinzugefügt) -->
-    <div id="mobile-menu" class="fixed inset-0 z-40 bg-aether-900/95 backdrop-blur-xl flex flex-col items-center justify-center space-y-8 transition-opacity duration-300 opacity-0 pointer-events-none">
+    <!-- MOBILE MENU -->
+    <!-- FIX: z-[60] stellt sicher, dass das mobile Menü IMMER über der z-50 Navbar liegt und das Schließen-Kreuz bedienbar bleibt -->
+    <div id="mobile-menu" class="fixed inset-0 z-[60] bg-aether-900/95 backdrop-blur-xl flex flex-col items-center justify-center space-y-8 transition-opacity duration-300 opacity-0 pointer-events-none">
         <button onclick="navigateFromMobile('home')" class="text-2xl font-tech uppercase text-aether-400 hover:scale-105 transition-transform">Startdeck</button>
         <button onclick="navigateFromMobile('classes')" class="text-2xl font-tech uppercase text-gray-400 hover:text-white hover:scale-105 transition-transform">Klassen</button>
         <button onclick="navigateFromMobile('lore')" class="text-2xl font-tech uppercase text-gray-400 hover:text-white hover:scale-105 transition-transform">Archiv</button>
@@ -441,7 +435,7 @@
 
     <!-- MAIN -->
     <main class="relative w-full h-full z-10">
-        <!-- Content Blocks (Home, Lore, etc.) -->
+        <!-- Content Blocks -->
         <div id="home" class="page-container page-active">
             <div class="py-12 md:py-20 flex flex-col items-center px-4 relative">
                 <div class="absolute top-1/4 left-10 w-1 h-32 bg-gradient-to-b from-transparent via-aether-500 to-transparent opacity-50 hidden lg:block"></div>
@@ -522,7 +516,6 @@
             </div>
         </div>
 
-        <!-- ================= RASSEN & KLASSEN ================= -->
         <div id="classes" class="page-container">
             <div class="max-w-6xl mx-auto px-4 py-12 space-y-12">
                 <div class="text-center mb-12">
@@ -843,7 +836,6 @@
             </div>
         </div>
 
-        <!-- ================= FAQ ================= -->
         <div id="faq" class="page-container">
             <div class="max-w-4xl mx-auto px-4 py-12">
                 <div class="text-center mb-12">
@@ -1192,6 +1184,7 @@
     </div>
 
     <script>
+        // Init Icons
         lucide.createIcons();
 
         // --- CONFIG & UTILS ---
@@ -1228,7 +1221,17 @@
             canvas.width = window.innerWidth;
             canvas.height = window.innerHeight;
         }
-        window.addEventListener('resize', resizeCanvas);
+        
+        // Performance Fix: Debounce Resize Event
+        let resizeTimer;
+        window.addEventListener('resize', () => {
+            clearTimeout(resizeTimer);
+            resizeTimer = setTimeout(() => {
+                resizeCanvas();
+                initParticles(); // Verhindert, dass Partikel beim Drehen des Handys stecken bleiben
+            }, 150);
+        });
+        
         resizeCanvas();
 
         class Particle {
@@ -1483,27 +1486,22 @@
         function toggleMobile() {
             const menu = document.getElementById('mobile-menu');
             if (menu.classList.contains('opacity-0')) { 
-                // Menü weich einblenden
                 menu.classList.remove('opacity-0', 'pointer-events-none'); 
                 menu.classList.add('opacity-100', 'pointer-events-auto'); 
             } else { 
-                // Menü weich ausblenden
                 menu.classList.add('opacity-0', 'pointer-events-none'); 
                 menu.classList.remove('opacity-100', 'pointer-events-auto'); 
             }
         }
         
         function navigateFromMobile(targetId) {
-            // Wenn man schon auf der Seite ist, nur das Menü schließen
             if (currentState !== STATE.IDLE || targetId === currentPageId) {
                 toggleMobile();
                 return;
             }
             
-            // Animation starten (Röhren füllen sich über dem offenen Menü!)
             switchPage(targetId);
             
-            // Das mobile Menü erst verstecken, wenn der komplett schwarze Ladebildschirm da ist (nach 3.2s)
             setTimeout(() => {
                 const menu = document.getElementById('mobile-menu');
                 if (menu && menu.classList.contains('opacity-100')) {
