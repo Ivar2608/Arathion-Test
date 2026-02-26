@@ -177,7 +177,7 @@
         }
         
         .system-surge .wave-surface {
-             background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 1000 100" preserveAspectRatio="none"><path d="M0 100 V 50 Q 250 10 500 50 T 1000 50 V 100 z" fill="%23ffffff"/></svg>');
+             background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 100" preserveAspectRatio="none"><path d="M0 100 V 50 Q 250 10 500 50 T 1000 50 V 100 z" fill="%23ffffff"/></svg>');
              animation-duration: 1s; 
         }
 
@@ -237,7 +237,6 @@
         }
 
         .page-active { display: block; animation: materialize 0.8s ease-out forwards; }
-        .page-exit { display: block; animation: dematerialize 0.4s ease-in forwards; pointer-events: none; }
 
         ::-webkit-scrollbar { width: 8px; }
         ::-webkit-scrollbar-track { background: #0a1a2f; }
@@ -418,7 +417,7 @@
                 <button onclick="switchPage('gallery')" class="nav-btn px-4 py-2 font-tech font-bold uppercase tracking-wider hover:text-white hover:bg-aether-500/10 border-b-2 border-transparent hover:border-aether-500 transition-all text-gray-400" data-target="gallery">Visionen</button>
                 <button onclick="switchPage('rules')" class="nav-btn px-4 py-2 font-tech font-bold uppercase tracking-wider hover:text-white hover:bg-aether-500/10 border-b-2 border-transparent hover:border-aether-500 transition-all text-gray-400" data-target="rules">Gesetze</button>
                 <button onclick="switchPage('faq')" class="nav-btn px-4 py-2 font-tech font-bold uppercase tracking-wider hover:text-white hover:bg-aether-500/10 border-b-2 border-transparent hover:border-aether-500 transition-all text-gray-400" data-target="faq">FAQ</button>
-                <button onclick="switchPage('char')" class="nav-btn px-4 py-2 font-tech font-bold uppercase tracking-wider hover:text-white hover:bg-aether-500/10 border-b-2 border-transparent hover:border-bronze-500 transition-all text-bronze-400" data-target="char">Identität</button>
+                <button onclick="switchPage('char')" class="nav-btn px-4 py-2 font-tech font-bold uppercase tracking-wider hover:text-white hover:bg-aether-500/10 border-b-2 border-transparent hover:border-bronze-500 transition-all text-gray-400" data-target="char" data-color="bronze">Identität</button>
             </div>
             <div class="hidden md:block">
                 <button onclick="switchPage('connect')" class="bg-bronze-600 hover:bg-bronze-500 text-white font-tech font-bold uppercase px-6 py-2 clip-path-slant border border-bronze-400 shadow-[0_0_15px_rgba(180,83,9,0.4)] transition-all hover:scale-105 active:scale-95">
@@ -1088,14 +1087,14 @@
                                     Steam64 ID
                                     <button type="button" onclick="openInfo('steam')" class="hover:text-white transition-colors"><i data-lucide="info" class="w-4 h-4"></i></button>
                                 </label>
-                                <input type="text" id="steamID" class="w-full p-2 rounded-sm focus:ring-1 focus:ring-aether-500">
+                                <input type="text" id="steamID" class="w-full p-2 rounded-sm bg-black/50 text-gray-300 focus:border-aether-500 focus:ring-1 focus:ring-aether-500">
                             </div>
                             <div>
                                 <label class="text-xs font-tech uppercase text-aether-500 mb-1 flex justify-between items-center">
                                     Discord Tag
                                     <button type="button" onclick="openInfo('discord')" class="hover:text-white transition-colors"><i data-lucide="info" class="w-4 h-4"></i></button>
                                 </label>
-                                <input type="text" id="discordID" class="w-full p-2 rounded-sm">
+                                <input type="text" id="discordID" class="w-full p-2 rounded-sm bg-black/50 text-gray-300 focus:border-aether-500 focus:ring-1 focus:ring-aether-500">
                             </div>
                         </div>
 
@@ -1106,14 +1105,14 @@
                                     Name
                                     <button type="button" onclick="openInfo('name')" class="hover:text-white transition-colors"><i data-lucide="info" class="w-4 h-4"></i></button>
                                 </label>
-                                <input type="text" id="charName" class="w-full p-2 rounded-sm border-bronze-800" placeholder="Max Mustermann, Graf von...">
+                                <input type="text" id="charName" class="w-full p-2 rounded-sm border-bronze-800 bg-black/50 text-gray-300 focus:border-aether-500 focus:ring-1 focus:ring-aether-500" placeholder="Max Mustermann, Graf von...">
                             </div>
                             <div>
                                 <label class="text-xs font-tech uppercase text-bronze-500 mb-1 flex justify-between items-center">
                                     Alter
                                     <button type="button" onclick="openInfo('alter')" class="hover:text-white transition-colors"><i data-lucide="info" class="w-4 h-4"></i></button>
                                 </label>
-                                <input type="text" id="charAge" class="w-full p-2 rounded-sm border-bronze-800">
+                                <input type="text" id="charAge" class="w-full p-2 rounded-sm border-bronze-800 bg-black/50 text-gray-300 focus:border-aether-500 focus:ring-1 focus:ring-aether-500">
                             </div>
                         </div>
 
@@ -1176,7 +1175,7 @@
                                     Fähigkeit
                                     <button type="button" onclick="openInfo('faehigkeit')" class="hover:text-white transition-colors"><i data-lucide="info" class="w-4 h-4"></i></button>
                                 </label>
-                                <input type="text" id="charAbility" class="w-full p-2 rounded-sm border-bronze-800" placeholder="Magie, Wandler, etc.">
+                                <input type="text" id="charAbility" class="w-full p-2 rounded-sm border-bronze-800 bg-black/50 text-gray-300 focus:border-aether-500 focus:ring-1 focus:ring-aether-500" placeholder="Magie, Wandler, etc.">
                             </div>
 
                             <!-- Custom Race Textarea (Hidden by default) -->
@@ -1252,14 +1251,14 @@
                                     Persönliche Stärken
                                     <button type="button" onclick="openInfo('staerken')" class="hover:text-white transition-colors"><i data-lucide="info" class="w-4 h-4"></i></button>
                                 </label>
-                                <textarea id="charStrengths" rows="3" class="w-full p-2 rounded-sm"></textarea>
+                                <textarea id="charStrengths" rows="3" class="w-full p-2 rounded-sm bg-black/50 text-gray-300 focus:border-aether-500 focus:ring-1 focus:ring-aether-500"></textarea>
                             </div>
                             <div>
                                 <label class="text-xs font-tech uppercase text-gray-500 mb-1 flex justify-between items-center">
                                     Persönliche Schwächen
                                     <button type="button" onclick="openInfo('schwaechen')" class="hover:text-white transition-colors"><i data-lucide="info" class="w-4 h-4"></i></button>
                                 </label>
-                                <textarea id="charWeaknesses" rows="3" class="w-full p-2 rounded-sm"></textarea>
+                                <textarea id="charWeaknesses" rows="3" class="w-full p-2 rounded-sm bg-black/50 text-gray-300 focus:border-aether-500 focus:ring-1 focus:ring-aether-500"></textarea>
                             </div>
                         </div>
 
@@ -1269,7 +1268,7 @@
                                 Allgemeine Charakterbeschreibung
                                 <button type="button" onclick="openInfo('beschreibung')" class="hover:text-white transition-colors"><i data-lucide="info" class="w-4 h-4"></i></button>
                             </label>
-                            <textarea id="charDescription" rows="4" class="w-full p-2 rounded-sm"></textarea>
+                            <textarea id="charDescription" rows="4" class="w-full p-2 rounded-sm bg-black/50 text-gray-300 focus:border-aether-500 focus:ring-1 focus:ring-aether-500"></textarea>
                         </div>
 
                         <!-- Row 7: Story / Background -->
@@ -1278,7 +1277,7 @@
                                 Hintergrund
                                 <button type="button" onclick="openInfo('hintergrund')" class="hover:text-white transition-colors"><i data-lucide="info" class="w-4 h-4"></i></button>
                             </label>
-                            <textarea id="charStory" rows="6" class="w-full p-2 rounded-sm"></textarea>
+                            <textarea id="charStory" rows="6" class="w-full p-2 rounded-sm bg-black/50 text-gray-300 focus:border-aether-500 focus:ring-1 focus:ring-aether-500"></textarea>
                         </div>
 
                         <button type="button" onclick="copyCharacter()" class="w-full bg-aether-900 border border-aether-500 text-aether-400 font-bold py-3 hover:bg-aether-500 hover:text-black transition-colors uppercase font-tech tracking-widest flex justify-center gap-2"><i data-lucide="save"></i> Daten exportieren</button>
@@ -1467,13 +1466,18 @@
             canvas.height = window.innerHeight;
         }
         
-        // Performance Fix: Debounce Resize Event
+        // Performance Fix: Debounce Resize Event (Verhindert Ruckeln beim Scrollen am Handy)
         let resizeTimer;
         window.addEventListener('resize', () => {
             clearTimeout(resizeTimer);
             resizeTimer = setTimeout(() => {
+                const oldWidth = canvas.width;
+                const oldHeight = canvas.height;
                 resizeCanvas();
-                initParticles(); // Verhindert, dass Partikel beim Drehen des Handys stecken bleiben
+                // Nur neu berechnen, wenn sich die Auflösung massiv ändert (z.B. Handy drehen)
+                if (Math.abs(oldWidth - canvas.width) > 100 || Math.abs(oldHeight - canvas.height) > 100) {
+                    initParticles();
+                }
             }, 150);
         });
         
@@ -1643,11 +1647,18 @@
             }
             requestAnimationFrame(animateSurge);
 
+            // FIX: Farbverlust der Navigation korrigiert
             document.querySelectorAll('.nav-btn').forEach(btn => {
+                const isBronze = btn.dataset.target === 'char';
+                const activeColor = isBronze ? 'text-bronze-400' : 'text-aether-400';
+                const activeBorder = isBronze ? 'border-bronze-500' : 'border-aether-500';
+                
                 if(btn.dataset.target === targetId) {
-                    btn.classList.add('text-aether-400', 'border-aether-500'); btn.classList.remove('text-gray-400', 'border-transparent');
+                    btn.classList.add(activeColor, activeBorder); 
+                    btn.classList.remove('text-gray-400', 'border-transparent');
                 } else {
-                    btn.classList.remove('text-aether-400', 'border-aether-500'); btn.classList.add('text-gray-400', 'border-transparent');
+                    btn.classList.remove(activeColor, activeBorder); 
+                    btn.classList.add('text-gray-400', 'border-transparent');
                 }
             });
 
@@ -1737,7 +1748,8 @@
             staerken: { title: "Persönliche Stärken", text: "Keine Enginestärken! Es geht um die Persönlichkeit!" },
             schwaechen: { title: "Persönliche Schwächen", text: "Keine Engineschwächen! Es geht um die Persönlichkeit!" },
             beschreibung: { title: "Allgemeine Charakterbeschreibung", text: "Erzähle in einigen Sätzen, wie dein Charakter mit anderen umgeht und was für eine Person wir im RP erwarten dürfen. Achtung: Stärken und Schwächen sind keine Charakterbeschreibung!" },
-             steam: { title: "Steam64 ID", text: "Deine Steam64 ID wird für die Server-Whitelist benötigt. Sie ist 17-stellig." },
+            hintergrund: { title: "Hintergrund", text: "Berichte in einigen Sätzen über die Eckpfeiler des Lebens, welches dein Charakter geführt hat. Dies sind die Gründe, warum der Charakter so ist, wie er ist. Eckpfeiler sind einschneidende Lebensereignisse. Wie kam dein Charakter dazu, bestimmte Charaktereigenschaften zu besitzen? Wie kam es zu den Fähigkeiten? Wie kam es zu dieser Berufswahl?" },
+            steam: { title: "Steam64 ID", text: "Deine Steam64 ID wird für die Server-Whitelist benötigt. Sie ist 17-stellig." },
             discord: { title: "Discord Tag", text: "Dein Discord Name zur Kontaktaufnahme und Zuordnung der Whitelist." },
             neueRasse: { title: "Neue Rasse", text: "Da diese Rasse in unseren Archiven noch unbekannt ist, benötigen wir eine kurze Beschreibung, um sie einordnen zu können. Gehe bitte auf das Aussehen und grobe Eigenheiten ein." }
         };
@@ -1783,7 +1795,10 @@
         }
         
         function navigateFromMobile(targetId) {
-            if (currentState !== STATE.IDLE || targetId === currentPageId) {
+            // FIX: Guard Clause, damit Spam-Klicken während der Lade-Animation nichts kaputt macht
+            if (currentState !== STATE.IDLE) return; 
+            
+            if (targetId === currentPageId) {
                 toggleMobile();
                 return;
             }
@@ -1799,13 +1814,32 @@
             }, 3200);
         }
 
+        // FIX: Sichere Kopier-Funktion auch für Browser, die das Clipboard blockieren
         async function copyIP() {
+            const ip = '178.63.47.190:7777';
+            const msg = document.getElementById('ip-msg'); 
             try {
-                await navigator.clipboard.writeText('178.63.47.190:7777');
-                const msg = document.getElementById('ip-msg'); 
-                if(msg) { msg.style.opacity = 1; setTimeout(() => msg.style.opacity = 0, 2000); }
+                if (navigator.clipboard && navigator.clipboard.writeText) {
+                    await navigator.clipboard.writeText(ip);
+                } else {
+                    const el = document.createElement('textarea');
+                    el.value = ip;
+                    document.body.appendChild(el);
+                    el.select();
+                    document.execCommand('copy');
+                    document.body.removeChild(el);
+                }
+                if(msg) { 
+                    msg.innerText = "Kopiert!";
+                    msg.className = "text-xs text-green-500 opacity-0 h-4 transition-opacity";
+                    msg.style.opacity = 1; setTimeout(() => msg.style.opacity = 0, 2000); 
+                }
             } catch (err) {
-                alert("Bitte markiere und kopiere die IP manuell: 178.63.47.190:7777");
+                if(msg) { 
+                    msg.innerText = "Fehler!";
+                    msg.className = "text-xs text-red-500 opacity-0 h-4 transition-opacity";
+                    msg.style.opacity = 1; setTimeout(() => msg.style.opacity = 0, 2000); 
+                }
             }
         }
 
@@ -1844,12 +1878,30 @@ ${val('charStory')}
 **Steam64 ID:** ${val('steamID')}
 **Discord Tag:** ${val('discordID')}`;
             
+            const msg = document.getElementById('copy-msg'); 
             try {
-                await navigator.clipboard.writeText(text);
-                const msg = document.getElementById('copy-msg'); 
-                if(msg) { msg.style.opacity = 1; setTimeout(() => msg.style.opacity = 0, 3000); }
+                if (navigator.clipboard && navigator.clipboard.writeText) {
+                    await navigator.clipboard.writeText(text);
+                } else {
+                    const el = document.createElement('textarea');
+                    el.value = text;
+                    document.body.appendChild(el);
+                    el.select();
+                    document.execCommand('copy');
+                    document.body.removeChild(el);
+                }
+                
+                if(msg) { 
+                    msg.innerText = ">> Export erfolgreich in Zwischenspeicher <<";
+                    msg.className = "text-center text-green-500 font-tech text-sm mt-2 opacity-0 transition-opacity";
+                    msg.style.opacity = 1; setTimeout(() => msg.style.opacity = 0, 3000); 
+                }
             } catch (err) {
-                alert("Fehler beim Kopieren in die Zwischenablage. Bitte markiere den Text manuell und drücke Strg+C.");
+                if(msg) { 
+                    msg.innerText = ">> Fehler beim Kopieren. Bitte Text manuell kopieren. <<";
+                    msg.className = "text-center text-red-500 font-tech text-sm mt-2 opacity-0 transition-opacity";
+                    msg.style.opacity = 1; setTimeout(() => msg.style.opacity = 0, 4000); 
+                }
                 console.error("Clipboard Error:", err);
             }
         }
