@@ -177,7 +177,7 @@
         }
         
         .system-surge .wave-surface {
-             background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 100" preserveAspectRatio="none"><path d="M0 100 V 50 Q 250 10 500 50 T 1000 50 V 100 z" fill="%23ffffff"/></svg>');
+             background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 1000 100" preserveAspectRatio="none"><path d="M0 100 V 50 Q 250 10 500 50 T 1000 50 V 100 z" fill="%23ffffff"/></svg>');
              animation-duration: 1s; 
         }
 
@@ -253,13 +253,13 @@
         }
         #aether-loader.active { opacity: 1; pointer-events: all; }
 
-        /* WIP Modal */
-        #wip-modal {
+        /* Modals */
+        .info-modal-bg {
             background: rgba(5, 11, 20, 0.95);
             backdrop-filter: blur(20px);
             transition: opacity 0.3s ease; 
         }
-        #wip-modal.hidden-modal {
+        .hidden-modal {
             opacity: 0;
             pointer-events: none;
         }
@@ -294,7 +294,7 @@
     <div class="scanlines"></div>
 
     <!-- WIP MODAL -->
-    <div id="wip-modal" class="fixed inset-0 flex items-center justify-center p-4 z-[200]">
+    <div id="wip-modal" class="info-modal-bg fixed inset-0 flex items-center justify-center p-4 z-[200]">
         <div class="tech-panel p-6 md:p-8 max-w-lg w-full text-center relative border-2 border-bronze-500 shadow-[0_0_50px_rgba(180,83,9,0.3)]">
             <i data-lucide="triangle-alert" class="w-12 h-12 md:w-16 md:h-16 text-bronze-400 mx-auto mb-4 animate-pulse"></i>
             <h2 class="font-magic text-3xl text-white mb-2 text-glow-gold">WORK IN PROGRESS</h2>
@@ -304,6 +304,21 @@
             </p>
             <button onclick="closeWipModal()" class="w-full bg-bronze-700 hover:bg-bronze-600 text-white font-bold py-3 uppercase tracking-widest border border-bronze-400 transition-all hover:shadow-[0_0_20px_#d97706]">
                 Verstanden
+            </button>
+        </div>
+    </div>
+
+    <!-- FIELD INFO MODAL (Dynamic Form Help) -->
+    <div id="field-info-modal" class="info-modal-bg hidden-modal fixed inset-0 flex items-center justify-center p-4 z-[300]">
+        <div class="tech-panel p-6 max-w-md w-full relative border-2 border-aether-500 shadow-[0_0_30px_rgba(0,217,255,0.2)] bg-black/90">
+            <button onclick="closeInfoModal()" class="absolute top-4 right-4 text-gray-400 hover:text-white transition-colors"><i data-lucide="x" class="w-6 h-6"></i></button>
+            <div class="flex items-center gap-3 mb-4 border-b border-aether-500/30 pb-3">
+                <i data-lucide="info" class="text-aether-400 w-6 h-6"></i>
+                <h3 id="info-modal-title" class="font-magic text-2xl text-white text-glow-blue m-0">Info</h3>
+            </div>
+            <p id="info-modal-text" class="text-gray-300 font-tech text-base leading-relaxed"></p>
+            <button onclick="closeInfoModal()" class="w-full mt-6 bg-aether-900 border border-aether-500 text-aether-400 hover:bg-aether-800 font-bold py-2 uppercase tracking-widest transition-colors">
+                Schließen
             </button>
         </div>
     </div>
@@ -417,7 +432,6 @@
     </nav>
 
     <!-- MOBILE MENU -->
-    <!-- FIX: z-[60] stellt sicher, dass das mobile Menü IMMER über der z-50 Navbar liegt und das Schließen-Kreuz bedienbar bleibt -->
     <div id="mobile-menu" class="fixed inset-0 z-[60] bg-aether-900/95 backdrop-blur-xl flex flex-col items-center justify-center space-y-8 transition-opacity duration-300 opacity-0 pointer-events-none">
         <button onclick="navigateFromMobile('home')" class="text-2xl font-tech uppercase text-aether-400 hover:scale-105 transition-transform">Startdeck</button>
         <button onclick="navigateFromMobile('classes')" class="text-2xl font-tech uppercase text-gray-400 hover:text-white hover:scale-105 transition-transform">Klassen</button>
@@ -504,7 +518,6 @@
                          <p class="text-gray-300 leading-relaxed text-center italic">Der Arkane Bund verliert an Macht, doch er ist nicht besiegt. Geheime Splittergruppen verüben immer wieder Anschläge auf Aether-Fabriken oder Reaktoren, um die Industrie zu schwächen. Sie fordern das Verbot des Aethers, denn sie sind der Meinung, die instabile Energie würde die Welt irgendwann aus den Fugen reißen und zerstören.</p>
                     </div>
                 </div>
-                <!-- Rift -->
                 <div class="relative py-12 px-8 my-12 text-center border border-aether-500/30 rounded-lg overflow-hidden">
                     <div class="absolute inset-0 bg-aether-500/5 backdrop-blur-sm z-0"></div>
                     <div class="relative z-10">
@@ -523,32 +536,60 @@
                     <p class="font-tech text-bronze-400 uppercase tracking-widest">Rassen-Register & Klassen-Spezifikationen</p>
                 </div>
 
-                <!-- Rassen -->
                 <div class="tech-panel p-8 bg-black/50">
-                    <h3 class="font-magic text-3xl text-aether-400 mb-6 flex items-center gap-3"><i data-lucide="dna" class="w-8 h-8"></i> Übersicht der Rassen</h3>
+                    <h3 class="font-magic text-3xl text-aether-400 mb-6 flex items-center gap-3"><i data-lucide="dna" class="w-8 h-8"></i> Rassenübersicht</h3>
                     <p class="text-gray-400 text-sm mb-6">Wähle weise, denn dein Blut bestimmt deinen Weg. Aktuell in den Archiven von Arathion verzeichnete und spielbare Rassen:</p>
-                    <div class="flex flex-wrap gap-3">
-                        <span class="px-4 py-2 border border-aether-500/50 bg-aether-900/80 text-white font-tech tracking-wider uppercase rounded-sm hover:bg-aether-500 hover:text-black transition-colors cursor-default">Elfen</span>
-                        <span class="px-4 py-2 border border-aether-500/50 bg-aether-900/80 text-white font-tech tracking-wider uppercase rounded-sm hover:bg-aether-500 hover:text-black transition-colors cursor-default">Zwerge</span>
-                        <span class="px-4 py-2 border border-aether-500/50 bg-aether-900/80 text-white font-tech tracking-wider uppercase rounded-sm hover:bg-aether-500 hover:text-black transition-colors cursor-default">Orks</span>
-                        <span class="px-4 py-2 border border-aether-500/50 bg-aether-900/80 text-white font-tech tracking-wider uppercase rounded-sm hover:bg-aether-500 hover:text-black transition-colors cursor-default">Halblinge</span>
-                        <span class="px-4 py-2 border border-aether-500/50 bg-aether-900/80 text-white font-tech tracking-wider uppercase rounded-sm hover:bg-aether-500 hover:text-black transition-colors cursor-default">Gnome</span>
-                        <span class="px-4 py-2 border border-aether-500/50 bg-aether-900/80 text-white font-tech tracking-wider uppercase rounded-sm hover:bg-aether-500 hover:text-black transition-colors cursor-default">Gobline</span>
-                        <span class="px-4 py-2 border border-aether-500/50 bg-aether-900/80 text-white font-tech tracking-wider uppercase rounded-sm hover:bg-aether-500 hover:text-black transition-colors cursor-default">Riesen</span>
-                        <span class="px-4 py-2 border border-aether-500/50 bg-aether-900/80 text-white font-tech tracking-wider uppercase rounded-sm hover:bg-aether-500 hover:text-black transition-colors cursor-default">Trolle</span>
-                        <span class="px-4 py-2 border border-aether-500/50 bg-aether-900/80 text-white font-tech tracking-wider uppercase rounded-sm hover:bg-aether-500 hover:text-black transition-colors cursor-default">Tierwesen</span>
-                        <span class="px-4 py-2 border border-aether-500/50 bg-aether-900/80 text-white font-tech tracking-wider uppercase rounded-sm hover:bg-aether-500 hover:text-black transition-colors cursor-default">Dimensionales</span>
-                        <span class="px-4 py-2 border border-aether-500/50 bg-aether-900/80 text-white font-tech tracking-wider uppercase rounded-sm hover:bg-aether-500 hover:text-black transition-colors cursor-default">Menschen</span>
-                        <span class="px-4 py-2 border border-bronze-500/50 bg-bronze-900/50 text-bronze-300 font-tech tracking-wider uppercase rounded-sm hover:bg-bronze-500 hover:text-white transition-colors cursor-default shadow-[0_0_10px_rgba(180,83,9,0.3)]">Cyborg</span>
+                    
+                    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                        <div class="bg-black/40 border border-green-900/50 p-4 rounded-sm shadow-[0_0_15px_rgba(74,222,128,0.05)]">
+                            <h4 class="font-tech text-green-400 uppercase tracking-widest mb-3 border-b border-green-900/50 pb-1">--- Naturvölker ---</h4>
+                            <div class="flex flex-wrap gap-2">
+                                <span class="px-3 py-1 border border-green-500/30 bg-green-900/20 text-gray-300 font-tech tracking-wider text-sm uppercase rounded-sm">Elfen</span>
+                                <span class="px-3 py-1 border border-green-500/30 bg-green-900/20 text-gray-300 font-tech tracking-wider text-sm uppercase rounded-sm">Halblinge</span>
+                            </div>
+                        </div>
+
+                        <div class="bg-black/40 border border-yellow-900/50 p-4 rounded-sm shadow-[0_0_15px_rgba(250,204,21,0.05)]">
+                            <h4 class="font-tech text-yellow-500 uppercase tracking-widest mb-3 border-b border-yellow-900/50 pb-1">--- Berg & Stein ---</h4>
+                            <div class="flex flex-wrap gap-2">
+                                <span class="px-3 py-1 border border-yellow-500/30 bg-yellow-900/20 text-gray-300 font-tech tracking-wider text-sm uppercase rounded-sm">Zwerge</span>
+                                <span class="px-3 py-1 border border-yellow-500/30 bg-yellow-900/20 text-gray-300 font-tech tracking-wider text-sm uppercase rounded-sm">Gnome</span>
+                                <span class="px-3 py-1 border border-yellow-500/30 bg-yellow-900/20 text-gray-300 font-tech tracking-wider text-sm uppercase rounded-sm">Riesen</span>
+                            </div>
+                        </div>
+
+                        <div class="bg-black/40 border border-red-900/50 p-4 rounded-sm shadow-[0_0_15px_rgba(248,113,113,0.05)]">
+                            <h4 class="font-tech text-red-500 uppercase tracking-widest mb-3 border-b border-red-900/50 pb-1">--- Wilde Völker ---</h4>
+                            <div class="flex flex-wrap gap-2">
+                                <span class="px-3 py-1 border border-red-500/30 bg-red-900/20 text-gray-300 font-tech tracking-wider text-sm uppercase rounded-sm">Orks</span>
+                                <span class="px-3 py-1 border border-red-500/30 bg-red-900/20 text-gray-300 font-tech tracking-wider text-sm uppercase rounded-sm">Gobline</span>
+                                <span class="px-3 py-1 border border-red-500/30 bg-red-900/20 text-gray-300 font-tech tracking-wider text-sm uppercase rounded-sm">Trolle</span>
+                            </div>
+                        </div>
+
+                        <div class="bg-black/40 border border-pink-900/50 p-4 rounded-sm shadow-[0_0_15px_rgba(244,114,182,0.05)] md:col-span-2 lg:col-span-1">
+                            <h4 class="font-tech text-pink-400 uppercase tracking-widest mb-3 border-b border-pink-900/50 pb-1">--- Mystik & Finsternis ---</h4>
+                            <div class="flex flex-wrap gap-2">
+                                <span class="px-3 py-1 border border-pink-500/30 bg-pink-900/20 text-gray-300 font-tech tracking-wider text-sm uppercase rounded-sm">Vampire</span>
+                                <span class="px-3 py-1 border border-pink-500/30 bg-pink-900/20 text-gray-300 font-tech tracking-wider text-sm uppercase rounded-sm">Werwesen</span>
+                                <span class="px-3 py-1 border border-pink-500/30 bg-pink-900/20 text-gray-300 font-tech tracking-wider text-sm uppercase rounded-sm">Tierwesen</span>
+                                <span class="px-3 py-1 border border-pink-500/30 bg-pink-900/20 text-gray-300 font-tech tracking-wider text-sm uppercase rounded-sm">Dimensionales</span>
+                            </div>
+                        </div>
+
+                        <div class="bg-black/40 border border-aether-900 p-4 rounded-sm shadow-[0_0_15px_rgba(0,217,255,0.05)] md:col-span-2 lg:col-span-2">
+                            <h4 class="font-tech text-aether-500 uppercase tracking-widest mb-3 border-b border-aether-900/50 pb-1">--- Zivilisation & Technik ---</h4>
+                            <div class="flex flex-wrap gap-2">
+                                <span class="px-3 py-1 border border-aether-500/30 bg-aether-900/20 text-gray-300 font-tech tracking-wider text-sm uppercase rounded-sm">Menschen</span>
+                                <span class="px-3 py-1 border border-aether-500/50 bg-aether-900/40 text-aether-300 font-tech tracking-wider text-sm uppercase rounded-sm shadow-[0_0_10px_rgba(0,217,255,0.2)]">Cyborgs</span>
+                            </div>
+                        </div>
                     </div>
                 </div>
 
-                <!-- Klassen -->
                 <div>
                     <h3 class="font-magic text-4xl text-white mb-8 border-b-2 border-bronze-500/50 pb-2 inline-block">Die Pfade (Klassen)</h3>
                     <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-                        
-                        <!-- Wandler -->
                         <div class="tech-panel p-6 bg-aether-900/60 hover:border-aether-400 transition-all flex flex-col h-full">
                             <h4 class="font-bold text-white text-2xl mb-3 flex items-center gap-3"><i data-lucide="paw-print" class="text-aether-400 w-8 h-8"></i> Wandler</h4>
                             <p class="text-gray-300 text-sm mb-4 flex-grow leading-relaxed">Wandler sind Meister der Anpassung, deren Körper so wandelbar sind wie die Zeitrisse selbst. Sie können ihre Gestalt in die verschiedensten Kreaturen oder Bestien verändern, um im Kampf an vorderster Front zu bestehen oder lautlos zu spähen. Diese Vielseitigkeit macht sie unberechenbar: Wo eben noch ein Mensch stand, kann im nächsten Moment eine reißende Bestie angreifen. Ihr Weg ist einer der Instinkte und der tiefen Verbundenheit zur inneren Natur.</p>
@@ -558,7 +599,6 @@
                             </div>
                         </div>
 
-                        <!-- Jäger -->
                         <div class="tech-panel p-6 bg-aether-900/60 hover:border-aether-400 transition-all flex flex-col h-full">
                             <h4 class="font-bold text-white text-2xl mb-3 flex items-center gap-3"><i data-lucide="crosshair" class="text-aether-400 w-8 h-8"></i> Jäger</h4>
                             <p class="text-gray-300 text-sm mb-4 flex-grow leading-relaxed">Jäger sind die unbestrittenen Meister des Fernkampfs und des Überlebens in der Wildnis. Ob mit dem traditionellen Langbogen oder einer modifizierten Waffe aus einem Zeitriss – sie treffen ihr Ziel mit tödlicher Präzision aus der Distanz. Sie verstehen es, das Gelände zu nutzen, Fallen zu stellen und die Spuren ihrer Feinde zu lesen. Ein Jäger in Arathion ist oft ein einsamer Wolf, der den ersten und letzten Schuss eines Kampfes abgibt.</p>
@@ -568,7 +608,6 @@
                             </div>
                         </div>
 
-                        <!-- Assassine -->
                         <div class="tech-panel p-6 bg-aether-900/60 hover:border-aether-400 transition-all flex flex-col h-full">
                             <h4 class="font-bold text-white text-2xl mb-3 flex items-center gap-3"><i data-lucide="swords" class="text-aether-400 w-8 h-8"></i> Assassine</h4>
                             <p class="text-gray-300 text-sm mb-4 flex-grow leading-relaxed">Der Assassine ist die Verkörperung des lautlosen Todes. In den Schatten Arathions zu Hause, nutzen sie Schnelligkeit, Tarnung und Gifte, um ihre Ziele auszuschalten, bevor der Kampf überhaupt begonnen hat. Sie meiden das offene Schlachtfeld und setzen stattdessen auf präzise Stiche in die Schwachstellen ihrer Gegner. Für einen Assassinen ist Ehre zweitrangig – nur das Ergebnis zählt, und das ist meistens ein lautloses Ende im Dunkeln.</p>
@@ -578,7 +617,6 @@
                             </div>
                         </div>
 
-                        <!-- Magier -->
                         <div class="tech-panel p-6 bg-aether-900/60 hover:border-aether-400 transition-all flex flex-col h-full">
                             <h4 class="font-bold text-white text-2xl mb-3 flex items-center gap-3"><i data-lucide="sparkles" class="text-aether-400 w-8 h-8"></i> Magier</h4>
                             <p class="text-gray-300 text-sm mb-4 flex-grow leading-relaxed">Magier sind Gelehrte, die die instabilen Energien der Welt manipulieren. Sie beherrschen sowohl die zerstörerischen Elemente als auch arkane Manipulationen, um das Schlachtfeld zu kontrollieren. Ein Magier kann Feuer regnen lassen oder die Realität krümmen, doch diese Macht ist gefährlich. Wer die arkane Energie nicht mit eisernem Willen führt, läuft Gefahr, von der Magie, die er beschwört, selbst verzehrt zu werden.</p>
@@ -592,7 +630,6 @@
                             </div>
                         </div>
 
-                        <!-- Krieger -->
                         <div class="tech-panel p-6 bg-aether-900/60 hover:border-bronze-400 transition-all flex flex-col h-full border-bronze-800">
                             <h4 class="font-bold text-white text-2xl mb-3 flex items-center gap-3"><i data-lucide="shield" class="text-bronze-400 w-8 h-8"></i> Krieger</h4>
                             <p class="text-gray-300 text-sm mb-4 flex-grow leading-relaxed">Der Krieger ist das stählerne Rückgrat einer jeden Gruppe. Ob in schwerer Platte mit Schild oder als rücksichtsloser Schadenskämpfer mit zwei Äxten – sie suchen den direkten Kontakt zum Feind. Ein Krieger in Arathion verlässt sich auf jahrelanges Training, pure Kraft und unerschütterlichen Mut. Sie sind es, die den Ansturm abfangen und die Linie halten, wenn alles andere im Chaos der Magie und der Zeitrisse zu versinken droht.</p>
@@ -602,7 +639,6 @@
                             </div>
                         </div>
 
-                        <!-- Vampir -->
                         <div class="tech-panel p-6 bg-aether-900/60 hover:border-red-400 transition-all flex flex-col h-full border-red-900/50">
                             <h4 class="font-bold text-white text-2xl mb-3 flex items-center gap-3"><i data-lucide="droplet" class="text-red-500 w-8 h-8"></i> Vampir</h4>
                             <p class="text-gray-300 text-sm mb-4 flex-grow leading-relaxed">Vampire sind zeitlose Raubtiere, die oft durch uralte Risse nach Arathion gelangten. Sie besitzen übermenschliche Reflexe, enorme Kraft und die Fähigkeit, sich nach Verletzungen rasch zu regenerieren – solange sie ihren Durst nach Lebenskraft stillen. In der Gesellschaft Arathions sind sie oft elegante, aber gefürchtete Außenseiter. Ihr Dasein ist ein ständiger Kampf zwischen ihrer menschlichen Vernunft und dem ewigen Hunger der Nacht.</p>
@@ -612,7 +648,6 @@
                             </div>
                         </div>
 
-                        <!-- Werwesen -->
                         <div class="tech-panel p-6 bg-aether-900/60 hover:border-gray-400 transition-all flex flex-col h-full md:col-span-2 lg:col-span-1 lg:col-start-2">
                             <h4 class="font-bold text-white text-2xl mb-3 flex items-center gap-3"><i data-lucide="moon" class="text-gray-400 w-8 h-8"></i> Werwesen</h4>
                             <p class="text-gray-300 text-sm mb-4 flex-grow leading-relaxed">Werwesen tragen einen unbändigen Fluch in sich, der sie in hybride Bestien verwandelt. In ihrer verwandelten Form sind sie eine Urgewalt aus Muskeln, Krallen und Zähnen, die kaum aufzuhalten ist. Sie zeichnen sich durch extreme Widerstandskraft und animalische Wildheit aus. Während sie in Menschengestalt oft ruhig wirken, brodelt unter der Oberfläche stets der Instinkt der Jagd, der nur darauf wartet, im Kampf entfesselt zu werden.</p>
@@ -631,12 +666,10 @@
 
                 <div class="w-full h-[1px] bg-gradient-to-r from-transparent via-bronze-500/50 to-transparent my-16"></div>
 
-                <!-- Berufe -->
                 <div>
                     <h3 class="font-magic text-4xl text-white mb-4 border-b-2 border-bronze-500/50 pb-2 inline-block">Wirtschafts- & Gildenregister (Berufe)</h3>
                     <p class="text-gray-400 text-sm mb-8 max-w-3xl leading-relaxed">Unsere Berufe werden in Gilden unterteilt. In jeder dieser Gilden finden dann Übungen für jene statt, die noch Unterstützung in der Erlernung ihres Berufes brauchen. Auch Forschungsgruppen, um sich weitere Kenntnisse anzueignen, finden innerhalb der Gilde statt. Niemand ist mit seiner Forschung auf sich allein gestellt!</p>
 
-                    <!-- Hauptberufe -->
                     <div class="mb-12">
                         <h4 class="font-tech text-2xl text-bronze-400 uppercase tracking-widest mb-6 flex items-center gap-2"><i data-lucide="hammer"></i> Hauptberufe</h4>
                         <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
@@ -663,7 +696,6 @@
                         </div>
                     </div>
 
-                    <!-- Nebenberufe -->
                     <div class="mb-12">
                         <h4 class="font-tech text-2xl text-aether-400 uppercase tracking-widest mb-6 flex items-center gap-2"><i data-lucide="briefcase"></i> Nebenberufe</h4>
                         <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
@@ -690,7 +722,6 @@
                         </div>
                     </div>
 
-                    <!-- RP Berufe -->
                     <div>
                         <h4 class="font-tech text-2xl text-gray-400 uppercase tracking-widest mb-6 flex items-center gap-2"><i data-lucide="theater"></i> RP-Berufe</h4>
                         <p class="text-gray-400 text-sm mb-4">Dies sind Berufe, die das RP unterstützen, sich aber kaum bis gar nicht auf die Engine beziehen. Jeder dieser Berufe arbeitet in der Regel eigenverantwortlich.</p>
@@ -715,14 +746,90 @@
                                 <i data-lucide="music" class="text-gray-400 w-6 h-6"></i>
                                 <div><h6 class="text-white font-bold">Barde</h6><span class="text-xs text-gray-500">Reiner RP Beruf</span></div>
                             </div>
-                            <div class="bg-gray-900/50 border border-red-900/50 p-4 rounded-sm flex items-center gap-3">
-                                <i data-lucide="heart-pulse" class="text-red-400 w-6 h-6"></i>
-                                <div><h6 class="text-white font-bold">Heiler</h6><span class="text-xs text-gray-500">Enorm wichtig (Knocksystem)</span></div>
+                        </div>
+                    </div>
+
+                    <div class="mt-12">
+                        <h4 class="font-tech text-2xl text-red-400 uppercase tracking-widest mb-6 flex items-center gap-2"><i data-lucide="heart-pulse"></i> Zusatz-Rolle: Heiler</h4>
+                        <div class="tech-panel p-6 bg-red-900/10 border-red-900/50">
+                            <p class="text-gray-300 text-sm leading-relaxed mb-4">Der Heiler nimmt eine absolute Sonderrolle ein und ist enorm wichtig für das Überleben der Bürger in Arathion (aufgrund des strengen Knocksystems). Daher kann der Weg des Heilers <strong>zusätzlich</strong> zu jedem Haupt-, Neben- und RP-Beruf erlernt und ausgeübt werden.</p>
+                            <div class="flex items-center gap-2 text-xs font-tech uppercase text-red-400 tracking-wider">
+                                <i data-lucide="info" class="w-4 h-4"></i> Darf beliebig mit allen anderen Berufen kombiniert werden
                             </div>
                         </div>
                     </div>
 
                 </div>
+
+                <div class="w-full h-[1px] bg-gradient-to-r from-transparent via-aether-500/50 to-transparent my-16"></div>
+
+                <div class="mb-8">
+                    <div class="text-center mb-8">
+                        <h3 class="font-magic text-4xl text-white mb-2 text-glow-blue">Gestaltwandler-Archive</h3>
+                        <p class="font-tech text-gray-400 uppercase tracking-widest text-sm">Dokumentierte Morph-Signaturen</p>
+                    </div>
+                    
+                    <div class="tech-panel p-8 bg-black/40 mb-10 border-aether-900">
+                        <p class="text-gray-300 text-sm mb-6 leading-relaxed text-center max-w-4xl mx-auto">Der Pfad des Wandlers erlaubt das Annehmen der verschiedensten Kreaturenformen. Dies ist ein Auszug der aktuell verzeichneten Gestalten, deren genetischer Code entschlüsselt wurde:</p>
+                        
+                        <div class="flex flex-wrap gap-2 justify-center">
+                            <span class="px-2 py-1 bg-aether-900/60 border border-aether-500/20 text-gray-400 font-tech text-[11px] tracking-wider rounded-sm hover:text-aether-300 hover:border-aether-500 transition-colors cursor-default">Yakith</span>
+                            <span class="px-2 py-1 bg-aether-900/60 border border-aether-500/20 text-gray-400 font-tech text-[11px] tracking-wider rounded-sm hover:text-aether-300 hover:border-aether-500 transition-colors cursor-default">Panther</span>
+                            <span class="px-2 py-1 bg-aether-900/60 border border-aether-500/20 text-gray-400 font-tech text-[11px] tracking-wider rounded-sm hover:text-aether-300 hover:border-aether-500 transition-colors cursor-default">White Tiger</span>
+                            <span class="px-2 py-1 bg-aether-900/60 border border-aether-500/20 text-gray-400 font-tech text-[11px] tracking-wider rounded-sm hover:text-aether-300 hover:border-aether-500 transition-colors cursor-default">Lion</span>
+                            <span class="px-2 py-1 bg-aether-900/60 border border-aether-500/20 text-gray-400 font-tech text-[11px] tracking-wider rounded-sm hover:text-aether-300 hover:border-aether-500 transition-colors cursor-default">Mountain Lion</span>
+                            <span class="px-2 py-1 bg-aether-900/60 border border-aether-500/20 text-gray-400 font-tech text-[11px] tracking-wider rounded-sm hover:text-aether-300 hover:border-aether-500 transition-colors cursor-default">Mountain Lion Alpha</span>
+                            <span class="px-2 py-1 bg-aether-900/60 border border-aether-500/20 text-gray-400 font-tech text-[11px] tracking-wider rounded-sm hover:text-aether-300 hover:border-aether-500 transition-colors cursor-default">Snow Leopard</span>
+                            <span class="px-2 py-1 bg-aether-900/60 border border-aether-500/20 text-gray-400 font-tech text-[11px] tracking-wider rounded-sm hover:text-aether-300 hover:border-aether-500 transition-colors cursor-default">Tiger</span>
+                            <span class="px-2 py-1 bg-aether-900/60 border border-aether-500/20 text-gray-400 font-tech text-[11px] tracking-wider rounded-sm hover:text-aether-300 hover:border-aether-500 transition-colors cursor-default">Sand Beast</span>
+                            <span class="px-2 py-1 bg-aether-900/60 border border-aether-500/20 text-gray-400 font-tech text-[11px] tracking-wider rounded-sm hover:text-aether-300 hover:border-aether-500 transition-colors cursor-default">Jaguar</span>
+                            <span class="px-2 py-1 bg-aether-900/60 border border-aether-500/20 text-gray-400 font-tech text-[11px] tracking-wider rounded-sm hover:text-aether-300 hover:border-aether-500 transition-colors cursor-default">Wolf</span>
+                            <span class="px-2 py-1 bg-aether-900/60 border border-aether-500/20 text-gray-400 font-tech text-[11px] tracking-wider rounded-sm hover:text-aether-300 hover:border-aether-500 transition-colors cursor-default">White Wolf</span>
+                            <span class="px-2 py-1 bg-aether-900/60 border border-aether-500/20 text-gray-400 font-tech text-[11px] tracking-wider rounded-sm hover:text-aether-300 hover:border-aether-500 transition-colors cursor-default">Brown Wolf</span>
+                            <span class="px-2 py-1 bg-aether-900/60 border border-aether-500/20 text-gray-400 font-tech text-[11px] tracking-wider rounded-sm hover:text-aether-300 hover:border-aether-500 transition-colors cursor-default">Black Wolf</span>
+                            <span class="px-2 py-1 bg-aether-900/60 border border-aether-500/20 text-gray-400 font-tech text-[11px] tracking-wider rounded-sm hover:text-aether-300 hover:border-aether-500 transition-colors cursor-default">Revonous Wolf</span>
+                            <span class="px-2 py-1 bg-aether-900/60 border border-aether-500/20 text-gray-400 font-tech text-[11px] tracking-wider rounded-sm hover:text-aether-300 hover:border-aether-500 transition-colors cursor-default">Wolf Puppy (Normal/White/Black)</span>
+                            <span class="px-2 py-1 bg-aether-900/60 border border-aether-500/20 text-gray-400 font-tech text-[11px] tracking-wider rounded-sm hover:text-aether-300 hover:border-aether-500 transition-colors cursor-default">Feral Dog (Red/Sick/Black/Beige)</span>
+                            <span class="px-2 py-1 bg-aether-900/60 border border-aether-500/20 text-gray-400 font-tech text-[11px] tracking-wider rounded-sm hover:text-aether-300 hover:border-aether-500 transition-colors cursor-default">White Lynx</span>
+                            <span class="px-2 py-1 bg-aether-900/60 border border-aether-500/20 text-gray-400 font-tech text-[11px] tracking-wider rounded-sm hover:text-aether-300 hover:border-aether-500 transition-colors cursor-default">Rabbit</span>
+                            <span class="px-2 py-1 bg-aether-900/60 border border-aether-500/20 text-gray-400 font-tech text-[11px] tracking-wider rounded-sm hover:text-aether-300 hover:border-aether-500 transition-colors cursor-default">Siptha Bear</span>
+                            <span class="px-2 py-1 bg-aether-900/60 border border-aether-500/20 text-gray-400 font-tech text-[11px] tracking-wider rounded-sm hover:text-aether-300 hover:border-aether-500 transition-colors cursor-default">Black Bear</span>
+                            <span class="px-2 py-1 bg-aether-900/60 border border-aether-500/20 text-gray-400 font-tech text-[11px] tracking-wider rounded-sm hover:text-aether-300 hover:border-aether-500 transition-colors cursor-default">Brown Bear</span>
+                            <span class="px-2 py-1 bg-aether-900/60 border border-aether-500/20 text-gray-400 font-tech text-[11px] tracking-wider rounded-sm hover:text-aether-300 hover:border-aether-500 transition-colors cursor-default">Demon Bat</span>
+                            <span class="px-2 py-1 bg-aether-900/60 border border-aether-500/20 text-gray-400 font-tech text-[11px] tracking-wider rounded-sm hover:text-aether-300 hover:border-aether-500 transition-colors cursor-default">Devolved Bat Black</span>
+                            <span class="px-2 py-1 bg-aether-900/60 border border-aether-500/20 text-gray-400 font-tech text-[11px] tracking-wider rounded-sm hover:text-aether-300 hover:border-aether-500 transition-colors cursor-default">Child of Jhil</span>
+                            <span class="px-2 py-1 bg-aether-900/60 border border-aether-500/20 text-gray-400 font-tech text-[11px] tracking-wider rounded-sm hover:text-aether-300 hover:border-aether-500 transition-colors cursor-default">Blood Moon Beast (Flesh/Albino)</span>
+                            <span class="px-2 py-1 bg-aether-900/60 border border-aether-500/20 text-gray-400 font-tech text-[11px] tracking-wider rounded-sm hover:text-aether-300 hover:border-aether-500 transition-colors cursor-default">King Beneath</span>
+                            <span class="px-2 py-1 bg-aether-900/60 border border-aether-500/20 text-gray-400 font-tech text-[11px] tracking-wider rounded-sm hover:text-aether-300 hover:border-aether-500 transition-colors cursor-default">Crow</span>
+                            <span class="px-2 py-1 bg-aether-900/60 border border-aether-500/20 text-gray-400 font-tech text-[11px] tracking-wider rounded-sm hover:text-aether-300 hover:border-aether-500 transition-colors cursor-default">Wolfman (Brute/Armored/White)</span>
+                            <span class="px-2 py-1 bg-aether-900/60 border border-aether-500/20 text-gray-400 font-tech text-[11px] tracking-wider rounded-sm hover:text-aether-300 hover:border-aether-500 transition-colors cursor-default">Panther (Corrupted/Demonic)</span>
+                            <span class="px-2 py-1 bg-aether-900/60 border border-aether-500/20 text-gray-400 font-tech text-[11px] tracking-wider rounded-sm hover:text-aether-300 hover:border-aether-500 transition-colors cursor-default">Serpentman (Devolved/Armored/Brute)</span>
+                            <span class="px-2 py-1 bg-aether-900/60 border border-aether-500/20 text-gray-400 font-tech text-[11px] tracking-wider rounded-sm hover:text-aether-300 hover:border-aether-500 transition-colors cursor-default">Mountain Dragon</span>
+                            <span class="px-2 py-1 bg-aether-900/60 border border-aether-500/20 text-gray-400 font-tech text-[11px] tracking-wider rounded-sm hover:text-aether-300 hover:border-aether-500 transition-colors cursor-default">Striped Werehyena</span>
+                            <span class="px-2 py-1 bg-aether-900/60 border border-aether-500/20 text-gray-400 font-tech text-[11px] tracking-wider rounded-sm hover:text-aether-300 hover:border-aether-500 transition-colors cursor-default">Demon Spider (Base/Ancient/Black)</span>
+                            <span class="px-2 py-1 bg-aether-900/60 border border-aether-500/20 text-gray-400 font-tech text-[11px] tracking-wider rounded-sm hover:text-aether-300 hover:border-aether-500 transition-colors cursor-default">Deer</span>
+                            <span class="px-2 py-1 bg-aether-900/60 border border-aether-500/20 text-gray-400 font-tech text-[11px] tracking-wider rounded-sm hover:text-aether-300 hover:border-aether-500 transition-colors cursor-default">Goat</span>
+                            <span class="px-2 py-1 bg-aether-900/60 border border-aether-500/20 text-gray-400 font-tech text-[11px] tracking-wider rounded-sm hover:text-aether-300 hover:border-aether-500 transition-colors cursor-default">Donkey</span>
+                            <span class="px-2 py-1 bg-aether-900/60 border border-aether-500/20 text-gray-400 font-tech text-[11px] tracking-wider rounded-sm hover:text-aether-300 hover:border-aether-500 transition-colors cursor-default">Elk King</span>
+                            <span class="px-2 py-1 bg-aether-900/60 border border-aether-500/20 text-gray-400 font-tech text-[11px] tracking-wider rounded-sm hover:text-aether-300 hover:border-aether-500 transition-colors cursor-default">Rocknose (Moss/Copper)</span>
+                            <span class="px-2 py-1 bg-aether-900/60 border border-aether-500/20 text-gray-400 font-tech text-[11px] tracking-wider rounded-sm hover:text-aether-300 hover:border-aether-500 transition-colors cursor-default">Quilin Teal</span>
+                            <span class="px-2 py-1 bg-aether-900/60 border border-aether-500/20 text-gray-400 font-tech text-[11px] tracking-wider rounded-sm hover:text-aether-300 hover:border-aether-500 transition-colors cursor-default">Werecroc</span>
+                            <span class="px-2 py-1 bg-aether-900/60 border border-aether-500/20 text-gray-400 font-tech text-[11px] tracking-wider rounded-sm hover:text-aether-300 hover:border-aether-500 transition-colors cursor-default">Red Succubus</span>
+                            <span class="px-2 py-1 bg-aether-900/60 border border-aether-500/20 text-gray-400 font-tech text-[11px] tracking-wider rounded-sm hover:text-aether-300 hover:border-aether-500 transition-colors cursor-default">Housecat (Black/Siamese/Tabby)</span>
+                            <span class="px-2 py-1 bg-aether-900/60 border border-aether-500/20 text-gray-400 font-tech text-[11px] tracking-wider rounded-sm hover:text-aether-300 hover:border-aether-500 transition-colors cursor-default">Werebear</span>
+                        </div>
+                    </div>
+
+                    <div class="flex justify-center">
+                        <a href="https://docs.google.com/document/d/1tQsupKtN3iaNzVfWIeNrVAhXLPpuslz7bQYz6O-ea4c/edit?tab=t.y1f7hvqyqjbh" target="_blank" rel="noopener noreferrer" class="group relative px-6 py-3 md:px-8 md:py-4 bg-aether-900/80 border border-aether-500 text-white font-tech font-bold uppercase tracking-wider overflow-hidden transition-all hover:shadow-[0_0_20px_#00d9ff] flex items-center gap-3 cursor-pointer">
+                            <div class="absolute inset-0 w-full h-full bg-aether-500/20 translate-y-full group-hover:translate-y-0 transition-transform duration-300"></div>
+                            <i data-lucide="book-open" class="w-5 h-5 md:w-6 md:h-6 text-aether-400 relative z-10"></i>
+                            <span class="relative z-10 text-sm md:text-base">Fähigkeiten & Bilder ansehen</span>
+                            <i data-lucide="external-link" class="w-4 h-4 text-gray-400 group-hover:text-white transition-colors relative z-10"></i>
+                        </a>
+                    </div>
+                </div>
+
             </div>
         </div>
 
@@ -740,7 +847,6 @@
             <div class="max-w-4xl mx-auto px-4 py-12">
                 <h2 class="font-magic text-4xl text-center text-white mb-8">System-Protokolle & Gesetze</h2>
                 <div class="grid gap-6">
-                    <!-- §1 Grundsatz & Ethik -->
                     <div class="tech-panel p-0 overflow-hidden group">
                         <details class="group">
                             <summary class="flex items-center justify-between p-6 cursor-pointer bg-aether-900/80 hover:bg-aether-800 transition-colors">
@@ -757,7 +863,6 @@
                         </details>
                     </div>
                     
-                    <!-- §2 Bauregeln & Clans -->
                     <div class="tech-panel p-0 overflow-hidden group">
                         <details class="group">
                             <summary class="flex items-center justify-between p-6 cursor-pointer bg-aether-900/80 hover:bg-aether-800 transition-colors">
@@ -776,7 +881,6 @@
                         </details>
                     </div>
 
-                    <!-- §3 Begleiter & Thralls -->
                     <div class="tech-panel p-0 overflow-hidden group">
                         <details class="group">
                             <summary class="flex items-center justify-between p-6 cursor-pointer bg-aether-900/80 hover:bg-aether-800 transition-colors">
@@ -795,7 +899,6 @@
                         </details>
                     </div>
 
-                    <!-- §4 RP-Regeln & Kampf -->
                     <div class="tech-panel p-0 overflow-hidden group">
                         <details class="group">
                             <summary class="flex items-center justify-between p-6 cursor-pointer bg-aether-900/80 hover:bg-aether-800 transition-colors">
@@ -812,7 +915,6 @@
                         </details>
                     </div>
 
-                    <!-- §5 Verbotenes & Strafen -->
                     <div class="tech-panel p-0 overflow-hidden group">
                         <details class="group">
                             <summary class="flex items-center justify-between p-6 cursor-pointer bg-aether-900/80 hover:bg-aether-800 transition-colors">
@@ -974,38 +1076,89 @@
         <div id="char" class="page-container">
             <div class="max-w-3xl mx-auto px-4 py-12">
                 <h2 class="font-magic text-4xl text-center text-white mb-2">Identitäts-Kern</h2>
-                <p class="text-center text-gray-400 font-tech mb-8">Generiere deine Bürger-Daten für die Whitelist.</p>
+                <p class="text-center text-gray-400 font-tech mb-8">Dieser Bogen muss vollständig ausgefüllt werden. Nutze die ( i ) Icons für Erklärungen.</p>
+                
                 <div class="tech-panel p-8 bg-black/60">
                     <form class="space-y-6">
-                        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-                            <div><label class="text-xs font-tech uppercase text-aether-500 mb-1 block">Steam64 ID</label><input type="text" id="steamID" class="w-full p-2 rounded-sm focus:ring-1 focus:ring-aether-500"></div>
-                            <div><label class="text-xs font-tech uppercase text-aether-500 mb-1 block">Discord Name</label><input type="text" id="discordID" class="w-full p-2 rounded-sm"></div>
-                        </div>
-                        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-                            <div><label class="text-xs font-tech uppercase text-bronze-500 mb-1 block">Vorname & Haus</label><input type="text" id="charName" class="w-full p-2 rounded-sm border-bronze-800"></div>
-                            <div><label class="text-xs font-tech uppercase text-bronze-500 mb-1 block">Zykel (Alter)</label><input type="text" id="charAge" class="w-full p-2 rounded-sm border-bronze-800"></div>
-                        </div>
+                        
+                        <!-- Row 1: System IDs -->
                         <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
                             <div>
-                                <label class="text-xs font-tech uppercase text-bronze-500 mb-1 block">Rasse / Spezies</label>
+                                <label class="text-xs font-tech uppercase text-aether-500 mb-1 flex justify-between items-center">
+                                    Steam64 ID
+                                    <button type="button" onclick="openInfo('steam')" class="hover:text-white transition-colors"><i data-lucide="info" class="w-4 h-4"></i></button>
+                                </label>
+                                <input type="text" id="steamID" class="w-full p-2 rounded-sm focus:ring-1 focus:ring-aether-500">
+                            </div>
+                            <div>
+                                <label class="text-xs font-tech uppercase text-aether-500 mb-1 flex justify-between items-center">
+                                    Discord Tag
+                                    <button type="button" onclick="openInfo('discord')" class="hover:text-white transition-colors"><i data-lucide="info" class="w-4 h-4"></i></button>
+                                </label>
+                                <input type="text" id="discordID" class="w-full p-2 rounded-sm">
+                            </div>
+                        </div>
+
+                        <!-- Row 2: Basic Info -->
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                            <div>
+                                <label class="text-xs font-tech uppercase text-bronze-500 mb-1 flex justify-between items-center">
+                                    Name
+                                    <button type="button" onclick="openInfo('name')" class="hover:text-white transition-colors"><i data-lucide="info" class="w-4 h-4"></i></button>
+                                </label>
+                                <input type="text" id="charName" class="w-full p-2 rounded-sm border-bronze-800" placeholder="Max Mustermann, Graf von...">
+                            </div>
+                            <div>
+                                <label class="text-xs font-tech uppercase text-bronze-500 mb-1 flex justify-between items-center">
+                                    Alter
+                                    <button type="button" onclick="openInfo('alter')" class="hover:text-white transition-colors"><i data-lucide="info" class="w-4 h-4"></i></button>
+                                </label>
+                                <input type="text" id="charAge" class="w-full p-2 rounded-sm border-bronze-800">
+                            </div>
+                        </div>
+
+                        <!-- Row 3: Character Specifics -->
+                        <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                            <div>
+                                <label class="text-xs font-tech uppercase text-bronze-500 mb-1 flex justify-between items-center">
+                                    Rasse
+                                    <button type="button" onclick="openInfo('rasse')" class="hover:text-white transition-colors"><i data-lucide="info" class="w-4 h-4"></i></button>
+                                </label>
                                 <select id="charRace" class="w-full p-2 rounded-sm border-bronze-800 bg-aether-900 text-aether-500">
-                                    <option value="Menschen">Menschen</option>
-                                    <option value="Elfen">Elfen</option>
-                                    <option value="Zwerge">Zwerge</option>
-                                    <option value="Orks">Orks</option>
-                                    <option value="Halblinge">Halblinge</option>
-                                    <option value="Gnome">Gnome</option>
-                                    <option value="Gobline">Gobline</option>
-                                    <option value="Riesen">Riesen</option>
-                                    <option value="Trolle">Trolle</option>
-                                    <option value="Tierwesen">Tierwesen</option>
-                                    <option value="Dimensionales">Dimensionales</option>
-                                    <option value="Cyborg">Cyborg</option>
+                                    <option value="Nicht angegeben">- Rasse wählen -</option>
+                                    <optgroup label="--- Naturvölker ---">
+                                        <option value="Elfen">Elfen</option>
+                                        <option value="Halblinge">Halblinge</option>
+                                    </optgroup>
+                                    <optgroup label="--- Berg & Stein ---">
+                                        <option value="Zwerge">Zwerge</option>
+                                        <option value="Gnome">Gnome</option>
+                                        <option value="Riesen">Riesen</option>
+                                    </optgroup>
+                                    <optgroup label="--- Wilde Völker ---">
+                                        <option value="Orks">Orks</option>
+                                        <option value="Gobline">Gobline</option>
+                                        <option value="Trolle">Trolle</option>
+                                    </optgroup>
+                                    <optgroup label="--- Mystik & Finsternis ---">
+                                        <option value="Vampire">Vampire</option>
+                                        <option value="Werwesen">Werwesen</option>
+                                        <option value="Tierwesen">Tierwesen</option>
+                                        <option value="Dimensionales">Dimensionales</option>
+                                    </optgroup>
+                                    <optgroup label="--- Zivilisation & Technik ---">
+                                        <option value="Menschen">Menschen</option>
+                                        <option value="Cyborgs">Cyborgs</option>
+                                    </optgroup>
                                 </select>
                             </div>
                             <div>
-                                <label class="text-xs font-tech uppercase text-bronze-500 mb-1 block">Pfad (Klasse)</label>
+                                <label class="text-xs font-tech uppercase text-bronze-500 mb-1 flex justify-between items-center">
+                                    Kampfklasse
+                                    <button type="button" onclick="openInfo('klasse')" class="hover:text-white transition-colors"><i data-lucide="info" class="w-4 h-4"></i></button>
+                                </label>
                                 <select id="charClass" class="w-full p-2 rounded-sm border-bronze-800 bg-aether-900 text-aether-500">
+                                    <option value="Nicht angegeben">- Klasse wählen -</option>
                                     <option value="Wandler">Wandler</option>
                                     <option value="Jäger">Jäger</option>
                                     <option value="Assassine">Assassine</option>
@@ -1015,10 +1168,22 @@
                                     <option value="Werwesen">Werwesen</option>
                                 </select>
                             </div>
-                        </div>
-                        <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
                             <div>
-                                <label class="text-xs font-tech uppercase text-bronze-500 mb-1 block">Hauptberuf</label>
+                                <label class="text-xs font-tech uppercase text-bronze-500 mb-1 flex justify-between items-center">
+                                    Fähigkeit
+                                    <button type="button" onclick="openInfo('faehigkeit')" class="hover:text-white transition-colors"><i data-lucide="info" class="w-4 h-4"></i></button>
+                                </label>
+                                <input type="text" id="charAbility" class="w-full p-2 rounded-sm border-bronze-800" placeholder="Magie, Wandler, etc.">
+                            </div>
+                        </div>
+
+                        <!-- Row 4: Professions -->
+                        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+                            <div>
+                                <label class="text-xs font-tech uppercase text-bronze-500 mb-1 flex justify-between items-center">
+                                    Hauptberuf
+                                    <button type="button" onclick="openInfo('berufe')" class="hover:text-white transition-colors"><i data-lucide="info" class="w-4 h-4"></i></button>
+                                </label>
                                 <select id="charMainProf" class="w-full p-2 rounded-sm border-bronze-800 bg-aether-900 text-aether-500">
                                     <option value="Ohne Beruf">- Ohne Beruf -</option>
                                     <option value="Waffenschmied">Waffenschmied</option>
@@ -1029,7 +1194,10 @@
                                 </select>
                             </div>
                             <div>
-                                <label class="text-xs font-tech uppercase text-bronze-500 mb-1 block">Nebenberuf</label>
+                                <label class="text-xs font-tech uppercase text-bronze-500 mb-1 flex justify-between items-center">
+                                    Nebenberuf
+                                    <button type="button" onclick="openInfo('berufe')" class="hover:text-white transition-colors"><i data-lucide="info" class="w-4 h-4"></i></button>
+                                </label>
                                 <select id="charSubProf" class="w-full p-2 rounded-sm border-bronze-800 bg-aether-900 text-aether-500">
                                     <option value="Ohne Beruf">- Ohne Beruf -</option>
                                     <option value="Sklavenhändler">Sklavenhändler</option>
@@ -1040,7 +1208,10 @@
                                 </select>
                             </div>
                             <div>
-                                <label class="text-xs font-tech uppercase text-bronze-500 mb-1 block">RP-Beruf</label>
+                                <label class="text-xs font-tech uppercase text-bronze-500 mb-1 flex justify-between items-center">
+                                    RP-Beruf
+                                    <button type="button" onclick="openInfo('berufe')" class="hover:text-white transition-colors"><i data-lucide="info" class="w-4 h-4"></i></button>
+                                </label>
                                 <select id="charRpProf" class="w-full p-2 rounded-sm border-bronze-800 bg-aether-900 text-aether-500">
                                     <option value="Ohne Beruf">- Ohne Beruf -</option>
                                     <option value="Golembauer">Golembauer</option>
@@ -1048,11 +1219,56 @@
                                     <option value="Bibliothekar">Bibliothekar</option>
                                     <option value="Dieb">Dieb</option>
                                     <option value="Barde">Barde</option>
-                                    <option value="Heiler">Heiler</option>
+                                </select>
+                            </div>
+                            <div>
+                                <label class="text-xs font-tech uppercase text-red-500 mb-1 flex justify-between items-center">
+                                    Heiler
+                                    <button type="button" onclick="openInfo('heiler')" class="hover:text-red-300 transition-colors"><i data-lucide="info" class="w-4 h-4"></i></button>
+                                </label>
+                                <select id="charHealer" class="w-full p-2 rounded-sm border-red-900/50 bg-aether-900 text-red-400 focus:border-red-500 focus:ring-red-500">
+                                    <option value="Nein">Nein</option>
+                                    <option value="Ja">Ja, ich bin Heiler</option>
                                 </select>
                             </div>
                         </div>
-                        <div><label class="text-xs font-tech uppercase text-gray-500 mb-1 block">Historische Daten (Hintergrund)</label><textarea id="charStory" rows="5" class="w-full p-2 rounded-sm"></textarea></div>
+
+                        <!-- Row 5: Strengths & Weaknesses -->
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                            <div>
+                                <label class="text-xs font-tech uppercase text-gray-500 mb-1 flex justify-between items-center">
+                                    Persönliche Stärken
+                                    <button type="button" onclick="openInfo('staerken')" class="hover:text-white transition-colors"><i data-lucide="info" class="w-4 h-4"></i></button>
+                                </label>
+                                <textarea id="charStrengths" rows="3" class="w-full p-2 rounded-sm"></textarea>
+                            </div>
+                            <div>
+                                <label class="text-xs font-tech uppercase text-gray-500 mb-1 flex justify-between items-center">
+                                    Persönliche Schwächen
+                                    <button type="button" onclick="openInfo('schwaechen')" class="hover:text-white transition-colors"><i data-lucide="info" class="w-4 h-4"></i></button>
+                                </label>
+                                <textarea id="charWeaknesses" rows="3" class="w-full p-2 rounded-sm"></textarea>
+                            </div>
+                        </div>
+
+                        <!-- Row 6: Description -->
+                        <div>
+                            <label class="text-xs font-tech uppercase text-gray-500 mb-1 flex justify-between items-center">
+                                Allgemeine Charakterbeschreibung
+                                <button type="button" onclick="openInfo('beschreibung')" class="hover:text-white transition-colors"><i data-lucide="info" class="w-4 h-4"></i></button>
+                            </label>
+                            <textarea id="charDescription" rows="4" class="w-full p-2 rounded-sm"></textarea>
+                        </div>
+
+                        <!-- Row 7: Story / Background -->
+                        <div>
+                            <label class="text-xs font-tech uppercase text-gray-500 mb-1 flex justify-between items-center">
+                                Hintergrund
+                                <button type="button" onclick="openInfo('hintergrund')" class="hover:text-white transition-colors"><i data-lucide="info" class="w-4 h-4"></i></button>
+                            </label>
+                            <textarea id="charStory" rows="6" class="w-full p-2 rounded-sm"></textarea>
+                        </div>
+
                         <button type="button" onclick="copyCharacter()" class="w-full bg-aether-900 border border-aether-500 text-aether-400 font-bold py-3 hover:bg-aether-500 hover:text-black transition-colors uppercase font-tech tracking-widest flex justify-center gap-2"><i data-lucide="save"></i> Daten exportieren</button>
                     </form>
                     <p id="copy-msg" class="text-center text-green-500 font-tech text-sm mt-2 opacity-0 transition-opacity">>> Export erfolgreich in Zwischenspeicher <<</p>
@@ -1470,16 +1686,49 @@
             requestAnimationFrame(animateCooldown);
         }
 
-        // --- WIP MODAL LOGIC ---
+        // --- MODAL LOGIC ---
         function closeWipModal() {
             const modal = document.getElementById('wip-modal');
             if (modal) {
                 modal.classList.add('hidden-modal');
                 modal.style.pointerEvents = 'none';
-                setTimeout(() => {
-                    modal.style.display = 'none';
-                }, 500);
+                setTimeout(() => { modal.style.display = 'none'; }, 500);
             }
+        }
+
+        // Info PopUp Daten
+        const fieldInfos = {
+            name: { title: "Name", text: "Der volle Name mitsamt Titel, falls vorhanden." },
+            alter: { title: "Alter", text: "Immer unter 5000 Jahre! Bedenke die Rasse und dass dein Charakter im hohen Alter entsprechende Gepflogenheiten hat. Außerdem auch, dass dieser dementsprechend aussehen muss/könnte - also alt!" },
+            rasse: { title: "Rasse", text: "Hier trägst du deine Rasse ein! Wenn es eine neue Rasse ist, beschreibst du sie bitte kurz." },
+            klasse: { title: "Kampfklasse", text: "Hier trägst du deine Klasse ein!" },
+            berufe: { title: "Berufe", text: "Hier trägst du deinen Haupt- und Nebenberuf ein! RP-Berufe werden hier auch gewählt." },
+            heiler: { title: "Heiler", text: "Ist dein Charakter ein Heiler? (Heiler ist eine Zusatzrolle, die mit allen Berufen kombiniert werden darf)." },
+            faehigkeit: { title: "Fähigkeit", text: "Hier trägst du ein, falls und welche Magie dein Charakter beherrscht, oder ob er sich wandeln kann. Auch der Vampirismus muss hier eingetragen werden." },
+            staerken: { title: "Persönliche Stärken", text: "Keine Enginestärken! Es geht um die Persönlichkeit!" },
+            schwaechen: { title: "Persönliche Schwächen", text: "Keine Engineschwächen! Es geht um die Persönlichkeit!" },
+            beschreibung: { title: "Allgemeine Charakterbeschreibung", text: "Erzähle in einigen Sätzen, wie dein Charakter mit anderen umgeht und was für eine Person wir im RP erwarten dürfen. Achtung: Stärken und Schwächen sind keine Charakterbeschreibung!" },
+            hintergrund: { title: "Hintergrund", text: "Berichte in einigen Sätzen über die Eckpfeiler des Lebens, welches dein Charakter geführt hat. Dies sind die Gründe, warum der Charakter so ist, wie er ist. Eckpfeiler sind einschneidende Lebensereignisse. Wie kam dein Charakter dazu, bestimmte Charaktereigenschaften zu besitzen? Wie kam es zu den Fähigkeiten? Wie kam es zu dieser Berufswahl?" },
+            steam: { title: "Steam64 ID", text: "Deine Steam64 ID wird für die Server-Whitelist benötigt. Sie ist 17-stellig." },
+            discord: { title: "Discord Tag", text: "Dein Discord Name zur Kontaktaufnahme und Zuordnung der Whitelist." }
+        };
+
+        function openInfo(key) {
+            const data = fieldInfos[key];
+            if(!data) return;
+            
+            document.getElementById('info-modal-title').innerText = data.title;
+            document.getElementById('info-modal-text').innerText = data.text;
+            
+            const modal = document.getElementById('field-info-modal');
+            modal.classList.remove('hidden-modal', 'pointer-events-none');
+            modal.classList.add('opacity-100', 'pointer-events-auto');
+        }
+
+        function closeInfoModal() {
+            const modal = document.getElementById('field-info-modal');
+            modal.classList.remove('opacity-100', 'pointer-events-auto');
+            modal.classList.add('hidden-modal', 'pointer-events-none');
         }
 
         // --- UTILS ---
@@ -1521,8 +1770,35 @@
             }
         }
 
+        // Helfer-Funktion zum sicheren Auslesen der Werte
+        function val(id) {
+            const el = document.getElementById(id);
+            return el ? el.value : '';
+        }
+
         async function copyCharacter() {
-            const text = `**Name:** ${document.getElementById('charName').value}\n**Alter:** ${document.getElementById('charAge').value}\n**Rasse:** ${document.getElementById('charRace').value}\n**Klasse:** ${document.getElementById('charClass').value}\n**Hauptberuf:** ${document.getElementById('charMainProf').value}\n**Nebenberuf:** ${document.getElementById('charSubProf').value}\n**RP-Beruf:** ${document.getElementById('charRpProf').value}\n**Story:** ${document.getElementById('charStory').value}\n**Steam:** ${document.getElementById('steamID').value}\n**Discord:** ${document.getElementById('discordID').value}`;
+            const text = `**Name:** ${val('charName')}
+**Alter:** ${val('charAge')}
+**Rasse:** ${val('charRace')}
+**Kampfklasse:** ${val('charClass')}
+**Berufe:** Haupt: ${val('charMainProf')} | Neben: ${val('charSubProf')} | RP: ${val('charRpProf')}
+**Heiler:** ${val('charHealer')}
+**Fähigkeit:** ${val('charAbility')}
+
+**Persönliche Stärken:**
+${val('charStrengths')}
+
+**Persönliche Schwächen:**
+${val('charWeaknesses')}
+
+**Allgemeine Charakterbeschreibung:**
+${val('charDescription')}
+
+**Hintergrund:**
+${val('charStory')}
+
+**Steam64 ID:** ${val('steamID')}
+**Discord Tag:** ${val('discordID')}`;
             
             try {
                 await navigator.clipboard.writeText(text);
