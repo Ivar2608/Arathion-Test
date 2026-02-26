@@ -1121,10 +1121,10 @@
                         <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
                             <div>
                                 <label class="text-xs font-tech uppercase text-bronze-500 mb-1 flex justify-between items-center">
-                                    Rasse
+                                    Rasse / Spezies
                                     <button type="button" onclick="openInfo('rasse')" class="hover:text-white transition-colors"><i data-lucide="info" class="w-4 h-4"></i></button>
                                 </label>
-                                <select id="charRace" class="w-full p-2 rounded-sm border-bronze-800 bg-aether-900 text-aether-500">
+                                <select id="charRace" onchange="toggleCustomRace()" class="w-full p-2 rounded-sm border-bronze-800 bg-aether-900 text-aether-500">
                                     <option value="Nicht angegeben">- Rasse wählen -</option>
                                     <optgroup label="--- Naturvölker ---">
                                         <option value="Elfen">Elfen</option>
@@ -1150,6 +1150,9 @@
                                         <option value="Menschen">Menschen</option>
                                         <option value="Cyborgs">Cyborgs</option>
                                     </optgroup>
+                                    <optgroup label="--- Unbekannt ---">
+                                        <option value="Neue Rasse">-- Neue Rasse erstellen --</option>
+                                    </optgroup>
                                 </select>
                             </div>
                             <div>
@@ -1174,6 +1177,15 @@
                                     <button type="button" onclick="openInfo('faehigkeit')" class="hover:text-white transition-colors"><i data-lucide="info" class="w-4 h-4"></i></button>
                                 </label>
                                 <input type="text" id="charAbility" class="w-full p-2 rounded-sm border-bronze-800" placeholder="Magie, Wandler, etc.">
+                            </div>
+
+                            <!-- Custom Race Textarea (Hidden by default) -->
+                            <div id="customRaceContainer" class="hidden md:col-span-3 bg-aether-900/50 border border-aether-500/30 p-4 rounded-sm mt-2 shadow-[0_0_15px_rgba(0,217,255,0.05)]">
+                                <label class="text-xs font-tech uppercase text-aether-400 mb-2 flex justify-between items-center">
+                                    Daten der neuen Rasse
+                                    <button type="button" onclick="openInfo('neueRasse')" class="hover:text-white transition-colors"><i data-lucide="info" class="w-4 h-4"></i></button>
+                                </label>
+                                <textarea id="charCustomRaceDesc" rows="3" class="w-full p-2 rounded-sm border-aether-800 bg-black/50 text-gray-300 focus:border-aether-500 focus:ring-1 focus:ring-aether-500" placeholder="Bitte beschreibe kurz das Aussehen und die Besonderheiten deiner neuen Rasse..."></textarea>
                             </div>
                         </div>
 
@@ -1295,6 +1307,23 @@
                         </div>
                         <p id="ip-msg" class="text-xs text-green-500 opacity-0 h-4">Kopiert!</p>
                     </div>
+                </div>
+
+                <!-- Whitelist Open Button -->
+                <div class="mt-16 flex justify-center w-full">
+                    <a href="https://discord.gg/7TPSchdDJW" target="_blank" rel="noopener noreferrer" class="group relative px-8 py-4 md:px-12 md:py-6 bg-green-900/20 border border-green-500 text-white font-tech font-bold text-2xl md:text-3xl uppercase tracking-[0.2em] overflow-hidden transition-all hover:scale-105 flex items-center gap-4 shadow-[0_0_30px_rgba(34,197,94,0.3)] hover:shadow-[0_0_50px_rgba(34,197,94,0.6)] animate-pulse">
+                        <!-- Hover Background Effect -->
+                        <div class="absolute inset-0 w-full h-full bg-green-500/20 translate-y-full group-hover:translate-y-0 transition-transform duration-300"></div>
+                        
+                        <!-- Ping Dot -->
+                        <div class="relative flex h-4 w-4 md:h-5 md:w-5 z-10">
+                            <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-green-400 opacity-75"></span>
+                            <span class="relative inline-flex rounded-full h-4 w-4 md:h-5 md:w-5 bg-green-500 shadow-[0_0_15px_#22c55e]"></span>
+                        </div>
+                        
+                        <!-- Text -->
+                        <span class="relative z-10" style="text-shadow: 0 0 10px rgba(34,197,94,0.8);">WHITELIST OPEN</span>
+                    </a>
                 </div>
             </div>
         </div>
@@ -1708,9 +1737,9 @@
             staerken: { title: "Persönliche Stärken", text: "Keine Enginestärken! Es geht um die Persönlichkeit!" },
             schwaechen: { title: "Persönliche Schwächen", text: "Keine Engineschwächen! Es geht um die Persönlichkeit!" },
             beschreibung: { title: "Allgemeine Charakterbeschreibung", text: "Erzähle in einigen Sätzen, wie dein Charakter mit anderen umgeht und was für eine Person wir im RP erwarten dürfen. Achtung: Stärken und Schwächen sind keine Charakterbeschreibung!" },
-            hintergrund: { title: "Hintergrund", text: "Berichte in einigen Sätzen über die Eckpfeiler des Lebens, welches dein Charakter geführt hat. Dies sind die Gründe, warum der Charakter so ist, wie er ist. Eckpfeiler sind einschneidende Lebensereignisse. Wie kam dein Charakter dazu, bestimmte Charaktereigenschaften zu besitzen? Wie kam es zu den Fähigkeiten? Wie kam es zu dieser Berufswahl?" },
-            steam: { title: "Steam64 ID", text: "Deine Steam64 ID wird für die Server-Whitelist benötigt. Sie ist 17-stellig." },
-            discord: { title: "Discord Tag", text: "Dein Discord Name zur Kontaktaufnahme und Zuordnung der Whitelist." }
+             steam: { title: "Steam64 ID", text: "Deine Steam64 ID wird für die Server-Whitelist benötigt. Sie ist 17-stellig." },
+            discord: { title: "Discord Tag", text: "Dein Discord Name zur Kontaktaufnahme und Zuordnung der Whitelist." },
+            neueRasse: { title: "Neue Rasse", text: "Da diese Rasse in unseren Archiven noch unbekannt ist, benötigen wir eine kurze Beschreibung, um sie einordnen zu können. Gehe bitte auf das Aussehen und grobe Eigenheiten ein." }
         };
 
         function openInfo(key) {
@@ -1729,6 +1758,16 @@
             const modal = document.getElementById('field-info-modal');
             modal.classList.remove('opacity-100', 'pointer-events-auto');
             modal.classList.add('hidden-modal', 'pointer-events-none');
+        }
+
+        function toggleCustomRace() {
+            const raceSelect = document.getElementById('charRace');
+            const customContainer = document.getElementById('customRaceContainer');
+            if (raceSelect.value === 'Neue Rasse') {
+                customContainer.classList.remove('hidden');
+            } else {
+                customContainer.classList.add('hidden');
+            }
         }
 
         // --- UTILS ---
@@ -1777,9 +1816,14 @@
         }
 
         async function copyCharacter() {
+            let raceValue = val('charRace');
+            if (raceValue === 'Neue Rasse') {
+                raceValue = `Neue Rasse\n**Rassen-Beschreibung:** ${val('charCustomRaceDesc')}`;
+            }
+
             const text = `**Name:** ${val('charName')}
 **Alter:** ${val('charAge')}
-**Rasse:** ${val('charRace')}
+**Rasse:** ${raceValue}
 **Kampfklasse:** ${val('charClass')}
 **Berufe:** Haupt: ${val('charMainProf')} | Neben: ${val('charSubProf')} | RP: ${val('charRpProf')}
 **Heiler:** ${val('charHealer')}
