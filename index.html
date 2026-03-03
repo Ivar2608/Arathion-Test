@@ -114,7 +114,7 @@
             z-index: -2;
         }
 
-        /* Staub / Noise Overlay (Optimiert für Performance) */
+        /* Staub / Noise Overlay */
         .dust-overlay {
             position: fixed; top: 0; left: 0; width: 100vw; height: 100vh;
             background-image: url('data:image/svg+xml,%3Csvg viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg"%3E%3Cfilter id="noiseFilter"%3E%3CfeTurbulence type="fractalNoise" baseFrequency="0.85" numOctaves="2" stitchTiles="stitch"/%3E%3C/filter%3E%3Crect width="100%25" height="100%25" filter="url(%23noiseFilter)" opacity="0.04"/%3E%3C/svg%3E');
@@ -124,13 +124,29 @@
 
         /* Dynamische Galerie-Karten (Masonry) */
         .holo-card {
-            position: relative; overflow: hidden;
-            border: 1px solid rgba(168, 162, 158, 0.2); background: rgba(28, 25, 23, 0.8);
-            transition: all 0.4s ease; opacity: 0; animation: materialize 0.8s ease-out forwards;
+            position: relative; 
+            overflow: hidden;
+            border: 1px solid rgba(168, 162, 158, 0.2); 
+            background: rgba(28, 25, 23, 0.8);
+            transition: all 0.4s ease; 
+            animation: materialize 0.8s ease-out forwards;
         }
-        .holo-card:hover { border-color: #8b5cf6; box-shadow: 0 0 25px rgba(139, 92, 246, 0.3); transform: translateY(-3px); }
-        .holo-img { width: 100%; height: auto; display: block; filter: grayscale(0.5) sepia(0.2) brightness(0.8); transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1); }
-        .holo-card:hover .holo-img { filter: grayscale(0) sepia(0) brightness(1.1); transform: scale(1.02); }
+        .holo-card:hover { 
+            border-color: #8b5cf6; 
+            box-shadow: 0 0 25px rgba(139, 92, 246, 0.3); 
+            transform: translateY(-3px); 
+        }
+        .holo-img { 
+            width: 100%; 
+            height: auto; 
+            display: block; 
+            filter: grayscale(0.5) sepia(0.2) brightness(0.8); 
+            transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1); 
+        }
+        .holo-card:hover .holo-img { 
+            filter: grayscale(0) sepia(0) brightness(1.1); 
+            transform: scale(1.02); 
+        }
         .holo-overlay { position: absolute; bottom: 0; left: 0; width: 100%; background: linear-gradient(to top, #020617, transparent); padding: 1rem; }
         
         /* Mystische Ecken für Bilder */
@@ -274,7 +290,7 @@
     <div class="world-bg gpu-accel"></div>
     <div class="dust-overlay gpu-accel"></div>
 
-    <!-- FX Canvas (Asche & Funken - Optimiert) -->
+    <!-- FX Canvas (Asche & Funken) -->
     <canvas id="bg-canvas" class="fixed inset-0 z-0 opacity-80 pointer-events-none gpu-accel"></canvas>
 
     <!-- MAGISCHE ENERGIE-RISSE (Seiten) -->
@@ -303,17 +319,6 @@
             <button onclick="closeInfoModal()" class="w-full mt-8 bg-black/50 border border-rift-800 text-rift-400 hover:border-rift-500 hover:text-white font-magic text-lg py-2 tracking-widest transition-colors">
                 Schriftrolle schließen
             </button>
-        </div>
-    </div>
-
-    <!-- LIGHTBOX MODAL (Für Vollbild-Bildergalerie) -->
-    <div id="lightbox-modal" class="fixed inset-0 z-[400] bg-black/95 backdrop-blur-xl hidden flex-col items-center justify-center opacity-0 transition-opacity duration-300 cursor-pointer" onclick="closeLightbox()">
-        <button onclick="closeLightbox()" class="absolute top-4 right-4 md:top-8 md:right-8 text-gray-500 hover:text-white transition-colors z-[410]">
-            <i data-lucide="x" class="w-10 h-10"></i>
-        </button>
-        <div class="relative max-w-[95vw] max-h-[90vh] flex flex-col items-center justify-center p-4">
-            <img id="lightbox-img" src="" alt="Vision Fullscreen" class="max-w-full max-h-[80vh] object-contain shadow-[0_0_50px_rgba(139,92,246,0.3)] border border-rift-800 transform scale-95 transition-transform duration-300">
-            <h4 id="lightbox-title" class="font-magic text-2xl text-rift-300 tracking-widest mt-6 uppercase text-glow-rift drop-shadow-[0_0_10px_rgba(0,0,0,0.8)]"></h4>
         </div>
     </div>
 
@@ -1711,7 +1716,6 @@
         // Init Icons
         lucide.createIcons();
 
-        // --- CONFIG & UTILS ---
         const STATE = { IDLE: 'IDLE', SURGE: 'SURGE', COOLDOWN: 'COOLDOWN' };
         let currentState = STATE.IDLE;
         let currentPageId = 'portal'; 
@@ -2015,45 +2019,12 @@
             }
         }
 
-        // --- LIGHTBOX FUNKTIONEN ---
-        function openLightbox(src, title) {
-            const modal = document.getElementById('lightbox-modal');
-            const img = document.getElementById('lightbox-img');
-            const titleEl = document.getElementById('lightbox-title');
-            
-            img.src = src;
-            titleEl.innerText = title;
-            
-            modal.classList.remove('hidden');
-            
-            // Kleines Delay für die CSS Animation
-            requestAnimationFrame(() => {
-                modal.classList.remove('opacity-0');
-                img.classList.remove('scale-95');
-                img.classList.add('scale-100');
-            });
-        }
-
-        function closeLightbox() {
-            const modal = document.getElementById('lightbox-modal');
-            const img = document.getElementById('lightbox-img');
-            
-            modal.classList.add('opacity-0');
-            img.classList.remove('scale-100');
-            img.classList.add('scale-95');
-            
-            setTimeout(() => {
-                modal.classList.add('hidden');
-                img.src = '';
-            }, 300); // Entspricht der CSS transition duration
-        }
-
         // --- GALERIE RENDERER (Masonry + Automatische Suche) ---
         function renderGallery() {
             const grid = document.getElementById('gallery-grid');
             if(!grid) return;
             
-            // Verhindern, dass die Galerie doppelt geladen wird, wenn sie schon Inhalte hat
+            // Verhindern, dass die Galerie doppelt geladen wird
             if(grid.innerHTML.trim() !== '') return;
             
             // Standard Masonry Layout
@@ -2064,12 +2035,11 @@
             const maxImages = 100;
             const cards = [];
 
-            // Platzhalter im Voraus anlegen, um Reihenfolge 1-100 exakt einzuhalten
+            // Platzhalter im Voraus anlegen, um Reihenfolge 1-100 einzuhalten
             for(let i = 1; i <= maxImages; i++) {
                 const card = document.createElement('div');
-                // mb-8 für Abstand, hidden damit leere Platzhalter nicht sichtbar sind, cursor-pointer für Klickbarkeit
-                card.className = 'holo-card break-inside-avoid shadow-2xl mb-8 hidden cursor-pointer';
-                card.onclick = () => openLightbox(`image${i}.png`, `Vision ${i}`);
+                // margin-bottom (mb-8) sorgt für Abstände im CSS-Columns Layout, hidden versteckt sie bis sie geladen sind
+                card.className = 'holo-card break-inside-avoid shadow-2xl mb-8 hidden';
                 
                 const img = new Image();
                 img.alt = `Vision ${i}`;
@@ -2095,19 +2065,19 @@
                 }
             };
 
-            // Schleife feuert das Laden der Bilder an
             cards.forEach(item => {
                 item.img.onerror = () => {
                     loadedCount++;
-                    item.card.remove(); // Bild nicht vorhanden -> Platzhalter entfernen
+                    item.card.remove(); // Platzhalter löschen, wenn kein Bild da ist
                     checkFinish();
                 };
                 item.img.onload = () => {
                     foundAny = true;
-                    item.card.classList.remove('hidden'); // Bild vorhanden -> Kasten einblenden
+                    item.card.classList.remove('hidden'); // Bild erfolgreich geladen -> Einblenden
                     loadedCount++;
                     checkFinish();
                 };
+                // Lädt das Bild
                 item.img.src = item.src;
             });
         }
