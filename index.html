@@ -122,32 +122,15 @@
             opacity: 0.5;
         }
 
-        /* Dynamische Galerie-Karten (Masonry) */
+        /* Dynamische Galerie-Karten */
         .holo-card {
-            position: relative; 
-            overflow: hidden;
-            border: 1px solid rgba(168, 162, 158, 0.2); 
-            background: rgba(28, 25, 23, 0.8);
-            transition: all 0.4s ease; 
-            animation: materialize 0.8s ease-out forwards;
+            position: relative; overflow: hidden;
+            border: 1px solid rgba(168, 162, 158, 0.2); background: rgba(28, 25, 23, 0.8);
+            transition: all 0.4s ease; opacity: 0; animation: materialize 0.8s ease-out forwards;
         }
-        .holo-card:hover { 
-            border-color: #8b5cf6; 
-            box-shadow: 0 0 25px rgba(139, 92, 246, 0.3); 
-            transform: translateY(-3px); 
-        }
-        .holo-img { 
-            width: 100%; 
-            height: auto; 
-            display: block; 
-            filter: grayscale(0.5) sepia(0.2) brightness(0.8); 
-            transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1); 
-        }
-        .holo-card:hover .holo-img { 
-            filter: grayscale(0) sepia(0) brightness(1.1); 
-            transform: scale(1.02); 
-        }
-        .holo-overlay { position: absolute; bottom: 0; left: 0; width: 100%; background: linear-gradient(to top, #020617, transparent); padding: 1rem; }
+        .holo-card:hover { border-color: #8b5cf6; box-shadow: 0 0 25px rgba(139, 92, 246, 0.3); transform: translateY(-3px); }
+        .holo-img { width: 100%; height: auto; display: block; filter: grayscale(0.5) sepia(0.2) brightness(0.8); transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1); }
+        .holo-card:hover .holo-img { filter: grayscale(0) sepia(0) brightness(1.1); transform: scale(1.02); }
         
         /* Mystische Ecken für Bilder */
         .holo-card::before, .holo-card::after {
@@ -270,11 +253,6 @@
             outline: none; 
             box-shadow: 0 4px 10px -4px rgba(139, 92, 246, 0.2);
         }
-        
-        /* Rechtliche Texte (Klar und leserlich) */
-        .legal-content h3 { color: #d6d3d1; font-family: 'Cinzel', serif; margin-top: 1.5rem; margin-bottom: 0.5rem; font-size: 1.5rem;}
-        .legal-content p, .legal-content ul { color: #a8a29e; margin-bottom: 1rem; line-height: 1.6; }
-        .legal-content ul { list-style-type: disc; padding-left: 1.5rem; }
     </style>
 </head>
 <body class="bg-rift-900 text-bone-300 selection:bg-rift-500 selection:text-white relative h-screen w-screen overflow-hidden">
@@ -319,6 +297,17 @@
             <button onclick="closeInfoModal()" class="w-full mt-8 bg-black/50 border border-rift-800 text-rift-400 hover:border-rift-500 hover:text-white font-magic text-lg py-2 tracking-widest transition-colors">
                 Schriftrolle schließen
             </button>
+        </div>
+    </div>
+
+    <!-- LIGHTBOX MODAL (Für Vollbild-Bildergalerie) -->
+    <div id="lightbox-modal" class="fixed inset-0 z-[400] bg-black/95 backdrop-blur-xl hidden flex-col items-center justify-center opacity-0 transition-opacity duration-300 cursor-pointer" onclick="closeLightbox()">
+        <button onclick="closeLightbox()" class="absolute top-4 right-4 md:top-8 md:right-8 text-gray-500 hover:text-white transition-colors z-[410]">
+            <i data-lucide="x" class="w-10 h-10"></i>
+        </button>
+        <div class="relative max-w-[95vw] max-h-[90vh] flex flex-col items-center justify-center p-4">
+            <img id="lightbox-img" src="" alt="Vision Fullscreen" class="max-w-full max-h-[80vh] object-contain shadow-[0_0_50px_rgba(139,92,246,0.3)] border border-rift-800 transform scale-95 transition-transform duration-300">
+            <h4 id="lightbox-title" class="font-magic text-2xl text-rift-300 tracking-widest mt-6 uppercase text-glow-rift drop-shadow-[0_0_10px_rgba(0,0,0,0.8)]"></h4>
         </div>
     </div>
 
@@ -395,16 +384,16 @@
                     <img src="ARALOGO.png" alt="Arathion Logo" class="w-48 h-48 sm:w-64 sm:h-64 md:w-80 md:h-80 object-cover rounded-full mx-auto relative z-10 shadow-[0_0_60px_rgba(59,130,246,0.4)] border border-rift-800 gpu-accel">
                 </div>
 
-                <h1 class="font-magic text-5xl sm:text-7xl md:text-9xl text-white text-glow-rift leading-tight mix-blend-overlay mb-2 z-10 tracking-widest text-center">ARATHION</h1>
+                <h1 class="font-magic text-5xl sm:text-7xl md:text-9xl text-white text-glow-rift leading-tight mix-blend-overlay mb-2 z-10 tracking-widest text-center uppercase">ARATHION</h1>
                 
-                <div class="flex items-center justify-center gap-2 sm:gap-4 opacity-80 mb-8 sm:mb-10 z-10 w-full">
+                <div class="flex items-center justify-center gap-2 sm:gap-4 opacity-80 mb-8 sm:mb-10 z-10 w-full uppercase">
                     <div class="h-[1px] flex-grow max-w-[40px] md:max-w-[80px] bg-gradient-to-r from-transparent to-rift-500/50"></div>
-                    <h2 class="font-magic text-lg sm:text-xl md:text-3xl text-bone-300 tracking-[0.2em] sm:tracking-[0.3em] text-glow-bone text-center uppercase whitespace-nowrap">Das Echo von Olyndra</h2>
+                    <h2 class="font-magic text-lg sm:text-xl md:text-3xl text-bone-300 tracking-[0.2em] sm:tracking-[0.3em] text-glow-bone text-center">Das Echo von Olyndra</h2>
                     <div class="h-[1px] flex-grow max-w-[40px] md:max-w-[80px] bg-gradient-to-l from-transparent to-rift-500/50"></div>
                 </div>
                 
-                <div class="text-gray-300 font-lore text-lg sm:text-xl md:text-2xl max-w-3xl mx-auto leading-relaxed text-center mb-12 sm:mb-16 z-10">
-                    <p class="mb-2 italic opacity-90">Ein offenes Fenster für alle, die in ihren alten Welten nichts mehr zu verlieren haben.</p>
+                <div class="text-gray-300 font-lore text-lg sm:text-xl md:text-2xl max-w-3xl mx-auto leading-relaxed text-center mb-12 sm:mb-16 z-10 italic opacity-90">
+                    <p>Ein offenes Fenster für alle, die in ihren alten Welten nichts mehr zu verlieren haben.</p>
                 </div>
                 
                 <button onclick="enterRift()" class="group relative px-6 py-4 sm:px-10 sm:py-6 md:px-16 md:py-8 bg-[#050205] border-2 border-rift-800 text-white font-magic text-lg sm:text-2xl md:text-4xl tracking-[0.2em] sm:tracking-[0.3em] overflow-hidden transition-all hover:shadow-[0_0_60px_rgba(139,92,246,0.6)] hover:border-rift-400 z-10 uppercase cursor-pointer">
@@ -427,17 +416,17 @@
                         <i data-lucide="sparkles" class="w-3 h-3 sm:w-4 sm:h-4 text-rift-400 animate-pulse"></i>
                     </div>
                     
-                    <h1 class="font-magic text-5xl sm:text-7xl md:text-8xl lg:text-9xl text-white text-glow-rift leading-tight mix-blend-overlay mt-2 mb-2">ARATHION</h1>
+                    <h1 class="font-magic text-5xl sm:text-7xl md:text-8xl lg:text-9xl text-white text-glow-rift leading-tight mix-blend-overlay mt-2 mb-2 uppercase">ARATHION</h1>
                     
-                    <div class="flex items-center justify-center gap-2 sm:gap-4 opacity-80 mb-10 w-full">
+                    <div class="flex items-center justify-center gap-2 sm:gap-4 opacity-80 mb-10 w-full uppercase">
                         <div class="h-[1px] flex-grow max-w-[30px] md:max-w-[80px] bg-gradient-to-r from-transparent to-rift-500/50"></div>
-                        <h2 class="font-magic text-lg sm:text-xl md:text-3xl text-bone-300 tracking-[0.2em] sm:tracking-[0.3em] text-glow-bone text-center uppercase whitespace-nowrap">Das Echo von Olyndra</h2>
+                        <h2 class="font-magic text-lg sm:text-xl md:text-3xl text-bone-300 tracking-[0.2em] sm:tracking-[0.3em] text-glow-bone text-center">Das Echo von Olyndra</h2>
                         <div class="h-[1px] flex-grow max-w-[30px] md:max-w-[80px] bg-gradient-to-l from-transparent to-rift-500/50"></div>
                     </div>
                     
-                    <div class="bg-black/30 border border-rift-900/50 px-4 sm:px-8 py-3 rounded-sm shadow-[0_0_20px_rgba(0,0,0,0.5)] mb-10 inline-flex flex-col sm:flex-row items-center justify-center gap-2 mx-auto">
-                        <span id="welcome-title" class="font-magic text-xl sm:text-2xl md:text-3xl text-rift-400 tracking-widest uppercase text-center">Willkommen</span>
-                        <span class="font-magic text-xl sm:text-2xl md:text-3xl text-rift-400 tracking-widest uppercase text-center">Reisender</span>
+                    <div class="bg-black/30 border border-rift-900/50 px-4 sm:px-8 py-3 rounded-sm shadow-[0_0_20px_rgba(0,0,0,0.5)] mb-10 inline-flex flex-col sm:flex-row items-center justify-center gap-2 mx-auto uppercase">
+                        <span id="welcome-title" class="font-magic text-xl sm:text-2xl md:text-3xl text-rift-400 tracking-widest">Willkommen</span>
+                        <span class="font-magic text-xl sm:text-2xl md:text-3xl text-rift-400 tracking-widest">Reisender</span>
                     </div>
                     
                     <p class="text-gray-300 font-lore text-lg sm:text-xl md:text-2xl max-w-3xl mx-auto leading-relaxed border-l-2 border-rift-800 pl-6 sm:pl-8 text-left bg-gradient-to-r from-black/50 to-transparent p-4 sm:p-6 rounded-r italic">
@@ -445,7 +434,7 @@
                     </p>
                     
                     <div class="flex flex-col sm:flex-row gap-6 justify-center pt-10">
-                        <a href="https://discord.gg/7TPSchdDJW" target="_blank" rel="noopener noreferrer" class="group relative px-8 py-4 bg-[#050205] border border-rift-500 text-white font-magic text-lg tracking-widest overflow-hidden transition-all shadow-[0_0_20px_rgba(59,130,246,0.3)] hover:shadow-[0_0_40px_rgba(139,92,246,0.6)] uppercase flex items-center justify-center gap-3">
+                        <a href="https://discord.gg/7TPSchdDJW" target="_blank" rel="noopener noreferrer" class="group relative overflow-hidden px-8 py-4 bg-[#050205] border border-rift-500 text-white font-magic text-lg tracking-widest uppercase flex items-center justify-center gap-3 shadow-[0_0_20px_rgba(59,130,246,0.3)] hover:shadow-[0_0_40px_rgba(139,92,246,0.6)]">
                             <div class="absolute inset-0 w-full h-full bg-gradient-to-r from-transparent via-rift-500/20 to-transparent translate-x-[-100%] group-hover:translate-x-[100%] transition-transform duration-700 gpu-accel"></div>
                             <i data-lucide="message-circle" class="w-5 h-5 text-rift-400 animate-pulse"></i>
                             <span class="relative z-10 text-glow-rift">Zu den Stimmen</span>
@@ -539,7 +528,7 @@
                 </div>
 
                 <div class="mt-20 text-center max-w-3xl mx-auto border-t border-b border-rift-800 py-12 bg-black/30">
-                    <h3 class="font-magic text-3xl md:text-4xl text-white mb-6 leading-relaxed">
+                    <h3 class="font-magic text-3xl md:text-4xl text-white mb-6 leading-relaxed uppercase">
                         Wer durch den Riss tritt, lässt seine Ketten fallen,<br>
                         <span class="text-rift-400">verliert aber auch seinen Schutz.</span>
                     </h3>
@@ -560,7 +549,6 @@
 
                 <div class="rift-panel p-8 md:p-12">
                     <h3 class="font-magic text-4xl text-rift-400 mb-6 flex items-center gap-4"><i data-lucide="droplet" class="w-8 h-8 opacity-70"></i> Völker von Olyndra</h3>
-                    <p class="text-gray-400 font-lore text-xl mb-10">Wähle weise, denn dein Blut bestimmt deinen Weg im Staub. Dies sind die Überlieferungen der Wesen, die den Riss durchschritten:</p>
                     
                     <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
                         <!-- Dark Fantasy Race Cards -->
@@ -613,7 +601,7 @@
                 </div>
 
                 <div class="pt-8">
-                    <h3 class="font-magic text-4xl text-white mb-10 border-b border-bone-800 pb-4 inline-block">Die Pfade des Kampfes</h3>
+                    <h3 class="font-magic text-4xl text-white mb-10 border-b border-bone-800 pb-4 inline-block uppercase">Die Pfade des Kampfes</h3>
                     <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
                         
                         <!-- Class Cards -->
@@ -621,8 +609,8 @@
                             <h4 class="font-magic text-white text-3xl mb-4 flex items-center gap-3"><i data-lucide="paw-print" class="text-rift-400 w-8 h-8 opacity-70"></i> Wandler</h4>
                             <p class="text-gray-300 font-lore text-xl mb-6 flex-grow leading-relaxed">Wandler sind Meister der Anpassung, deren Körper so wandelbar sind wie die Zeitrisse selbst. Sie können ihre Gestalt in die verschiedensten Kreaturen oder Bestien verändern, um im Kampf an vorderster Front zu bestehen oder lautlos zu spähen. Diese Vielseitigkeit macht sie unberechenbar: Wo eben noch ein Mensch stand, kann im nächsten Moment eine reißende Bestie angreifen. Ihr Weg ist einer der Instinkte und der tiefen Verbundenheit zur inneren Natur.</p>
                             <div class="font-lore text-gray-400 border-t border-bone-800 pt-4">
-                                <p><span class="text-bone-500">Rüstung:</span> leichte bis mittlere Rüstung</p>
-                                <p><span class="text-bone-500">Kampfart:</span> Nahkampf - Shapeshift</p>
+                                <p><span class="text-bone-500 font-magic text-xs uppercase tracking-tighter">Rüstung:</span> leichte bis mittlere Rüstung</p>
+                                <p><span class="text-bone-500 font-magic text-xs uppercase tracking-tighter">Kampfart:</span> Nahkampf - Shapeshift</p>
                             </div>
                         </div>
 
@@ -630,8 +618,8 @@
                             <h4 class="font-magic text-white text-3xl mb-4 flex items-center gap-3"><i data-lucide="crosshair" class="text-rift-400 w-8 h-8 opacity-70"></i> Jäger</h4>
                             <p class="text-gray-300 font-lore text-xl mb-6 flex-grow leading-relaxed">Jäger sind die unbestrittenen Meister des Fernkampfs und des Überlebens in der Wildnis. Ob mit dem traditionellen Langbogen oder einer modifizierten Waffe aus einem Zeitriss – sie treffen ihr Ziel mit tödlicher Präzision aus der Distanz. Sie verstehen es, das Gelände zu nutzen, Fallen zu stellen und die Spuren ihrer Feinde zu lesen. Ein Jäger in Arathion ist oft ein einsamer Wolf, der den ersten und letzten Schuss eines Kampfes abgibt.</p>
                             <div class="font-lore text-gray-400 border-t border-bone-800 pt-4">
-                                <p><span class="text-bone-500">Rüstung:</span> leichte bis mittlere Rüstung</p>
-                                <p><span class="text-bone-500">Kampfart:</span> Fernkampf - mit Begleiter</p>
+                                <p><span class="text-bone-500 font-magic text-xs uppercase tracking-tighter">Rüstung:</span> leichte bis mittlere Rüstung</p>
+                                <p><span class="text-bone-500 font-magic text-xs uppercase tracking-tighter">Kampfart:</span> Fernkampf - mit Begleiter</p>
                             </div>
                         </div>
 
@@ -639,21 +627,21 @@
                             <h4 class="font-magic text-white text-3xl mb-4 flex items-center gap-3"><i data-lucide="swords" class="text-rift-400 w-8 h-8 opacity-70"></i> Assassine</h4>
                             <p class="text-gray-300 font-lore text-xl mb-6 flex-grow leading-relaxed">Der Assassine ist die Verkörperung des lautlosen Todes. In den Schatten Arathions zu Hause, nutzen sie Schnelligkeit, Tarnung und Gifte, um ihre Ziele auszuschalten, bevor der Kampf überhaupt begonnen hat. Sie meiden das offene Schlachtfeld und setzen stattdessen auf präzise Stiche in die Schwachstellen ihrer Gegner. Für einen Assassinen ist Ehre zweitrangig – nur das Ergebnis zählt, und das ist meistens ein lautloses Ende im Dunkeln.</p>
                             <div class="font-lore text-gray-400 border-t border-bone-800 pt-4">
-                                <p><span class="text-bone-500">Rüstung:</span> leichte bis mittlere Rüstung</p>
-                                <p><span class="text-bone-500">Kampfart:</span> Nahkampf - Fernkampf</p>
+                                <p><span class="text-bone-500 font-magic text-xs uppercase tracking-tighter">Rüstung:</span> leichte bis mittlere Rüstung</p>
+                                <p><span class="text-bone-500 font-magic text-xs uppercase tracking-tighter">Kampfart:</span> Nahkampf - Fernkampf</p>
                             </div>
                         </div>
 
                         <div class="rift-panel p-8 flex flex-col h-full hover:border-rift-800 transition-colors relative overflow-hidden">
                             <div class="absolute -right-10 -bottom-10 w-40 h-40 bg-rift-500/10 blur-3xl rounded-full gpu-accel"></div>
-                            <h4 class="font-magic text-white text-3xl mb-4 flex items-center gap-3 relative z-10"><i data-lucide="sparkles" class="text-rift-400 w-8 h-8 opacity-70"></i> Magier</h4>
+                            <h4 class="font-magic text-white text-3xl mb-4 flex items-center gap-3 relative z-10 uppercase font-bold"><i data-lucide="sparkles" class="text-rift-400 w-8 h-8 opacity-70"></i> Magier</h4>
                             <p class="text-gray-300 font-lore text-xl mb-4 flex-grow leading-relaxed relative z-10">Magier sind Gelehrte, die die instabilen Energien der Welt manipulieren. Sie beherrschen sowohl die zerstörerischen Elemente als auch arkane Manipulationen, um das Schlachtfeld zu kontrollieren. Ein Magier kann Feuer regnen lassen oder die Realität krümmen, doch diese Macht ist gefährlich. Wer die arkane Energie nicht mit eisernem Willen führt, läuft Gefahr, von der Magie, die er beschwört, selbst verzehrt zu werden.</p>
                             <div class="bg-red-950/20 border border-red-900/50 p-3 mb-4 text-sm font-lore text-gray-300 relative z-10">
-                                <span class="text-red-400 font-bold">ACHTUNG:</span> Wer die Seelenmagie wählt, hat keine andere Wahl, als sich mit Spinnen auseinander zu setzen! Dies liegt am AOC System. Wir empfehlen also dies mit einer so enorm ausgeprägten Arachnophobie zu vermeiden!
+                                <span class="text-red-400 font-bold uppercase">ACHTUNG:</span> Wer die Seelenmagie wählt, hat keine andere Wahl, als sich mit Spinnen auseinander zu setzen! Dies liegt am AOC System. Wir empfehlen also dies mit einer so enorm ausgeprägten Arachnophobie zu vermeiden!
                             </div>
                             <div class="font-lore text-gray-400 border-t border-bone-800 pt-4 relative z-10">
-                                <p><span class="text-bone-500">Rüstung:</span> leichte Rüstung</p>
-                                <p><span class="text-bone-500">Kampfart:</span> Fernkampf - Magie</p>
+                                <p><span class="text-bone-500 font-magic text-xs uppercase tracking-tighter">Rüstung:</span> leichte Rüstung</p>
+                                <p><span class="text-bone-500 font-magic text-xs uppercase tracking-tighter">Kampfart:</span> Fernkampf - Magie</p>
                             </div>
                         </div>
 
@@ -661,8 +649,8 @@
                             <h4 class="font-magic text-white text-3xl mb-4 flex items-center gap-3"><i data-lucide="shield" class="text-bone-300 w-8 h-8 opacity-70"></i> Krieger</h4>
                             <p class="text-gray-300 font-lore text-xl mb-6 flex-grow leading-relaxed">Der Krieger ist das stählerne Rückgrat einer jeden Gruppe. Ob in schwerer Platte mit Schild oder als rücksichtsloser Schadenskämpfer mit zwei Äxten – sie suchen den direkten Kontakt zum Feind. Ein Krieger in Arathion verlässt sich auf jahrelanges Training, pure Kraft und unerschütterlichen Mut. Sie sind es, die den Ansturm abfangen und die Linie halten, wenn alles andere im Chaos der Magie und der Zeitrisse zu versinken droht.</p>
                             <div class="font-lore text-gray-400 border-t border-bone-800 pt-4">
-                                <p><span class="text-bone-500">Rüstung:</span> mittlere bis schwere Rüstung</p>
-                                <p><span class="text-bone-500">Kampfart:</span> Nahkampf</p>
+                                <p><span class="text-bone-500 font-magic text-xs uppercase tracking-tighter">Rüstung:</span> mittlere bis schwere Rüstung</p>
+                                <p><span class="text-bone-500 font-magic text-xs uppercase tracking-tighter">Kampfart:</span> Nahkampf</p>
                             </div>
                         </div>
 
@@ -670,8 +658,8 @@
                             <h4 class="font-magic text-white text-3xl mb-4 flex items-center gap-3"><i data-lucide="droplet" class="text-red-500 w-8 h-8 opacity-70"></i> Vampir</h4>
                             <p class="text-gray-300 font-lore text-xl mb-6 flex-grow leading-relaxed">Vampire sind zeitlose Raubtiere, die oft durch uralte Risse nach Arathion gelangten. Sie besitzen übermenschliche Reflexe, enorme Kraft und die Fähigkeit, sich nach Verletzungen rasch zu regenerieren – solange sie ihren Durst nach Lebenskraft stillen. In der Gesellschaft Arathions sind sie oft elegante, aber gefürchtete Außenseiter. Ihr Dasein ist ein ständiger Kampf zwischen ihrer menschlichen Vernunft und dem ewigen Hunger der Nacht.</p>
                             <div class="font-lore text-gray-400 border-t border-bone-800 pt-4">
-                                <p><span class="text-bone-500">Rüstung:</span> leichte bis mittlere Rüstung</p>
-                                <p><span class="text-bone-500">Kampfart:</span> Nahkampf</p>
+                                <p><span class="text-bone-500 font-magic text-xs uppercase tracking-tighter">Rüstung:</span> leichte bis mittlere Rüstung</p>
+                                <p><span class="text-bone-500 font-magic text-xs uppercase tracking-tighter">Kampfart:</span> Nahkampf</p>
                             </div>
                         </div>
 
@@ -682,8 +670,8 @@
                                 <span class="text-gray-400 font-bold">Achtung:</span> In gewandelter Form kann der Charakter nicht sprechen!
                             </div>
                             <div class="font-lore text-gray-400 border-t border-bone-800 pt-4 relative z-10">
-                                <p><span class="text-bone-500">Rüstung:</span> leichte bis mittlere Rüstung</p>
-                                <p><span class="text-bone-500">Kampfart:</span> Nahkampf - Werwolfwandlung über Indrids</p>
+                                <p><span class="text-bone-500 font-magic text-xs uppercase tracking-tighter">Rüstung:</span> leichte bis mittlere Rüstung</p>
+                                <p><span class="text-bone-500 font-magic text-xs uppercase tracking-tighter">Kampfart:</span> Nahkampf - Werwolfwandlung über Indrids</p>
                             </div>
                         </div>
 
@@ -693,70 +681,29 @@
                 <div class="w-full h-px bg-gradient-to-r from-transparent via-bone-800 to-transparent my-16"></div>
 
                 <div>
-                    <h3 class="font-magic text-4xl text-white mb-6 border-b border-bone-800 pb-4 inline-block">Handwerk (Berufe)</h3>
+                    <h3 class="font-magic text-4xl text-white mb-6 border-b border-bone-800 pb-4 inline-block uppercase">Handwerk (Berufe)</h3>
                     <p class="text-gray-300 font-lore text-xl mb-10 max-w-4xl leading-relaxed">In Olyndra haben Handwerk und Spezialisierung überlebt.</p>
 
-                    <div class="mb-16">
-                        <h4 class="font-magic text-3xl text-bone-300 mb-6 flex items-center gap-3"><i data-lucide="hammer" class="opacity-70"></i> Das Fundament (Hauptberufe)</h4>
-                        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-                            <div class="bg-black/30 border border-bone-800 p-6 hover:bg-black/50 transition-colors">
-                                <h5 class="font-magic text-white text-xl mb-3">Der Waffenschmied</h5>
-                                <p class="text-gray-400 font-lore text-lg">Erschafft Waffen und essentielle Werkzeuge für alle Überlebenden. Ohne ihn ist das Überleben im Staub unmöglich.</p>
-                            </div>
-                            <div class="bg-black/30 border border-bone-800 p-6 hover:bg-black/50 transition-colors">
-                                <h5 class="font-magic text-white text-xl mb-3">Der Rüstschmied</h5>
-                                <p class="text-gray-400 font-lore text-lg">Schützt das Fleisch. Er stellt von leichten Stoffen bis zu schweren Platten alles her und prägt das Erscheinungsbild der Krieger.</p>
-                            </div>
-                            <div class="bg-black/30 border border-bone-800 p-6 hover:bg-black/50 transition-colors">
-                                <h5 class="font-magic text-white text-xl mb-3">Der Juwelier</h5>
-                                <p class="text-gray-400 font-lore text-lg">Schleift Edelsteine für Fokus-Magie, verzauberte Ringe und fertigt Schmuckstücke, die an vergangene Zivilisationen erinnern.</p>
-                            </div>
-                            <div class="bg-black/30 border border-bone-800 p-6 hover:bg-black/50 transition-colors">
-                                <h5 class="font-magic text-white text-xl mb-3">Der Bogner</h5>
-                                <p class="text-gray-400 font-lore text-lg">Die Distanz entscheidet oft über Leben und Tod. Er fertigt Bögen, Büchsen und jegliche Munition.</p>
-                            </div>
-                            <div class="bg-black/30 border border-bone-800 p-6 hover:bg-black/50 transition-colors md:col-span-2">
-                                <h5 class="font-magic text-white text-xl mb-3">Der Alchemist</h5>
-                                <p class="text-gray-400 font-lore text-lg">Braut Essenzen, Gifte und heilende Tränke. Seine Substanzen sind die Grundlage für viele Forschungen und Taktiken im Kampf.</p>
-                            </div>
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-16">
+                        <div class="bg-black/30 border border-bone-800 p-6 hover:bg-black/50 transition-colors">
+                            <h5 class="font-magic text-white text-xl mb-3">Der Waffenschmied</h5>
+                            <p class="text-gray-400 font-lore">Erschafft Waffen und essentielle Werkzeuge. Ohne ihn ist das Überleben im Staub unmöglich.</p>
                         </div>
-                    </div>
-
-                    <div class="mb-16">
-                        <h4 class="font-magic text-3xl text-rift-400 mb-6 flex items-center gap-3"><i data-lucide="briefcase" class="opacity-70"></i> Die Versorgung (Nebenberufe)</h4>
-                        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                            <div class="bg-black/30 border border-bone-800 p-6">
-                                <h5 class="font-magic text-white text-xl mb-2">Sklavenhändler</h5>
-                                <p class="text-gray-400 font-lore text-lg">Vermittelt Arbeitskräfte, Kämpfer und Tänzer. Im gnadenlosen Olyndra ein brutales, aber lukratives Geschäft.</p>
-                            </div>
-                            <div class="bg-black/30 border border-bone-800 p-6">
-                                <h5 class="font-magic text-white text-xl mb-2">Gärtner</h5>
-                                <p class="text-gray-400 font-lore text-lg">Kennt die wenigen Pflanzen, die in der Asche gedeihen, und versorgt die Alchemisten mit Kräutern.</p>
-                            </div>
-                            <div class="bg-black/30 border border-bone-800 p-6">
-                                <h5 class="font-magic text-white text-xl mb-2">Händler</h5>
-                                <p class="text-gray-400 font-lore text-lg">Sucht und tauscht Güter über den Großmarkt. Er beschafft das Unmögliche für jene, die zahlen können.</p>
-                            </div>
-                            <div class="bg-black/30 border border-bone-800 p-6">
-                                <h5 class="font-magic text-white text-xl mb-2">Koch</h5>
-                                <p class="text-gray-400 font-lore text-lg">Sorgt für die körperliche Stärkung durch Rationen und Festmähler, unverzichtbar vor Expeditionen.</p>
-                            </div>
-                            <div class="bg-black/30 border border-bone-800 p-6">
-                                <h5 class="font-magic text-white text-xl mb-2">Tierbändiger</h5>
-                                <p class="text-gray-400 font-lore text-lg">Unterwirft die wilden Bestien von Arathion. Pflegt und züchtet treue Begleiter für den Kampf.</p>
-                            </div>
+                        <div class="bg-black/30 border border-bone-800 p-6 hover:bg-black/50 transition-colors">
+                            <h5 class="font-magic text-white text-xl mb-3">Der Rüstschmied</h5>
+                            <p class="text-gray-400 font-lore">Schützt das Fleisch. Er stellt von leichten Stoffen bis zu schweren Platten alles her.</p>
                         </div>
-                    </div>
-
-                    <div class="mb-16">
-                        <h4 class="font-magic text-3xl text-gray-300 mb-6 flex items-center gap-3"><i data-lucide="theater" class="opacity-70"></i> Das Rollenspiel (Sonderberufe)</h4>
-                        <p class="text-gray-400 font-lore text-xl mb-6">Diese Berufungen leben rein durch Erzählung und Interaktion, weitgehend losgelöst von Engine-Mechaniken.</p>
-                        <div class="flex flex-wrap gap-4 font-lore text-lg">
-                            <span class="bg-[#050205] border border-bone-800 px-5 py-2 text-white">Golembauer <span class="text-gray-500 text-sm italic ml-2">teilw. Engine</span></span>
-                            <span class="bg-[#050205] border border-bone-800 px-5 py-2 text-white">Söldner</span>
-                            <span class="bg-[#050205] border border-bone-800 px-5 py-2 text-white">Bibliothekar</span>
-                            <span class="bg-[#050205] border border-bone-800 px-5 py-2 text-white">Dieb</span>
-                            <span class="bg-[#050205] border border-bone-800 px-5 py-2 text-white">Barde</span>
+                        <div class="bg-black/30 border border-bone-800 p-6 hover:bg-black/50 transition-colors">
+                            <h5 class="font-magic text-white text-xl mb-3">Der Juwelier</h5>
+                            <p class="text-gray-400 font-lore">Schleift Edelsteine für Fokus-Magie und fertigt Schmuckstücke alter Zivilisationen.</p>
+                        </div>
+                        <div class="bg-black/30 border border-bone-800 p-6 hover:bg-black/50 transition-colors">
+                            <h5 class="font-magic text-white text-xl mb-3">Der Bogner</h5>
+                            <p class="text-gray-400 font-lore">Die Distanz entscheidet oft über Leben und Tod. Er fertigt Bögen, Büchsen und Munition.</p>
+                        </div>
+                        <div class="bg-black/30 border border-bone-800 p-6 md:col-span-2 text-center hover:bg-black/50 transition-colors">
+                            <h5 class="font-magic text-white text-xl mb-3">Der Alchemist</h5>
+                            <p class="text-gray-400 font-lore">Braut Essenzen, Gifte und heilende Tränke. Grundlage für Forschungen und Taktiken.</p>
                         </div>
                     </div>
 
@@ -765,55 +712,6 @@
                         <p class="text-gray-300 font-lore text-xl leading-relaxed">
                             Der Heiler nimmt eine absolute Sonderrolle ein und ist enorm wichtig für das Überleben nach schweren Wunden (Knock-System). Daher kann der Weg des Heilers <strong class="text-white">zusätzlich</strong> zu jedem anderen Beruf erlernt werden.
                         </p>
-                    </div>
-
-                </div>
-
-                <div class="w-full h-px bg-gradient-to-r from-transparent via-rift-800 to-transparent my-16"></div>
-
-                <div class="mb-10">
-                    <div class="text-center mb-10">
-                        <h3 class="font-magic text-4xl text-white mb-2 text-glow-rift">Die Lehren der Wandler</h3>
-                        <p class="font-magic tracking-widest text-gray-400 uppercase text-sm">Bekannte Manifestationen</p>
-                    </div>
-                    
-                    <div class="bg-[#050205] border border-rift-900 p-8 md:p-12">
-                        <p class="text-gray-300 font-lore text-xl mb-8 leading-relaxed text-center max-w-4xl mx-auto">Der Pfad des Wandlers erlaubt das Annehmen der verschiedensten Kreaturenformen. Dies ist ein Auszug der Formen, deren Essenz bisher verstanden und gebändigt wurde:</p>
-                        
-                        <div class="flex flex-wrap gap-x-6 gap-y-3 justify-center font-lore text-lg text-gray-400">
-                            <span>Yakith</span> <span class="text-bone-800">•</span>
-                            <span>Panther</span> <span class="text-bone-800">•</span>
-                            <span>Tiger (Normal / Weiß)</span> <span class="text-bone-800">•</span>
-                            <span>Löwe (Normal / Berg)</span> <span class="text-bone-800">•</span>
-                            <span>Schneeleopard</span> <span class="text-bone-800">•</span>
-                            <span>Sand Beast</span> <span class="text-bone-800">•</span>
-                            <span>Jaguar</span> <span class="text-bone-800">•</span>
-                            <span>Wolf (Normal / Weiß / Braun / Schwarz)</span> <span class="text-bone-800">•</span>
-                            <span>Ravenous Wolf</span> <span class="text-bone-800">•</span>
-                            <span>Wolfswelpe</span> <span class="text-bone-800">•</span>
-                            <span>Feral Dog</span> <span class="text-bone-800">•</span>
-                            <span>White Lynx</span> <span class="text-bone-800">•</span>
-                            <span>Hase</span> <span class="text-bone-800">•</span>
-                            <span>Bär (Siptah / Schwarz / Braun)</span> <span class="text-bone-800">•</span>
-                            <span>Demon Bat</span> <span class="text-bone-800">•</span>
-                            <span>Child of Jhil</span> <span class="text-bone-800">•</span>
-                            <span>Blood Moon Beast</span> <span class="text-bone-800">•</span>
-                            <span>King Beneath</span> <span class="text-bone-800">•</span>
-                            <span>Krähe</span> <span class="text-bone-800">•</span>
-                            <span>Wolfman</span> <span class="text-bone-800">•</span>
-                            <span>Dämonischer Panther</span> <span class="text-bone-800">•</span>
-                            <span>Serpentman</span> <span class="text-bone-800">•</span>
-                            <span>Mountain Dragon</span> <span class="text-bone-800">•</span>
-                            <span>Werehyena</span> <span class="text-bone-800">•</span>
-                            <span>Demon Spider</span> <span class="text-bone-800">•</span>
-                            <span>Hirsch / Elk King</span> <span class="text-bone-800">•</span>
-                            <span>Ziege / Esel</span> <span class="text-bone-800">•</span>
-                            <span>Rocknose</span> <span class="text-bone-800">•</span>
-                            <span>Quilin</span> <span class="text-bone-800">•</span>
-                            <span>Werecroc / Werebear</span> <span class="text-bone-800">•</span>
-                            <span>Succubus</span> <span class="text-bone-800">•</span>
-                            <span>Hauskatze</span>
-                        </div>
                     </div>
 
                     <div class="flex justify-center mt-10">
@@ -830,9 +728,9 @@
 
         <!-- GALLERY -->
         <div id="gallery" class="page-container">
-            <div class="max-w-6xl mx-auto px-4 py-12">
+            <div class="max-w-7xl mx-auto px-4 py-12">
                 <div class="text-center mb-16">
-                    <h2 class="font-magic text-5xl text-white text-glow-rift mb-4">Verblasste Visionen</h2>
+                    <h2 class="font-magic text-5xl text-white text-glow-rift mb-4 uppercase">Verblasste Visionen</h2>
                     <p class="font-magic text-bone-400 tracking-widest uppercase text-sm">Bilder aus dem Staub von Olyndra</p>
                 </div>
                 <!-- Gallery Grid - Wird dynamisch via Script mit image1 bis image100 gefüllt -->
@@ -843,15 +741,15 @@
         <!-- RULES -->
         <div id="rules" class="page-container">
             <div class="max-w-4xl mx-auto px-4 py-12">
-                <h2 class="font-magic text-5xl text-center text-white mb-16 text-glow-bone">Eherne Gesetze</h2>
+                <h2 class="font-magic text-5xl text-center text-white mb-16 text-glow-bone uppercase">Eherne Gesetze</h2>
                 <div class="grid gap-6 font-lore text-xl">
                     
                     <!-- 1. Allgemeines -->
                     <div class="rift-panel p-0 overflow-hidden group">
                         <details class="group">
                             <summary class="flex items-center justify-between p-6 cursor-pointer bg-black/30 hover:bg-black/60 transition-colors">
-                                <div class="flex items-center gap-4"><i data-lucide="scale" class="text-bone-400"></i><h3 class="font-magic text-2xl text-rift-300 m-0">#1 - Allgemeines</h3></div>
-                                <span class="text-rift-500 group-open:rotate-180 transition-transform arrow-icon"><i data-lucide="chevron-down"></i></span>
+                                <div class="flex items-center gap-4"><i data-lucide="scale" class="text-bone-400"></i><h3 class="font-magic text-2xl text-rift-300 uppercase">#1 - Allgemeines</h3></div>
+                                <i data-lucide="chevron-down" class="arrow-icon transition-transform text-rift-500"></i>
                             </summary>
                             <div class="p-8 text-gray-300 leading-relaxed border-t border-bone-800 bg-[#050205] space-y-6">
                                 <div>
@@ -909,9 +807,6 @@
                                     <p>Die Teilnahme am Spielbetrieb ist nur mit Vollendung des 18. Lebensjahres erlaubt. Das Spiel Conan Exiles unterliegt der Einstufung FSK 18. Der dazugehörende Discordserver verlangt ebenso das Mindestalter von 18 Jahren.<br>
                                     Mit eurer Anmeldung stimmt ihr zu, dass die uneingeschränkten und zeitlich unbefristeten Nutzungsrechte, sämtlicher von euch im Rahmen der Plattform oder des Servers generierten Inhalte, unentgeltlich und exklusiv an die Serverleitung übergehen. Das bedeutet, dass man ebenso akzeptiert, dass Streamer / Video Creator Aufnahmen live / sowie als abrufbaren Inhalt (VOD) über eine Plattform wie Youtube, Twitch oder ähnliches zur Verfügung stellen können und man keine Ansprüche bezüglich persönlicher Inhalte geltend machen darf.</p>
                                 </div>
-                                <div class="bg-black/50 border-l-2 border-rift-500 p-4">
-                                    <p><strong class="text-rift-400">Hinweis:</strong> Das Regelwerk kann sich je nach RP-Entwicklung und Server interner Situation jederzeit ändern. Das Team behält sich vor, Regeln anzupassen, zu ergänzen oder auszusetzen, wenn es der Verlauf des Spiels erfordert.</p>
-                                </div>
                             </div>
                         </details>
                     </div>
@@ -920,8 +815,8 @@
                     <div class="rift-panel p-0 overflow-hidden group">
                         <details class="group">
                             <summary class="flex items-center justify-between p-6 cursor-pointer bg-black/30 hover:bg-black/60 transition-colors">
-                                <div class="flex items-center gap-4"><i data-lucide="hammer" class="text-bone-400"></i><h3 class="font-magic text-2xl text-rift-300 m-0">#2 - Bauregeln</h3></div>
-                                <span class="text-rift-500 group-open:rotate-180 transition-transform arrow-icon"><i data-lucide="chevron-down"></i></span>
+                                <div class="flex items-center gap-4"><i data-lucide="hammer" class="text-bone-400"></i><h3 class="font-magic text-2xl text-rift-300 uppercase">#2 - Bauregeln</h3></div>
+                                <i data-lucide="chevron-down" class="arrow-icon transition-transform text-rift-500"></i>
                             </summary>
                             <div class="p-8 text-gray-300 leading-relaxed border-t border-bone-800 bg-[#050205] space-y-6">
                                 <div>
@@ -940,7 +835,6 @@
                                         <li>Glockentiere pro Spieler → 1 Tier</li>
                                         <li>Conan Haustier (Cat) pro Spieler → 1 Tier</li>
                                     </ul>
-                                    <p class="mt-2 text-bone-400 italic">Abweichungen können im Ticket angefragt werden! Es muss damit gerechnet werden das es abgelehnt wird, selbst wenn der Grund gut und solide ist!</p>
                                 </div>
                                 <div>
                                     <h4 class="font-bold text-rift-400 mb-2">Werkbänke</h4>
@@ -961,8 +855,8 @@
                     <div class="rift-panel p-0 overflow-hidden group">
                         <details class="group">
                             <summary class="flex items-center justify-between p-6 cursor-pointer bg-black/30 hover:bg-black/60 transition-colors">
-                                <div class="flex items-center gap-4"><i data-lucide="users" class="text-bone-400"></i><h3 class="font-magic text-2xl text-rift-300 m-0">#3 - Begleiter und Thralls</h3></div>
-                                <span class="text-rift-500 group-open:rotate-180 transition-transform arrow-icon"><i data-lucide="chevron-down"></i></span>
+                                <div class="flex items-center gap-4"><i data-lucide="users" class="text-bone-400"></i><h3 class="font-magic text-2xl text-rift-300 uppercase">#3 - Begleiter und Thralls</h3></div>
+                                <i data-lucide="chevron-down" class="arrow-icon transition-transform text-rift-500"></i>
                             </summary>
                             <div class="p-8 text-gray-300 leading-relaxed border-t border-bone-800 bg-[#050205] space-y-6">
                                 <div>
@@ -999,8 +893,8 @@
                     <div class="rift-panel p-0 overflow-hidden group">
                         <details class="group">
                             <summary class="flex items-center justify-between p-6 cursor-pointer bg-black/30 hover:bg-black/60 transition-colors">
-                                <div class="flex items-center gap-4"><i data-lucide="scroll" class="text-bone-400"></i><h3 class="font-magic text-2xl text-rift-300 m-0">#4 - RP-Regeln</h3></div>
-                                <span class="text-rift-500 group-open:rotate-180 transition-transform arrow-icon"><i data-lucide="chevron-down"></i></span>
+                                <div class="flex items-center gap-4"><i data-lucide="scroll" class="text-bone-400"></i><h3 class="font-magic text-2xl text-rift-300 uppercase">#4 - RP-Regeln</h3></div>
+                                <i data-lucide="chevron-down" class="arrow-icon transition-transform text-rift-500"></i>
                             </summary>
                             <div class="p-8 text-gray-300 leading-relaxed border-t border-bone-800 bg-[#050205] space-y-6">
                                 <div>
@@ -1066,8 +960,8 @@
                     <div class="rift-panel p-0 overflow-hidden group">
                         <details class="group">
                             <summary class="flex items-center justify-between p-6 cursor-pointer bg-black/30 hover:bg-black/60 transition-colors">
-                                <div class="flex items-center gap-4"><i data-lucide="alert-triangle" class="text-red-900"></i><h3 class="font-magic text-2xl text-red-500 m-0">#5 - Verbotenes</h3></div>
-                                <span class="text-rift-500 group-open:rotate-180 transition-transform arrow-icon"><i data-lucide="chevron-down"></i></span>
+                                <div class="flex items-center gap-4"><i data-lucide="alert-triangle" class="text-red-900"></i><h3 class="font-magic text-2xl text-red-500 m-0 uppercase">#5 - Verbotenes</h3></div>
+                                <i data-lucide="chevron-down" class="arrow-icon transition-transform text-rift-500"></i>
                             </summary>
                             <div class="p-8 text-gray-300 leading-relaxed border-t border-bone-800 bg-[#050205] space-y-6">
                                 <div>
@@ -1103,21 +997,21 @@
                     <div class="rift-panel p-0 overflow-hidden group">
                         <details class="group">
                             <summary class="flex items-center justify-between p-6 cursor-pointer bg-black/30 hover:bg-black/60 transition-colors">
-                                <div class="flex items-center gap-4"><i data-lucide="gavel" class="text-bone-400"></i><h3 class="font-magic text-2xl text-rift-300 m-0">#6 - Strafen</h3></div>
-                                <span class="text-rift-500 group-open:rotate-180 transition-transform arrow-icon"><i data-lucide="chevron-down"></i></span>
+                                <div class="flex items-center gap-4"><i data-lucide="gavel" class="text-bone-400"></i><h3 class="font-magic text-2xl text-rift-300 uppercase">#6 - Strafen</h3></div>
+                                <i data-lucide="chevron-down" class="arrow-icon transition-transform text-rift-500"></i>
                             </summary>
-                            <div class="p-8 text-gray-300 leading-relaxed border-t border-bone-800 bg-[#050205]">
+                            <div class="p-8 text-gray-300 leading-relaxed border-t border-bone-800 bg-[#050205] uppercase font-magic text-sm">
                                 <div class="space-y-4">
                                     <div class="flex flex-col sm:flex-row sm:items-center gap-2 border-b border-bone-800 pb-2">
-                                        <span class="font-bold text-bone-300 w-32 shrink-0">Verstoß 1</span>
+                                        <span class="font-bold text-rift-400 w-32 shrink-0">Verstoß 1</span>
                                         <span>Auf Level 1 gesetzt</span>
                                     </div>
                                     <div class="flex flex-col sm:flex-row sm:items-center gap-2 border-b border-bone-800 pb-2">
-                                        <span class="font-bold text-bone-300 w-32 shrink-0">Verstoß 2</span>
+                                        <span class="font-bold text-rift-400 w-32 shrink-0">Verstoß 2</span>
                                         <span>Char Tod, Start mit Level 1</span>
                                     </div>
                                     <div class="flex flex-col sm:flex-row sm:items-center gap-2 border-b border-bone-800 pb-2">
-                                        <span class="font-bold text-bone-300 w-32 shrink-0">Verstoß 3</span>
+                                        <span class="font-bold text-rift-400 w-32 shrink-0">Verstoß 3</span>
                                         <span>2 Wochen WL Entzug, Char Tod, Start mit Level 1</span>
                                     </div>
                                     <div class="flex flex-col sm:flex-row sm:items-center gap-2">
@@ -1137,7 +1031,7 @@
         <div id="faq" class="page-container">
             <div class="max-w-4xl mx-auto px-4 py-12">
                 <div class="text-center mb-16">
-                    <h2 class="font-magic text-5xl text-white mb-4 text-glow-rift">Altes Wissen</h2>
+                    <h2 class="font-magic text-5xl text-white mb-4 text-glow-rift uppercase">Altes Wissen</h2>
                     <p class="font-magic tracking-widest text-bone-400 uppercase text-sm">Überlieferungen & Werkzeuge</p>
                 </div>
 
@@ -1160,8 +1054,8 @@
                     <div class="rift-panel p-0 overflow-hidden group">
                         <details class="group">
                             <summary class="flex items-center justify-between p-6 cursor-pointer bg-black/30 hover:bg-black/60 transition-colors">
-                                <div class="flex items-center gap-4"><i data-lucide="book-open" class="text-bone-400"></i><h3 class="font-magic text-2xl text-rift-300 m-0">Begriffserklärung</h3></div>
-                                <span class="text-rift-500 group-open:rotate-180 transition-transform arrow-icon"><i data-lucide="chevron-down"></i></span>
+                                <div class="flex items-center gap-4"><i data-lucide="book-open" class="text-bone-400"></i><h3 class="font-magic text-2xl text-rift-300 m-0 uppercase">Begriffserklärung</h3></div>
+                                <i data-lucide="chevron-down" class="arrow-icon transition-transform text-rift-500"></i>
                             </summary>
                             <div class="p-8 text-gray-300 leading-relaxed border-t border-bone-800 bg-[#050205]">
                                 <ul class="space-y-4">
@@ -1182,8 +1076,8 @@
                     <div class="rift-panel p-0 overflow-hidden group">
                         <details class="group">
                             <summary class="flex items-center justify-between p-6 cursor-pointer bg-black/30 hover:bg-black/60 transition-colors">
-                                <div class="flex items-center gap-4"><i data-lucide="settings" class="text-bone-400"></i><h3 class="font-magic text-2xl text-rift-300 m-0">Engine, Lichter & Accessoires</h3></div>
-                                <span class="text-rift-500 group-open:rotate-180 transition-transform arrow-icon"><i data-lucide="chevron-down"></i></span>
+                                <div class="flex items-center gap-4"><i data-lucide="settings" class="text-bone-400"></i><h3 class="font-magic text-2xl text-rift-300 m-0 uppercase">Engine, Lichter & Accessoires</h3></div>
+                                <i data-lucide="chevron-down" class="arrow-icon transition-transform text-rift-500"></i>
                             </summary>
                             <div class="p-8 text-gray-300 leading-relaxed border-t border-bone-800 bg-[#050205] space-y-6">
                                 <div>
@@ -1230,8 +1124,8 @@
                     <div class="rift-panel p-0 overflow-hidden group">
                         <details class="group">
                             <summary class="flex items-center justify-between p-6 cursor-pointer bg-black/30 hover:bg-black/60 transition-colors">
-                                <div class="flex items-center gap-4"><i data-lucide="message-square" class="text-bone-400"></i><h3 class="font-magic text-2xl text-rift-300 m-0">Sprachen lernen</h3></div>
-                                <span class="text-rift-500 group-open:rotate-180 transition-transform arrow-icon"><i data-lucide="chevron-down"></i></span>
+                                <div class="flex items-center gap-4"><i data-lucide="message-square" class="text-bone-400"></i><h3 class="font-magic text-2xl text-rift-300 m-0 uppercase">Sprachen lernen</h3></div>
+                                <i data-lucide="chevron-down" class="arrow-icon transition-transform text-rift-500"></i>
                             </summary>
                             <div class="p-8 text-gray-300 leading-relaxed border-t border-bone-800 bg-[#050205]">
                                 <p class="mb-4">Ob durch lange Reisen, gelehrte Meister oder tiefe Bande zu einem fremden Volk – wer eine Sprache erlernen will, muss sich ihr mit Hingabe widmen. Nur jene, die Zeit, Mühe und den wahren Willen zur Verständigung aufbringen, werden sich die Worte eines fremden Volkes zu eigen machen können. – der Weg zur Verständigung ist nicht leicht. Doch wer ihn beschreitet gewinnt nicht nur Wissen sondern auch Respekt.</p>
@@ -1250,8 +1144,8 @@
                     <div class="rift-panel p-0 overflow-hidden group">
                         <details class="group">
                             <summary class="flex items-center justify-between p-6 cursor-pointer bg-black/30 hover:bg-black/60 transition-colors">
-                                <div class="flex items-center gap-4"><i data-lucide="sparkles" class="text-bone-400"></i><h3 class="font-magic text-2xl text-rift-300 m-0">Magie</h3></div>
-                                <span class="text-rift-500 group-open:rotate-180 transition-transform arrow-icon"><i data-lucide="chevron-down"></i></span>
+                                <div class="flex items-center gap-4"><i data-lucide="sparkles" class="text-bone-400"></i><h3 class="font-magic text-2xl text-rift-300 m-0 uppercase">Magie</h3></div>
+                                <i data-lucide="chevron-down" class="arrow-icon transition-transform text-rift-500"></i>
                             </summary>
                             <div class="p-8 text-gray-300 leading-relaxed border-t border-bone-800 bg-[#050205]">
                                 <p>Magie wird in die Grundelemente, Feuer, Wasser, Luft und Erde unterteilt. Diese bilden sich schließlich weiter. Licht, Schatten, Arkan und Seele. Dies ist auch als solches auszuspielen. Weder Blutmagie noch heilige oder unheilige Magie ist im RP zu erwähnen.</p>
@@ -1263,8 +1157,8 @@
                     <div class="rift-panel p-0 overflow-hidden group">
                         <details class="group">
                             <summary class="flex items-center justify-between p-6 cursor-pointer bg-black/30 hover:bg-black/60 transition-colors">
-                                <div class="flex items-center gap-4"><i data-lucide="heart-pulse" class="text-bone-400"></i><h3 class="font-magic text-2xl text-rift-300 m-0">Kranken RP & Enginetod</h3></div>
-                                <span class="text-rift-500 group-open:rotate-180 transition-transform arrow-icon"><i data-lucide="chevron-down"></i></span>
+                                <div class="flex items-center gap-4"><i data-lucide="heart-pulse" class="text-bone-400"></i><h3 class="font-magic text-2xl text-rift-300 m-0 uppercase">Kranken RP & Enginetod</h3></div>
+                                <i data-lucide="chevron-down" class="arrow-icon transition-transform text-rift-500"></i>
                             </summary>
                             <div class="p-8 text-gray-300 leading-relaxed border-t border-bone-800 bg-[#050205] space-y-6">
                                 <div>
@@ -1296,8 +1190,8 @@
                     <div class="rift-panel p-0 overflow-hidden group">
                         <details class="group">
                             <summary class="flex items-center justify-between p-6 cursor-pointer bg-black/30 hover:bg-black/60 transition-colors">
-                                <div class="flex items-center gap-4"><i data-lucide="cross" class="text-bone-400"></i><h3 class="font-magic text-2xl text-rift-300 m-0">Heilerneuerungen</h3></div>
-                                <span class="text-rift-500 group-open:rotate-180 transition-transform arrow-icon"><i data-lucide="chevron-down"></i></span>
+                                <div class="flex items-center gap-4"><i data-lucide="cross" class="text-bone-400"></i><h3 class="font-magic text-2xl text-rift-300 m-0 uppercase">Heilerneuerungen</h3></div>
+                                <i data-lucide="chevron-down" class="arrow-icon transition-transform text-rift-500"></i>
                             </summary>
                             <div class="p-8 text-gray-300 leading-relaxed border-t border-bone-800 bg-[#050205]">
                                 <p class="mb-4">Verletzte die auf dem Boden liegen, können nur von Heilern aufgehoben werden. Personen, die keine Heiler sind können weiterhin Verletzte aus der Gefahrenzone bringen. Wenn ihr einen Knock kassiert, dann gibt es auch gewisse "Liegezeiten", diese werdet ihr mit der Zeit herausfinden. Ihr benötigt hier also einen Moment Geduld oder einen Heiler in eurer Nähe.</p>
@@ -1322,7 +1216,7 @@
                     <div class="rift-panel p-0 overflow-hidden group">
                         <details class="group">
                             <summary class="flex items-center justify-between p-6 cursor-pointer bg-black/30 hover:bg-black/60 transition-colors">
-                                <div class="flex items-center gap-4"><i data-lucide="flask-conical" class="text-bone-400"></i><h3 class="font-magic text-2xl text-rift-300 m-0">Wachstum & Entwicklung</h3></div>
+                                <div class="flex items-center gap-4"><i data-lucide="flask-conical" class="text-bone-400"></i><h3 class="font-magic text-2xl text-rift-300 m-0 uppercase">Wachstum & Entwicklung</h3></div>
                                 <span class="text-rift-500 group-open:rotate-180 transition-transform arrow-icon"><i data-lucide="chevron-down"></i></span>
                             </summary>
                             <div class="p-8 text-gray-300 leading-relaxed border-t border-bone-800 bg-[#050205] space-y-6">
@@ -1349,7 +1243,7 @@
         <!-- CHAR / IDENTITÄT -->
         <div id="char" class="page-container">
             <div class="max-w-3xl mx-auto px-4 py-12">
-                <h2 class="font-magic text-5xl text-center text-white mb-4 text-glow-bone">Seelen-Inschrift</h2>
+                <h2 class="font-magic text-5xl text-center text-white mb-4 text-glow-bone uppercase">Seelen-Inschrift</h2>
                 <p class="text-center text-gray-400 font-lore text-xl mb-12 italic">Verankere deine Existenz im Buch von Olyndra.</p>
                 
                 <div class="bg-[#050205] border border-bone-800 p-6 sm:p-8 md:p-12 shadow-[0_10px_40px_rgba(0,0,0,0.8)] relative">
@@ -1570,7 +1464,7 @@
                             <i data-lucide="feather"></i> Inschrift in den Staub ritzen (Kopieren)
                         </button>
                     </form>
-                    <p id="copy-msg" class="text-center text-green-700 font-magic tracking-widest text-sm mt-4 opacity-0 transition-opacity">>> Das Pergament wurde gesichert <<</p>
+                    <p id="copy-msg" class="text-center text-green-700 font-magic tracking-widest text-sm mt-4 opacity-0 transition-opacity uppercase">>> Das Pergament wurde gesichert <<</p>
                 </div>
             </div>
         </div>
@@ -1580,7 +1474,7 @@
             <div class="py-12 md:py-20 flex flex-col items-center px-4 relative">
                 <div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-full max-w-3xl h-[600px] bg-rift-500/10 blur-[180px] rounded-full pointer-events-none z-0 gpu-accel"></div>
                 
-                <h2 class="font-magic text-6xl text-white mb-16 text-glow-rift text-center relative z-10">Das Erwachen</h2>
+                <h2 class="font-magic text-6xl text-white mb-16 text-glow-rift text-center relative z-10 uppercase">Das Erwachen</h2>
                 <div class="grid md:grid-cols-2 gap-10 max-w-4xl w-full relative z-10">
                     
                     <div class="bg-[#050205] border border-rift-900 p-10 text-center hover:bg-[#0a050a] hover:border-rift-800 transition-all group cursor-pointer shadow-[0_10px_30px_rgba(0,0,0,0.8)]">
@@ -1621,29 +1515,29 @@
         <!-- ================= IMPRESSUM ================= -->
         <div id="legal-imprint" class="page-container">
             <div class="max-w-3xl mx-auto px-4 py-12">
-                <h2 class="font-magic text-4xl text-center text-bone-400 mb-8">Impressum</h2>
+                <h2 class="font-magic text-4xl text-center text-bone-400 mb-8 uppercase">Impressum</h2>
                 <div class="bg-[#050205] border border-bone-900 p-10 text-base font-sans text-gray-300 leading-relaxed shadow-lg">
                     <p class="text-sm text-gray-500 mb-8">Angaben gemäß § 5 DDG (ehemals TMG) / § 18 MStV</p>
                     
-                    <h3 class="font-bold text-xl text-white mb-2">Verantwortlich für den Inhalt</h3>
-                    <p class="border-l-2 border-bone-800 pl-6 py-2 mb-8 text-bone-400">
+                    <h3 class="font-bold text-xl text-white mb-2 font-magic uppercase">Verantwortlich für den Inhalt</h3>
+                    <p class="border-l-2 border-bone-800 pl-6 py-2 mb-8 text-bone-400 font-lore text-lg">
                         Dennis Heitz<br>
                         Am Ehrenkamp 25<br>
                         33659 Bielefeld<br>
                         Deutschland
                     </p>
                     
-                    <h3 class="font-bold text-xl text-white mb-2">Kontakt</h3>
-                    <p class="border-l-2 border-bone-800 pl-6 py-2 mb-8 text-bone-400">
-                        E-Mail: info@arathion-rp.de<br>
+                    <h3 class="font-bold text-xl text-white mb-2 font-magic uppercase">Kontakt</h3>
+                    <p class="border-l-2 border-bone-800 pl-6 py-2 mb-8 text-bone-400 font-lore text-lg">
+                        E-Mail: denn260898@gmail.com<br>
                         Discord: dennis2608
                     </p>
 
-                    <h3 class="font-bold text-xl text-white mb-2">Projekt-Hinweis</h3>
-                    <p class="mb-8">Dies ist ein rein privates, nicht-kommerzielles Fan-Projekt im Rahmen des Spiels "Conan Exiles". Wir verfolgen keinerlei finanzielle Interessen. Alle Einnahmen (falls zutreffend über freiwillige Spenden) fließen zu 100% in die Erhaltung und Deckung der Serverkosten.</p>
+                    <h3 class="font-bold text-xl text-white mb-2 font-magic uppercase">Projekt-Hinweis</h3>
+                    <p class="mb-8 italic text-sm">Dies ist ein rein privates, nicht-kommerzielles Fan-Projekt im Rahmen des Spiels "Conan Exiles". Wir verfolgen keinerlei finanzielle Interessen. Alle Einnahmen (falls zutreffend über freiwillige Spenden) fließen zu 100% in die Erhaltung und Deckung der Serverkosten.</p>
 
-                    <h3 class="font-bold text-xl text-white mb-2">Haftung für Links</h3>
-                    <p>Unser Angebot enthält Links zu externen Websites Dritter, auf deren Inhalte wir keinen Einfluss haben. Deshalb können wir für diese fremden Inhalte auch keine Gewähr übernehmen. Für die Inhalte der verlinkten Seiten ist stets der jeweilige Anbieter oder Betreiber der Seiten verantwortlich.</p>
+                    <h3 class="font-bold text-xl text-white mb-2 font-magic uppercase">Haftung für Links</h3>
+                    <p class="text-sm">Unser Angebot enthält Links zu externen Websites Dritter, auf deren Inhalte wir keinen Einfluss haben. Deshalb können wir für diese fremden Inhalte auch keine Gewähr übernehmen. Für die Inhalte der verlinkten Seiten ist stets der jeweilige Anbieter oder Betreiber der Seiten verantwortlich.</p>
                 </div>
             </div>
         </div>
@@ -1651,27 +1545,27 @@
         <!-- ================= DATENSCHUTZ ================= -->
         <div id="legal-privacy" class="page-container">
             <div class="max-w-3xl mx-auto px-4 py-12">
-                <h2 class="font-magic text-4xl text-center text-rift-400 mb-8">Datenschutzerklärung</h2>
+                <h2 class="font-magic text-4xl text-center text-rift-400 mb-8 uppercase">Datenschutzerklärung</h2>
                 <div class="bg-[#050205] border border-bone-900 p-10 text-base font-sans text-gray-300 leading-relaxed shadow-lg">
-                    <h3 class="font-bold text-xl text-white mb-3 mt-4 border-b border-bone-800 pb-2">1. Datenschutz auf einen Blick</h3>
-                    <p class="mb-6">Die folgenden Hinweise geben einen einfachen Überblick darüber, was mit Ihren personenbezogenen Daten passiert, wenn Sie diese Website besuchen. Personenbezogene Daten sind alle Daten, mit denen Sie persönlich identifiziert werden können.</p>
+                    <h3 class="font-bold text-xl text-white mb-3 mt-4 border-b border-bone-800 pb-2 font-magic uppercase">1. Datenschutz auf einen Blick</h3>
+                    <p class="mb-6 text-sm">Die folgenden Hinweise geben einen einfachen Überblick darüber, was mit Ihren personenbezogenen Daten passiert, wenn Sie diese Website besuchen. Personenbezogene Daten sind alle Daten, mit denen Sie persönlich identifiziert werden können.</p>
 
-                    <h3 class="font-bold text-xl text-white mb-3 mt-8 border-b border-bone-800 pb-2">2. Hosting (GitHub Pages)</h3>
-                    <p class="mb-6">Wir hosten unsere Website bei GitHub Pages. Anbieter ist die GitHub Inc., 88 Colin P Kelly Jr St, San Francisco, CA 94107, USA.<br>
+                    <h3 class="font-bold text-xl text-white mb-3 mt-8 border-b border-bone-800 pb-2 font-magic uppercase">2. Hosting (GitHub Pages)</h3>
+                    <p class="mb-6 text-sm">Wir hosten unsere Website bei GitHub Pages. Anbieter ist die GitHub Inc., 88 Colin P Kelly Jr St, San Francisco, CA 94107, USA.<br>
                     Wenn Sie unsere Website besuchen, erfasst GitHub verschiedene Logfiles inklusive Ihrer IP-Adressen. Dies geschieht zur Bereitstellung und Sicherung der Website. Die Verwendung von GitHub Pages erfolgt auf Grundlage von Art. 6 Abs. 1 lit. f DSGVO. Wir haben ein berechtigtes Interesse an einer möglichst zuverlässigen Darstellung und Bereitstellung unseres reinen Fan-Projekts.</p>
                     
-                    <h3 class="font-bold text-xl text-white mb-3 mt-8 border-b border-bone-800 pb-2">3. Datenerfassung auf dieser Website</h3>
-                    <p class="mb-4"><strong class="text-white">Lokale Speicherung (LocalStorage):</strong> Unsere Website nutzt zur Speicherung von einfachen Einstellungen die Technologie des "Local Storage" Ihres Browsers. Hierbei werden lediglich technische Werte (<code>riftProtocolAccepted</code>, <code>hasEnteredRift</code>, <code>visitCount</code>) abgelegt, um Ihre Zustimmung zum Banner zu speichern und das einmalige Portal-Intro ("Riss betreten") sowie eine angepasste Begrüßung zu ermöglichen. Es werden <strong>keine</strong> Tracking-Mechanismen oder Analyse-Cookies verwendet.</p>
-                    <p class="mb-6"><strong class="text-white">Formular "Charakter-Erstellung":</strong> Das auf der Website bereitgestellte Formular zur Charakter-Erstellung ("Seelen-Inschrift") dient ausschließlich dazu, die von Ihnen eingegebenen Texte zu strukturieren und in die <strong>lokale Zwischenablage (Clipboard) Ihres eigenen Endgerätes</strong> zu kopieren. Es findet keine Datenübertragung an unsere Server oder an Dritte statt. Alle eingegebenen Daten verbleiben bei Ihnen.</p>
+                    <h3 class="font-bold text-xl text-white mb-3 mt-8 border-b border-bone-800 pb-2 font-magic uppercase">3. Datenerfassung auf dieser Website</h3>
+                    <p class="mb-4 text-sm"><strong class="text-white">Lokale Speicherung (LocalStorage):</strong> Unsere Website nutzt zur Speicherung von einfachen Einstellungen die Technologie des "Local Storage" Ihres Browsers. Hierbei werden lediglich technische Werte (<code>riftProtocolAccepted</code>, <code>hasEnteredRift</code>, <code>visitCount</code>) abgelegt, um Ihre Zustimmung zum Banner zu speichern und das einmalige Portal-Intro ("Riss betreten") sowie eine angepasste Begrüßung zu ermöglichen. Es werden <strong>keine</strong> Tracking-Mechanismen oder Analyse-Cookies verwendet.</p>
+                    <p class="mb-6 text-sm"><strong class="text-white">Formular "Charakter-Erstellung":</strong> Das auf der Website bereitgestellte Formular zur Charakter-Erstellung ("Seelen-Inschrift") dient ausschließlich dazu, die von Ihnen eingegebenen Texte zu strukturieren und in die <strong>lokale Zwischenablage (Clipboard) Ihres eigenen Endgerätes</strong> zu kopieren. Es findet keine Datenübertragung an unsere Server oder an Dritte statt. Alle eingegebenen Daten verbleiben bei Ihnen.</p>
 
-                    <h3 class="font-bold text-xl text-white mb-3 mt-8 border-b border-bone-800 pb-2">4. Plugins und externe Tools</h3>
-                    <p class="mb-6">Diese Seite nutzt zur einheitlichen Darstellung von Schriftarten Web Fonts, die von Google bereitgestellt werden, sowie Content Delivery Networks (CDNs) für die Frameworks "Tailwind CSS" und "Lucide Icons". Beim Aufruf der Seite lädt Ihr Browser die benötigten Dateien in Browsercache. Hierdurch erlangen die Anbieter Kenntnis darüber, dass über Ihre IP-Adresse diese Website aufgerufen wurde. Die Nutzung erfolgt im Interesse einer einheitlichen und fehlerfreien Darstellung (Art. 6 Abs. 1 lit. f DSGVO).</p>
+                    <h3 class="font-bold text-xl text-white mb-3 mt-8 border-b border-bone-800 pb-2 font-magic uppercase">4. Plugins und externe Tools</h3>
+                    <p class="mb-6 text-sm">Diese Seite nutzt zur einheitlichen Darstellung von Schriftarten Web Fonts, die von Google bereitgestellt werden, sowie Content Delivery Networks (CDNs) für die Frameworks "Tailwind CSS" und "Lucide Icons". Beim Aufruf der Seite lädt Ihr Browser die benötigten Dateien in Browsercache. Hierdurch erlangen die Anbieter Kenntnis darüber, dass über Ihre IP-Adresse diese Website aufgerufen wurde. Die Nutzung erfolgt im Interesse einer einheitlichen und fehlerfreien Darstellung (Art. 6 Abs. 1 lit. f DSGVO).</p>
 
-                    <h3 class="font-bold text-xl text-white mb-3 mt-8 border-b border-bone-800 pb-2">5. Externe Links & Plattformen</h3>
-                    <p class="mb-6">Unsere Website enthält Links zu externen Websites und Plattformen Dritter (z. B. Steam, Discord). Wenn Sie diese Links anklicken, verlassen Sie unsere Seite. Bei der Nutzung dieser externen Plattformen gelten ausschließlich deren jeweilige Datenschutzbestimmungen. Wir übermitteln von unserer Seite aus keine personenbezogenen Daten an diese Anbieter.</p>
+                    <h3 class="font-bold text-xl text-white mb-3 mt-8 border-b border-bone-800 pb-2 font-magic uppercase">5. Externe Links & Plattformen</h3>
+                    <p class="mb-6 text-sm">Unsere Website enthält Links zu externen Websites und Plattformen Dritter (z. B. Steam, Discord). Wenn Sie diese Links anklicken, verlassen Sie unsere Seite. Bei der Nutzung dieser externen Plattformen gelten ausschließlich deren jeweilige Datenschutzbestimmungen. Wir übermitteln von unserer Seite aus keine personenbezogenen Daten an diese Anbieter.</p>
 
-                    <h3 class="font-bold text-xl text-white mb-3 mt-8 border-b border-bone-800 pb-2">6. Ihre Rechte</h3>
-                    <p class="mb-6">Sie haben jederzeit das Recht auf unentgeltliche Auskunft über Ihre gespeicherten personenbezogenen Daten, deren Herkunft und Empfänger und den Zweck der Datenverarbeitung sowie ein Recht auf Berichtigung oder Löschung dieser Daten. Des Weiteren steht Ihnen ein Beschwerderecht bei der zuständigen Aufsichtsbehörde zu.</p>
+                    <h3 class="font-bold text-xl text-white mb-3 mt-8 border-b border-bone-800 pb-2 font-magic uppercase">6. Ihre Rechte</h3>
+                    <p class="mb-6 text-sm">Sie haben jederzeit das Recht auf unentgeltliche Auskunft über Ihre gespeicherten personenbezogenen Daten, deren Herkunft und Empfänger und den Zweck der Datenverarbeitung sowie ein Recht auf Berichtigung oder Löschung dieser Daten. Des Weiteren steht Ihnen ein Beschwerderecht bei der zuständigen Aufsichtsbehörde zu.</p>
 
                     <div class="mt-12 pt-6 border-t border-rift-900 text-center">
                         <button onclick="localStorage.removeItem('riftProtocolAccepted'); localStorage.removeItem('hasEnteredRift'); localStorage.removeItem('visitCount'); location.reload();" class="text-rift-500 hover:text-white font-sans text-sm tracking-widest uppercase transition-colors">[ LocalStorage & Banner-Zustimmung zurücksetzen ]</button>
@@ -1714,8 +1608,11 @@
 
     <script>
         // Init Icons
-        lucide.createIcons();
+        if (typeof lucide !== 'undefined') {
+            lucide.createIcons();
+        }
 
+        // --- CONFIG & UTILS ---
         const STATE = { IDLE: 'IDLE', SURGE: 'SURGE', COOLDOWN: 'COOLDOWN' };
         let currentState = STATE.IDLE;
         let currentPageId = 'portal'; 
@@ -1767,9 +1664,10 @@
                     this.speedX = (Math.random() - 0.5) * 1.2;
                     this.speedY = (Math.random() * -1.5) - 0.5; 
                     this.opacity = Math.random() * 0.6 + 0.4;
-                    // PERFORMANCE FIX: GlowColor vorberechnen
-                    this.color = Math.random() > 0.5 ? `rgba(139, 92, 246, ${this.opacity})` : `rgba(59, 130, 246, ${this.opacity})`;
-                    this.glowColor = Math.random() > 0.5 ? `rgba(139, 92, 246, ${this.opacity * 0.25})` : `rgba(59, 130, 246, ${this.opacity * 0.25})`;
+                    // PERFORMANCE FIX: Pre-calculate colors cleanly
+                    const colorRGB = Math.random() > 0.5 ? '139, 92, 246' : '59, 130, 246';
+                    this.color = `rgba(${colorRGB}, ${this.opacity})`;
+                    this.glowColor = `rgba(${colorRGB}, ${this.opacity * 0.25})`;
                 } else {
                     this.y = Math.random() * -100; 
                     this.size = Math.random() * 2 + 0.5;
@@ -1798,7 +1696,7 @@
                 ctx.fill();
                 
                 if(this.isSpark) {
-                    // Nutzt jetzt die vorgebaute Farbe, spart massive CPU Last!
+                    // Nutzt vorgebaute Farbe, spart CPU!
                     ctx.fillStyle = this.glowColor;
                     ctx.beginPath();
                     ctx.arc(this.x, this.y, this.size * 3.5, 0, Math.PI * 2);
@@ -1809,7 +1707,7 @@
 
         function initParticles() {
             particles = [];
-            // Dynamische Anzahl: Weniger Partikel auf dem Handy für mehr FPS
+            // Weniger Partikel auf Mobile für mehr FPS
             const particleCount = window.innerWidth < 768 ? 60 : 150;
             for (let i = 0; i < particleCount; i++) { 
                 particles.push(new Particle());
@@ -1860,10 +1758,8 @@
                 visits++;
                 localStorage.setItem('visitCount', visits);
                 
-                if (visits > 1) {
+                if (visits > 1 && welcomeTitle) {
                     welcomeTitle.innerText = "Willkommen zurück";
-                } else {
-                    welcomeTitle.innerText = "Willkommen";
                 }
                 
                 document.querySelectorAll('.nav-btn').forEach(btn => {
@@ -1942,7 +1838,9 @@
                 
                 localStorage.setItem('hasEnteredRift', 'true');
                 localStorage.setItem('visitCount', '1');
-                document.getElementById('welcome-title').innerText = "Willkommen";
+                
+                const welcomeTitle = document.getElementById('welcome-title');
+                if (welcomeTitle) welcomeTitle.innerText = "Willkommen";
                 
                 document.querySelectorAll('.nav-btn').forEach(btn => {
                     if(btn.dataset.target === 'home') {
@@ -2019,6 +1917,39 @@
             }
         }
 
+        // --- LIGHTBOX FUNKTIONEN ---
+        function openLightbox(src, title) {
+            const modal = document.getElementById('lightbox-modal');
+            const img = document.getElementById('lightbox-img');
+            const titleEl = document.getElementById('lightbox-title');
+            
+            img.src = src;
+            titleEl.innerText = title;
+            
+            modal.classList.remove('hidden');
+            
+            // Kleines Delay für die CSS Animation
+            requestAnimationFrame(() => {
+                modal.classList.remove('opacity-0');
+                img.classList.remove('scale-95');
+                img.classList.add('scale-100');
+            });
+        }
+
+        function closeLightbox() {
+            const modal = document.getElementById('lightbox-modal');
+            const img = document.getElementById('lightbox-img');
+            
+            modal.classList.add('opacity-0');
+            img.classList.remove('scale-100');
+            img.classList.add('scale-95');
+            
+            setTimeout(() => {
+                modal.classList.add('hidden');
+                img.src = '';
+            }, 300); // Entspricht der CSS transition duration
+        }
+
         // --- GALERIE RENDERER (Masonry + Automatische Suche) ---
         function renderGallery() {
             const grid = document.getElementById('gallery-grid');
@@ -2038,8 +1969,9 @@
             // Platzhalter im Voraus anlegen, um Reihenfolge 1-100 einzuhalten
             for(let i = 1; i <= maxImages; i++) {
                 const card = document.createElement('div');
-                // margin-bottom (mb-8) sorgt für Abstände im CSS-Columns Layout, hidden versteckt sie bis sie geladen sind
-                card.className = 'holo-card break-inside-avoid shadow-2xl mb-8 hidden';
+                // mb-8 für Abstand, hidden damit leere Platzhalter nicht sichtbar sind
+                card.className = 'holo-card break-inside-avoid shadow-2xl mb-8 hidden cursor-pointer';
+                card.onclick = () => openLightbox(`image${i}.png`, `Vision ${i}`);
                 
                 const img = new Image();
                 img.alt = `Vision ${i}`;
@@ -2157,24 +2089,24 @@
             requestAnimationFrame(animateCooldown);
         }
 
-        const fieldInfos = {
-            name: { title: "Name", text: "Der Name oder Rufname deiner Seele, mitsamt Titel falls zutreffend." },
-            alter: { title: "Alter", text: "Wähle das Alter passend zu deinem Volk (maximal 5000 Jahre). Bedenke: Ein altes Wesen sieht auch entsprechend aus und trägt alte Lasten." },
-            rasse: { title: "Blutlinie (Volk)", text: "Welchem Volk gehörst du an? Falls du von einer fremden Welt stammst, beschreibe deine Natur kurz." },
-            klasse: { title: "Pfad des Kampfes", text: "Die Art, wie du im gnadenlosen Staub überlebst und feindest." },
-            berufe: { title: "Handwerk", text: "Dein Beitrag zum Überleben der Gemeinschaft. Haupt-, Neben- und reine Erzähl-Berufe." },
-            heiler: { title: "Heiler", text: "Verfügst du über die Kunst, Wunden zu schließen und vom Tode zu retten? (Zusätzlich zu anderen Berufen möglich)." },
-            faehigkeit: { title: "Gabe", text: "Beherrschst du alte Magie, das Wandeln der Gestalt oder trägst du das Bluterbe der Vampire in dir?" },
-            staerken: { title: "Eiserner Wille", text: "Geistige und charakterliche Stärken deiner Persönlichkeit (keine Spiel-Mechaniken!)." },
-            schwaechen: { title: "Sprödes Fleisch", text: "Ängste, Schwächen und Fehler, die dich angreifbar machen." },
-            beschreibung: { title: "Das Antlitz", text: "Wie gibst du dich? Was sehen die anderen Wanderer, wenn sie dir im Staub begegnen?" },
-            hintergrund: { title: "Das alte Leben", text: "Wo kommst du her? Warum bist du durch den Riss geschritten? Erzähle von den Narben deiner Vergangenheit." },
-            steam: { title: "Aura-Signatur (Steam)", text: "Die 17-stellige Steam64 ID, um deine Existenz am Portal zu legitimieren." },
-            discord: { title: "Rufname (Discord)", text: "Dein Name in der Halle der Stimmen (Discord) zur Kommunikation mit den Architekten." },
-            neueRasse: { title: "Vergessenes Blut", text: "Beschreibe das Aussehen, die Herkunft und die Eigenheiten dieses unbekannten Volkes." }
-        };
-
         function openInfo(key) {
+            const fieldInfos = {
+                name: { title: "Name", text: "Der Name oder Rufname deiner Seele, mitsamt Titel falls zutreffend." },
+                alter: { title: "Alter", text: "Wähle das Alter passend zu deinem Volk (maximal 5000 Jahre). Bedenke: Ein altes Wesen sieht auch entsprechend aus und trägt alte Lasten." },
+                rasse: { title: "Blutlinie (Volk)", text: "Welchem Volk gehörst du an? Falls du von einer fremden Welt stammst, beschreibe deine Natur kurz." },
+                klasse: { title: "Pfad des Kampfes", text: "Die Art, wie du im gnadenlosen Staub überlebst und feindest." },
+                berufe: { title: "Handwerk", text: "Dein Beitrag zum Überleben der Gemeinschaft. Haupt-, Neben- und reine Erzähl-Berufe." },
+                heiler: { title: "Heiler", text: "Verfügst du über die Kunst, Wunden zu schließen und vom Tode zu retten? (Zusätzlich zu anderen Berufen möglich)." },
+                faehigkeit: { title: "Gabe", text: "Beherrschst du alte Magie, das Wandeln der Gestalt oder trägst du das Bluterbe der Vampire in dir?" },
+                staerken: { title: "Eiserner Wille", text: "Geistige und charakterliche Stärken deiner Persönlichkeit (keine Spiel-Mechaniken!)." },
+                schwaechen: { title: "Sprödes Fleisch", text: "Ängste, Schwächen und Fehler, die dich angreifbar machen." },
+                beschreibung: { title: "Das Antlitz", text: "Wie gibst du dich? Was sehen die anderen Wanderer, wenn sie dir im Staub begegnen?" },
+                hintergrund: { title: "Das alte Leben", text: "Wo kommst du her? Warum bist du durch den Riss geschritten? Erzähle von den Narben deiner Vergangenheit." },
+                steam: { title: "Aura-Signatur (Steam)", text: "Die 17-stellige Steam64 ID, um deine Existenz am Portal zu legitimieren." },
+                discord: { title: "Rufname (Discord)", text: "Dein Name in der Halle der Stimmen (Discord) zur Kommunikation mit den Architekten." },
+                neueRasse: { title: "Vergessenes Blut", text: "Beschreibe das Aussehen, die Herkunft und die Eigenheiten dieses unbekannten Volkes." }
+            };
+
             const data = fieldInfos[key];
             if(!data) return;
             
@@ -2195,10 +2127,12 @@
         function toggleCustomRace() {
             const raceSelect = document.getElementById('charRace');
             const customContainer = document.getElementById('customRaceContainer');
-            if (raceSelect.value === 'Neue Rasse') {
-                customContainer.classList.remove('hidden');
-            } else {
-                customContainer.classList.add('hidden');
+            if (raceSelect && customContainer) {
+                if (raceSelect.value === 'Neue Rasse') {
+                    customContainer.classList.remove('hidden');
+                } else {
+                    customContainer.classList.add('hidden');
+                }
             }
         }
 
@@ -2258,12 +2192,9 @@
             }
         }
 
-        function val(id) {
-            const el = document.getElementById(id);
-            return el ? el.value : '';
-        }
-
         async function copyCharacter() {
+            const val = id => document.getElementById(id) ? document.getElementById(id).value : '';
+            
             let raceValue = val('charRace');
             if (raceValue === 'Neue Rasse') {
                 raceValue = `Unbekanntes Blut\n**Beschreibung:** ${val('charCustomRaceDesc')}`;
