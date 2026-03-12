@@ -298,6 +298,17 @@
         </div>
     </div>
 
+    <!-- IMAGE LIGHTBOX MODAL -->
+    <div id="image-modal" class="info-modal-bg hidden-modal fixed inset-0 flex items-center justify-center p-4 z-[400]" onclick="closeImageModal()">
+        <button onclick="closeImageModal()" class="absolute top-6 right-6 text-gray-400 hover:text-white transition-colors z-50">
+            <i data-lucide="x" class="w-10 h-10 drop-shadow-md"></i>
+        </button>
+        <div class="relative max-w-7xl w-full max-h-[90vh] flex flex-col items-center justify-center" onclick="event.stopPropagation()">
+            <img id="modal-img" src="" alt="Großansicht" class="max-w-full max-h-[80vh] object-contain border border-rift-800 shadow-[0_0_50px_rgba(139,92,246,0.3)] bg-black/50">
+            <h4 id="modal-title" class="font-magic text-white text-2xl md:text-3xl tracking-widest mt-6 capitalize text-glow-rift"></h4>
+        </div>
+    </div>
+
     <!-- EPIC RIFT LOADER (Nur für den Portal-Eintritt) -->
     <div id="rift-loader" class="fixed inset-0 z-[100] flex flex-col items-center justify-center">
         <div id="rift-aura" class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-8 h-8 bg-rift-400 rounded-full blur-[80px] opacity-80 pointer-events-none transform scale-1 gpu-accel"></div>
@@ -1692,11 +1703,12 @@
         // --- CONFIG & UTILS ---
         const galleryConfig = {
             folder: './', // <-- GEÄNDERT: Sucht jetzt im selben Ordner wie die index.html
-            files: ['image1.png'
-                // Hier kannst du in Zukunft deine Bilddateien eintragen.
-                // Beispiel:
-                // 'mein-bild.jpg',
-                // 'noch-ein-bild.png'
+            files: [
+                'image1.png',
+                'image2.png'
+                // Füge hier einfach weitere Bilder hinzu:
+                // 'image3.png',
+                // 'image4.jpg'
             ] 
         };
 
@@ -2018,20 +2030,59 @@
                 return;
             }
 
+            // Gitter-Klassen wiederherstellen, falls sie durch den leeren Zustand überschrieben wurden
+            grid.className = "grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8";
+
             galleryConfig.files.forEach((filename, index) => {
                 const card = document.createElement('div');
-                card.className = 'holo-card rounded-sm opacity-0'; 
+                card.className = 'holo-card rounded-sm opacity-0 cursor-pointer group'; 
                 card.style.animationDelay = `${index * 0.1}s`; 
                 const title = filename.split('.')[0].replace(/[-_]/g, ' '); 
+                const imgSrc = `${galleryConfig.folder}${filename}`;
+
+                // Klick-Event für die Großansicht
+                card.onclick = () => openImageModal(imgSrc, title);
 
                 card.innerHTML = `
-                    <img src="${galleryConfig.folder}${filename}" alt="${title}" class="holo-img" onerror="this.onerror=null; this.src='https://placehold.co/600x400/1c1917/a8a29e?text=Kein+Bild';">
-                    <div class="holo-overlay">
+                    <div class="relative w-full h-full overflow-hidden">
+                        <img src="${imgSrc}" alt="${title}" class="holo-img transform group-hover:scale-110 transition-all duration-700" onerror="this.onerror=null; this.src='https://placehold.co/600x400/1c1917/a8a29e?text=Kein+Bild';">
+                        <div class="absolute inset-0 bg-rift-500/0 group-hover:bg-rift-500/20 transition-colors duration-500 flex items-center justify-center">
+                            <i data-lucide="zoom-in" class="text-white w-10 h-10 opacity-0 group-hover:opacity-100 transition-opacity duration-300 drop-shadow-[0_0_10px_rgba(0,0,0,0.8)]"></i>
+                        </div>
+                    </div>
+                    <div class="holo-overlay pointer-events-none">
                         <h4 class="font-magic text-white text-xl tracking-widest capitalize">${title}</h4>
                     </div>
                 `;
                 grid.appendChild(card);
             });
+            
+            // Icons für die neuen Lupe-Symbole initialisieren
+            if(typeof lucide !== 'undefined') { lucide.createIcons(); }
+        }
+
+        // --- BILDER MODAL LOGIK ---
+        function openImageModal(src, title) {
+            const modal = document.getElementById('image-modal');
+            const img = document.getElementById('modal-img');
+            const titleEl = document.getElementById('modal-title');
+
+            img.src = src;
+            titleEl.innerText = title;
+
+            modal.classList.remove('hidden-modal', 'pointer-events-none');
+            modal.classList.add('opacity-100', 'pointer-events-auto');
+        }
+
+        function closeImageModal() {
+            const modal = document.getElementById('image-modal');
+            modal.classList.remove('opacity-100', 'pointer-events-auto');
+            modal.classList.add('hidden-modal', 'pointer-events-none');
+            
+            // Bild-URL verzögert leeren, damit es beim Ausblenden keinen Sprung gibt
+            setTimeout(() => {
+                document.getElementById('modal-img').src = '';
+            }, 300);
         }
 
         // --- LOOP ---
