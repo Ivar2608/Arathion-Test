@@ -122,25 +122,16 @@
             opacity: 0.5;
         }
 
-        /* Gallery Masonry Cards */
+        /* Gallery */
         .holo-card {
             position: relative; overflow: hidden;
             border: 1px solid rgba(168, 162, 158, 0.2); background: rgba(28, 25, 23, 0.8);
-            transition: all 0.4s ease; opacity: 0; 
-            /* Animation wird jetzt dynamisch per JS gesetzt, damit sie erst beim Rendern triggert */
+            transition: all 0.4s ease; opacity: 0; animation: materialize 0.8s ease-out forwards;
         }
-        .holo-card:hover { border-color: #d946ef; box-shadow: 0 0 25px rgba(139, 92, 246, 0.3); transform: translateY(-3px); }
-        .holo-img { width: 100%; height: auto; display: block; object-fit: cover; filter: grayscale(0.6) sepia(0.3) hue-rotate(250deg) brightness(0.7); transition: filter 0.5s, transform 0.5s; }
-        .holo-card:hover .holo-img { filter: grayscale(0) sepia(0) hue-rotate(0) brightness(1.1); transform: scale(1.02); }
+        .holo-card:hover { border-color: #d946ef; box-shadow: 0 0 20px rgba(139, 92, 246, 0.2); transform: translateY(-5px); }
+        .holo-img { width: 100%; height: 200px; object-fit: cover; filter: grayscale(0.6) sepia(0.3) hue-rotate(250deg) brightness(0.7); transition: filter 0.5s; }
+        .holo-card:hover .holo-img { filter: grayscale(0.2) sepia(0) hue-rotate(0) brightness(1); }
         .holo-overlay { position: absolute; bottom: 0; left: 0; width: 100%; background: linear-gradient(to top, #020617, transparent); padding: 1rem; }
-
-        /* Mystische Ecken für Bilder */
-        .holo-card::before, .holo-card::after {
-            content: ''; position: absolute; width: 15px; height: 15px; border: 1px solid rgba(139, 92, 246, 0.3); z-index: 20; pointer-events: none; transition: border-color 0.3s;
-        }
-        .holo-card::before { top: 5px; left: 5px; border-right: 0; border-bottom: 0; }
-        .holo-card::after { bottom: 5px; right: 5px; border-left: 0; border-top: 0; }
-        .holo-card:hover::before, .holo-card:hover::after { border-color: #c084fc; }
 
         /* Page Layout */
         .page-container {
@@ -260,20 +251,7 @@
         .legal-content h3 { color: #d6d3d1; font-family: 'Cinzel', serif; margin-top: 1.5rem; margin-bottom: 0.5rem; font-size: 1.5rem;}
         .legal-content p, .legal-content ul { color: #a8a29e; margin-bottom: 1rem; line-height: 1.6; }
         .legal-content ul { list-style-type: disc; padding-left: 1.5rem; }
-
-        /* ANTI-FLASH LOGIC: Versteckt das Portal *sofort*, wenn LocalStorage gefunden wird! */
-        html.skip-portal #portal { display: none !important; }
-        html.skip-portal #home { display: block !important; opacity: 1 !important; animation: none !important; }
-        html.skip-portal #main-nav { display: flex !important; }
-        html.skip-portal #main-footer { display: flex !important; }
     </style>
-
-    <!-- ANTI-FLASH SCRIPT: Muss exakt hier stehen! Verhindert das 1-Sekunden-Blitzen der Frontpage. -->
-    <script>
-        if (localStorage.getItem('hasEnteredRift') === 'true') {
-            document.documentElement.classList.add('skip-portal');
-        }
-    </script>
 </head>
 <body class="bg-rift-900 text-bone-300 selection:bg-rift-500 selection:text-white relative h-screen w-screen overflow-hidden">
 
@@ -317,17 +295,6 @@
             <button onclick="closeInfoModal()" class="w-full mt-8 bg-black/50 border border-rift-800 text-rift-400 hover:border-rift-500 hover:text-white font-magic text-lg py-2 tracking-widest transition-colors">
                 Schriftrolle schließen
             </button>
-        </div>
-    </div>
-
-    <!-- LIGHTBOX MODAL (Für Galerie Bilder in Groß) -->
-    <div id="lightbox-modal" class="fixed inset-0 z-[400] bg-black/95 backdrop-blur-xl hidden flex-col items-center justify-center opacity-0 transition-opacity duration-300 cursor-pointer" onclick="closeLightbox()">
-        <button onclick="closeLightbox()" class="absolute top-4 right-4 md:top-8 md:right-8 text-gray-500 hover:text-white transition-colors z-[410]">
-            <i data-lucide="x" class="w-10 h-10"></i>
-        </button>
-        <div class="relative max-w-[95vw] max-h-[90vh] flex flex-col items-center justify-center p-4 pointer-events-none">
-            <img id="lightbox-img" src="" alt="Vision Fullscreen" class="max-w-full max-h-[80vh] object-contain shadow-[0_0_50px_rgba(139,92,246,0.3)] border border-rift-800 transform scale-95 transition-transform duration-300">
-            <h4 id="lightbox-title" class="font-magic text-2xl text-rift-300 tracking-widest mt-6 uppercase text-glow-rift drop-shadow-[0_0_10px_rgba(0,0,0,0.8)]"></h4>
         </div>
     </div>
 
@@ -577,6 +544,7 @@
                             <h4 class="font-magic text-bone-300 text-xl tracking-widest mb-4 border-b border-bone-800 pb-2">Naturvölker <span class="text-[#4ade80] opacity-50 float-right">✤</span></h4>
                             <div class="flex flex-wrap gap-3 font-lore text-lg">
                                 <span class="text-gray-300">Elfen</span> <span class="text-bone-700">•</span>
+                                <span class="text-gray-300">Tierwesen</span> <span class="text-bone-700">•</span>
                                 <span class="text-gray-300">Halblinge</span> <span class="text-bone-700">•</span>
                                 <span class="text-gray-300">Fee</span>
                             </div>
@@ -601,18 +569,17 @@
                         </div>
 
                         <div class="bg-black/50 border border-bone-800 p-6 shadow-lg md:col-span-2 lg:col-span-1">
-                            <h4 class="font-magic text-bone-300 text-xl tracking-widest mb-4 border-b border-bone-800 pb-2">Finsternis <span class="text-[#c084fc] opacity-50 float-right">☽</span></h4>
+                            <h4 class="font-magic text-bone-300 text-xl tracking-widest mb-4 border-b border-bone-800 pb-2">Finsternis & Mystik <span class="text-[#c084fc] opacity-50 float-right">☽</span></h4>
                             <div class="flex flex-wrap gap-3 font-lore text-lg">
                                 <span class="text-gray-300">Vampire</span> <span class="text-bone-700">•</span>
                                 <span class="text-gray-300">Werwesen</span> <span class="text-bone-700">•</span>
-                                <span class="text-gray-300">Tierwesen</span> <span class="text-bone-700">•</span>
                                 <span class="text-gray-300">Dimensionales</span>
                             </div>
                         </div>
 
                         <div class="bg-black/50 border border-rift-800 p-6 shadow-lg md:col-span-2 lg:col-span-2 relative overflow-hidden">
                             <div class="absolute top-0 right-0 w-32 h-32 bg-rift-500/10 blur-2xl rounded-full gpu-accel"></div>
-                            <h4 class="font-magic text-rift-300 text-xl tracking-widest mb-4 border-b border-rift-900 pb-2 relative z-10">Zivilisation</h4>
+                            <h4 class="font-magic text-rift-300 text-xl tracking-widest mb-4 border-b border-rift-900 pb-2 relative z-10">Zivilisation & Technik</h4>
                             <div class="flex flex-wrap gap-3 font-lore text-lg relative z-10 items-center">
                                 <span class="text-gray-300">Menschen</span> <span class="text-bone-700">•</span>
                                 <span class="text-gray-300">Cyborgs</span>
@@ -658,7 +625,7 @@
                             <h4 class="font-magic text-white text-3xl mb-4 flex items-center gap-3 relative z-10"><i data-lucide="sparkles" class="text-rift-400 w-8 h-8 opacity-70"></i> Magier</h4>
                             <p class="text-gray-300 font-lore text-xl mb-4 flex-grow leading-relaxed relative z-10">Magier sind Gelehrte, die die instabilen Energien der Welt manipulieren. Sie beherrschen sowohl die zerstörerischen Elemente als auch arkane Manipulationen, um das Schlachtfeld zu kontrollieren. Ein Magier kann Feuer regnen lassen oder die Realität krümmen, doch diese Macht ist gefährlich. Wer die arkane Energie nicht mit eisernem Willen führt, läuft Gefahr, von der Magie, die er beschwört, selbst verzehrt zu werden.</p>
                             <div class="bg-red-950/20 border border-red-900/50 p-3 mb-4 text-sm font-lore text-gray-300 relative z-10">
-                                <span class="text-red-400 font-bold">ACHTUNG:</span> Wer die Seelenmagie wählt, hat keine andere Wahl, als sich mit Spinnen auseinander zu setzen! Dies liegt am AOC System. Wir empfehlen also dies mit einer so enorm ausgeprägten Arachnophobie zu vermeiden!
+                                <span class="text-red-400 font-bold">ACHTUNG:</span> Wer die Seelenmagie wählt, hat keine andere Wahl, als sich mit Spinnen auseinanderzusetzen! Dies liegt am AOC System. Wir empfehlen also, dies mit einer stark ausgeprägten Arachnophobie zu vermeiden!
                             </div>
                             <div class="font-lore text-gray-400 border-t border-bone-800 pt-4 relative z-10">
                                 <p><span class="text-bone-500">Rüstung:</span> leichte Rüstung</p>
@@ -837,14 +804,14 @@
             </div>
         </div>
 
-        <!-- GALLERY (Masonry & Automatische Bild-Suche) -->
+        <!-- GALLERY -->
         <div id="gallery" class="page-container">
-            <div class="max-w-7xl mx-auto px-4 py-12">
+            <div class="max-w-6xl mx-auto px-4 py-12">
                 <div class="text-center mb-16">
                     <h2 class="font-magic text-5xl text-white text-glow-rift mb-4">Verblasste Visionen</h2>
                     <p class="font-magic text-bone-400 tracking-widest uppercase text-sm">Bilder aus dem Staub von Olyndra</p>
                 </div>
-                <div id="gallery-grid"></div>
+                <div id="gallery-grid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8"></div>
             </div>
         </div>
 
@@ -939,27 +906,27 @@
                                 <div>
                                     <h4 class="font-bold text-rift-400 mb-2">Bauregeln</h4>
                                     <ul class="list-disc pl-6 space-y-1 marker:text-bone-600">
-                                        <li>Bauort muss über ein Supportticket angemeldet werden</li>
+                                        <li>Bauort muss über ein Supportticket gemeldet werden</li>
                                         <li>Maximale Dekorationen pro Person → 250 Dekoteile</li>
                                         <li>Rüstungspuppen pro Person → 2 Stück</li>
                                         <li>Maximale Pflanztröge pro Clan → 4 Stück</li>
-                                        <li>Maximale Strukturen pro Clan in pro Kachel → 3000 Bauteile</li>
-                                        <li>Maximale Dekorationen pro Clan in pro Kachel → 1000 Deko Teile</li>
+                                        <li>Maximale Strukturen pro Clan pro Kachel → 3000 Bauteile</li>
+                                        <li>Maximale Dekorationen pro Clan pro Kachel → 1000 Deko Teile</li>
                                         <li>Glockentiere pro Spieler → 1 Tier</li>
                                         <li>Conan Haustier (Cat) pro Spieler → 1 Tier</li>
                                     </ul>
-                                    <p class="mt-2 text-bone-400 italic">Abweichungen können im Ticket angefragt werden! Es muss damit gerechnet werden das es abgelehnt wird, selbst wenn der Grund gut und solide ist!</p>
+                                    <p class="mt-2 text-bone-400 italic">Abweichungen können im Ticket angefragt werden! Es muss damit gerechnet werden, dass es abgelehnt wird, selbst wenn der Grund gut und solide ist!</p>
                                 </div>
                                 <div>
                                     <h4 class="font-bold text-rift-400 mb-2">Werkbänke</h4>
-                                    <p>Das anpassen der größe der Werkbänke ist im Rplichen Rahmen gestattet. Kleine und große Charaktere dürfen die jeweilige Werkbank anpassen um RPlich angenehm an ihnen Arbeiten zu können. Das größer und kleiner Ziehen der Werkbänke um Platz zu sparen oder zu füllen ist nicht gestattet.</p>
+                                    <p>Das Anpassen der Größe der Werkbänke ist im Rplichen Rahmen gestattet. Kleine und große Charaktere dürfen die jeweilige Werkbank anpassen, um RPlich angenehm an ihnen arbeiten zu können. Das größer und kleiner Ziehen der Werkbänke um Platz zu sparen oder zu füllen, ist nicht gestattet.</p>
                                     <p class="mt-2"><strong>Für Clan’s gilt:</strong><br>
                                     Maximal 2 Werkbänke gleicher Art und Nutzung pro Clan.<br>
                                     Maximal 2 Öfen pro Clan</p>
                                 </div>
                                 <div>
                                     <h4 class="font-bold text-rift-400 mb-2">Lagerräume</h4>
-                                    <p>Jede Siedlung, unabhängig der Bewohner, kann einen “externen” Lagerraum anfragen um die Materialien außerhalb zu lagern und somit die Performance zu schonen. Jedoch sind diese Lagerräume nur für die jeweilige Siedlung und somit ist rp darin und es als AFK-Fläche nutzen verboten.</p>
+                                    <p>Jede Siedlung, unabhängig der Bewohner, kann einen “externen” Lagerraum anfragen, um die Materialien außerhalb zu lagern und somit die Performance zu schonen. Jedoch sind diese Lagerräume nur für die jeweilige Siedlung und somit ist RP darin und es als AFK-Fläche zu nutzen, verboten.</p>
                                 </div>
                             </div>
                         </details>
@@ -992,11 +959,11 @@
                                 <div>
                                     <h4 class="font-bold text-rift-400 mb-2">Thralls</h4>
                                     <ul class="list-disc pl-6 space-y-2 marker:text-bone-600">
-                                        <li>Magischen Thralls dürfen die Plaketten nicht entnommen werden [Auch nicht bei tot] ! Die Plaketten dürfen auch nicht anderen Thralls gegeben werden! Werkbank-Thralls zählen ins Limit mit rein!</li>
+                                        <li>Magischen Thralls dürfen die Plaketten nicht entnommen werden [Auch nicht bei Tod] ! Die Plaketten dürfen auch nicht anderen Thralls gegeben werden! Werkbank-Thralls zählen ins Limit mit rein!</li>
                                         <li>Die Nutzung von AoC Thralls ist auf unserem Server nur nach vorheriger Absprache mit dem Team gestattet.</li>
                                         <li>Vor der Verwendung muss ein Support- oder Story-Ticket eröffnet werden.</li>
                                         <li>Auch wenn die Thralls über den Barmann anzuheuern sind, gilt: Ohne Genehmigung ist ihr Einsatz nicht erlaubt!</li>
-                                        <li>AoC Thralls werden bewusst vom Team vergeben, da sie starke und besondere Begleiter darstellen. Ihr Einsatz soll etwas Besonderes bleiben</li>
+                                        <li>AoC Thralls werden bewusst vom Team vergeben, da sie starke und besondere Begleiter darstellen. Ihr Einsatz soll etwas Besonderes bleiben.</li>
                                     </ul>
                                 </div>
                             </div>
@@ -1031,7 +998,7 @@
                                         <li>Sex- und/oder Anstößiges-RP ist nur im gegenseitigen Einverständnis erlaubt.</li>
                                         <li>Das Streamen auf unserem Server benötigt keine gesonderte Erlaubnis (ausgenommen Team-Räumen, Support-Räumen, allgemein im DC). Es ist im Stream Titel zu vermerken, dass ihr auf unserem Server spielt. Im Support könnt ihr euch die Streamer-Rolle und unser Emblem geben lassen.</li>
                                         <li>Jeder, der auf unserem Discord und/oder auf dem Server ist, hat sich dazu bereit erklärt, unwiderruflich in Streams und Videos aufgenommen zu werden (Char + Stimme).</li>
-                                        <li>Rückerstattungen von Dingen bekommt man nur mit Beweis, sei es Video Bilder oder auch Logs, bitte bedenkt, dass nicht jeder immer ehrlich ist und daher eine Kontrolle sein muss.</li>
+                                        <li>Rückerstattungen von Dingen bekommt man nur mit Beweis, sei es Video, Bilder oder auch Logs, bitte bedenkt, dass nicht jeder immer ehrlich ist und daher eine Kontrolle sein muss.</li>
                                     </ul>
                                 </div>
                                 <div>
@@ -1045,7 +1012,7 @@
                                         <li>
                                             <strong class="text-bone-300">Rassen</strong><br>
                                             <em class="text-gray-400 block mb-1">Mehrere Gestalten eines Charakters</em>
-                                            Es ist möglich mehrere Darstellungen zu haben, jedoch ist es auch notwendig das diese regelmäßig ausgespielt werden. Werden diese Darstellungen nicht regelmäßig ausgespielt, dann verliert der Charakter die Fähigkeit und behält nur noch seine Ausgangsgestalt (z.B. Dämon: Menschliche und dämonische Gestalt. Es wird aber nur die menschliche Gestalt ausgespielt, dann verliert der Charakter die dämonische Form)<br>
+                                            Es ist möglich mehrere Darstellungen zu haben, jedoch ist es auch notwendig, dass diese regelmäßig ausgespielt werden. Werden diese Darstellungen nicht regelmäßig ausgespielt, dann verliert der Charakter die Fähigkeit und behält nur noch seine Ausgangsgestalt (z.B. Dämon: Menschliche und dämonische Gestalt. Es wird aber nur die menschliche Gestalt ausgespielt, dann verliert der Charakter die dämonische Form)<br>
                                             <em class="text-gray-400 block mt-2 mb-1">Verschiedene Größen der Rassen</em>
                                             Mindestgröße: 100<br>
                                             Maximalgröße: 240
@@ -1058,11 +1025,11 @@
                                         <li>
                                             <strong class="text-bone-300">Charaktere</strong><br>
                                             <em class="text-gray-400 block mb-1">Charakterboni (Indrid’s)</em>
-                                            Jeder Charakter hat bestimmten Fähigkeiten. Jedoch legen wir Wert darauf, dass das Gleichgewicht gewahrt bleibt.
+                                            Jeder Charakter hat bestimmte Fähigkeiten. Jedoch legen wir Wert darauf, dass das Gleichgewicht gewahrt bleibt.
                                         </li>
                                         <li>
                                             <strong class="text-bone-300">Magie</strong><br>
-                                            Magie wird in die Grundelemente unterteilt. Feuer, Wasser, Luft, Erde. Diese bilden sich schließlich weiter: Licht, Schatten, Arkan, Seele. Weder Blutmagie noch heilige oder unheilige Magie ist im RP zu erwähnen! Grundsätzlich ist jeder dazu in der Lage sich eine Magie anzueignen und voran zu treiben, lediglich die Magier können nach und nach mehr als eine Magieart erlernen.
+                                            Magie wird in die Grundelemente unterteilt. Feuer, Wasser, Luft, Erde. Diese bilden sich schließlich weiter: Licht, Schatten, Arkan, Seele. Weder Blutmagie noch heilige oder unheilige Magie ist im RP zu erwähnen! Grundsätzlich ist jeder dazu in der Lage sich eine Magie anzueignen und voranzutreiben, lediglich die Magier können nach und nach mehr als eine Magieart erlernen.
                                         </li>
                                     </ul>
                                 </div>
@@ -1096,7 +1063,7 @@
                                     <h4 class="font-bold text-red-400 mb-2">Generell verbotenes</h4>
                                     <ul class="list-disc pl-6 space-y-1 marker:text-red-600">
                                         <li>Das Bauen von Altären zur Magie Herstellung ist den Magiern vorbehalten.</li>
-                                        <li>die Farmingtools sind nur von Magiern herzustellen und zu nutzen!</li>
+                                        <li>Die Farmingtools sind nur von Magiern herzustellen und zu nutzen!</li>
                                         <li>RP-Verweigerung</li>
                                     </ul>
                                 </div>
@@ -1202,15 +1169,15 @@
                                     <h4 class="font-bold text-rift-400 mb-2">Foot Print</h4>
                                     <p class="mb-2">Ihr müsst eure Fußabdrücke einstellen und in folgendem Tutorial findet ihr heraus, wie ihr es anpassen und ändern könnt:</p>
                                     <ul class="list-disc pl-6 space-y-1 marker:text-bone-600">
-                                        <li>Gehe über Shift+B in deine Tot einstellungen und wähle Bodies aus</li>
+                                        <li>Gehe über Shift+B in deine ToT-Einstellungen und wähle Bodies aus</li>
                                         <li>Gehe auf den Stift zum bearbeiten bei Current Body</li>
                                         <li>Öffne den Bereich "Body"</li>
                                         <li>Wähle dann den Bereich "Footprint" aus und entscheide dich für die passenden Abdrücke: Bare = Barfuß, Generic Shoes = Flache Schuhe, High Heels = mit dünnem Stiletto Absatz, Wide Heel = Mit breitem Absatz. Alles weitere sind tierische Abdrücke die im allgemeinen nicht gebraucht werden, es sei denn, man hat Hufe, Pfoten oder dergleichen</li>
-                                        <li>Nach dem Aussuchen den Abdrucks, oben links auf den Haken gehen für "Apply". Deine Fußabdrücke sind nun richtig eingestellt</li>
+                                        <li>Nach dem Aussuchen des Abdrucks, oben links auf den Haken gehen für "Apply". Deine Fußabdrücke sind nun richtig eingestellt</li>
                                     </ul>
                                 </div>
                                 <div>
-                                    <h4 class="font-bold text-rift-400 mb-2">Tot! Chat</h4>
+                                    <h4 class="font-bold text-rift-400 mb-2">ToT! Chat</h4>
                                     <p class="italic text-gray-400">Frage: Mein Chatfenster bleibt durchsichtig, ich muss mit der Maus reinklicken, auch wenn ich es mit [Enter] geöffnet habe. Wie ändere ich das, dass sich mein Chatfenster richtig öffnet und ich direkt schreiben kann?</p>
                                     <p>Antwort: Begib dich in die Einstellungen, dort findest du unter dem Reiter 'Steuerung' die Kategorie “Kommunikation”. In dieser musst du zwei Tastenbelegungen ändern.<br>
                                     Setze für den Globalchat eine Taste ein, die du niemals benutzt.<br>
@@ -1221,9 +1188,9 @@
                                     <p class="mb-2">Jeder kann ab sofort Scripted Lights erstellen. Tagsüber sind diese Lichter aus, in der Nacht an. Dabei zu beachten/Wie Ihr sie platziert:</p>
                                     <ul class="list-disc pl-6 space-y-1 marker:text-bone-600">
                                         <li>Lichtquelle platzieren</li>
-                                        <li>„e“ gedrückt halten und auf scripted light klicken, der Name den ihr dort dan eintragt ist Nachtlicht</li>
+                                        <li>„e“ gedrückt halten und auf scripted light klicken, der Name, den ihr dort dann eintragt, ist Nachtlicht</li>
                                         <li>Wenn ihr die Lichtquelle verschieben wollt, müsst ihr das Scriptet Light zerstören und es danach erneut erstellen</li>
-                                        <li>Alle 5 Minuten gibt es eine Abfrage ob Abend ist oder Tag</li>
+                                        <li>Alle 5 Minuten gibt es eine Abfrage, ob Abend ist oder Tag</li>
                                     </ul>
                                 </div>
                                 <div>
@@ -1290,7 +1257,7 @@
                                 </div>
                                 <div>
                                     <h4 class="font-bold text-rift-400 mb-2">Enginetod</h4>
-                                    <p>Wer so schwer verletzt wird, dass er in die Bewusstlosigkeit gerät und sogar ins Lazarett getragen werden muss, wird von der Leere korrumpiert, da die Seele schaden erleidet. Das bedeutet, dass der Spieler ein ticket eröffnen muss und von uns Ängste zugeschrieben bekommt, welche er min. 7 Tage auszuspielen hat. Dies sind Ängste, die nicht zwingend mit dem Charakter zusammen hängen. Hat er normalerweise nur Angst vor Spinnen und Feuer, hat er plötzlich so seltsame Angstzustände in der Stille oder Panik, wenn er eine Waffe in die Hand nehmen soll.</p>
+                                    <p>Wer so schwer verletzt wird, dass er in die Bewusstlosigkeit gerät und sogar ins Lazarett getragen werden muss, wird von der Leere korrumpiert, da die Seele schaden erleidet. Das bedeutet, dass der Spieler ein ticket eröffnen muss und von uns Ängste zugeschrieben bekommt, welche er min. 7 Tage auszuspielen hat. Dies sind Ängste, die nicht zwingend mit dem Charakter zusammenhängen. Hat er normalerweise nur Angst vor Spinnen und Feuer, hat er plötzlich so seltsame Angstzustände in der Stille oder Panik, wenn er eine Waffe in die Hand nehmen soll.</p>
                                 </div>
                                 <div>
                                     <h4 class="font-bold text-rift-400 mb-2">Wiederholungstäter</h4>
@@ -1418,6 +1385,7 @@
                                     <option value="Nicht angegeben" class="bg-black text-gray-500">- Unbestimmt -</option>
                                     <optgroup label="--- Naturvölker ---" class="bg-black text-gray-300">
                                         <option value="Elfen">Elfen</option>
+                                        <option value="Tierwesen">Tierwesen</option>
                                         <option value="Halblinge">Halblinge</option>
                                         <option value="Fee">Fee</option>
                                     </optgroup>
@@ -1431,13 +1399,13 @@
                                         <option value="Gobline">Gobline</option>
                                         <option value="Trolle">Trolle</option>
                                     </optgroup>
-                                    <optgroup label="--- Finsternis ---" class="bg-black text-gray-300">
+                                    <optgroup label="--- Finsternis & Mystik ---" class="bg-black text-gray-300">
                                         <option value="Vampire">Vampire</option>
                                         <option value="Werwesen">Werwesen</option>
-                                        <option value="Tierwesen">Tierwesen</option>
+                                        
                                         <option value="Dimensionales">Dimensionales</option>
                                     </optgroup>
-                                    <optgroup label="--- Zivilisation ---" class="bg-black text-gray-300">
+                                    <optgroup label="--- Zivilisation & Technik ---" class="bg-black text-gray-300">
                                         <option value="Menschen">Menschen</option>
                                         <option value="Cyborgs">Cyborgs</option>
                                     </optgroup>
@@ -1721,12 +1689,17 @@
     </div>
 
     <script>
-        // Init Icons
-        if (typeof lucide !== 'undefined') {
-            lucide.createIcons();
-        }
-
         // --- CONFIG & UTILS ---
+        const galleryConfig = {
+            folder: './', // <-- GEÄNDERT: Sucht jetzt im selben Ordner wie die index.html
+            files: [
+                // Hier kannst du in Zukunft deine Bilddateien eintragen.
+                // Beispiel:
+                // 'mein-bild.jpg',
+                // 'noch-ein-bild.png'
+            ] 
+        };
+
         const STATE = { IDLE: 'IDLE', SURGE: 'SURGE', COOLDOWN: 'COOLDOWN' };
         let currentState = STATE.IDLE;
         let currentPageId = 'portal'; 
@@ -1778,10 +1751,9 @@
                     this.speedX = (Math.random() - 0.5) * 1.2;
                     this.speedY = (Math.random() * -1.5) - 0.5; 
                     this.opacity = Math.random() * 0.6 + 0.4;
-                    // PERFORMANCE FIX: Pre-calculate colors cleanly
-                    const colorRGB = Math.random() > 0.5 ? '139, 92, 246' : '59, 130, 246';
-                    this.color = `rgba(${colorRGB}, ${this.opacity})`;
-                    this.glowColor = `rgba(${colorRGB}, ${this.opacity * 0.25})`;
+                    // PERFORMANCE FIX: GlowColor vorberechnen
+                    this.color = Math.random() > 0.5 ? `rgba(139, 92, 246, ${this.opacity})` : `rgba(59, 130, 246, ${this.opacity})`;
+                    this.glowColor = Math.random() > 0.5 ? `rgba(139, 92, 246, ${this.opacity * 0.25})` : `rgba(59, 130, 246, ${this.opacity * 0.25})`;
                 } else {
                     this.y = Math.random() * -100; 
                     this.size = Math.random() * 2 + 0.5;
@@ -1810,7 +1782,7 @@
                 ctx.fill();
                 
                 if(this.isSpark) {
-                    // Nutzt vorgebaute Farbe, spart CPU!
+                    // Nutzt jetzt die vorgebaute Farbe, spart massive CPU Last!
                     ctx.fillStyle = this.glowColor;
                     ctx.beginPath();
                     ctx.arc(this.x, this.y, this.size * 3.5, 0, Math.PI * 2);
@@ -1821,7 +1793,7 @@
 
         function initParticles() {
             particles = [];
-            // Weniger Partikel auf Mobile für mehr FPS
+            // Dynamische Anzahl: Weniger Partikel auf dem Handy für mehr FPS
             const particleCount = window.innerWidth < 768 ? 60 : 150;
             for (let i = 0; i < particleCount; i++) { 
                 particles.push(new Particle());
@@ -1872,8 +1844,10 @@
                 visits++;
                 localStorage.setItem('visitCount', visits);
                 
-                if (visits > 1 && welcomeTitle) {
+                if (visits > 1) {
                     welcomeTitle.innerText = "Willkommen zurück";
+                } else {
+                    welcomeTitle.innerText = "Willkommen";
                 }
                 
                 document.querySelectorAll('.nav-btn').forEach(btn => {
@@ -1952,9 +1926,7 @@
                 
                 localStorage.setItem('hasEnteredRift', 'true');
                 localStorage.setItem('visitCount', '1');
-                
-                const welcomeTitle = document.getElementById('welcome-title');
-                if (welcomeTitle) welcomeTitle.innerText = "Willkommen";
+                document.getElementById('welcome-title').innerText = "Willkommen";
                 
                 document.querySelectorAll('.nav-btn').forEach(btn => {
                     if(btn.dataset.target === 'home') {
@@ -1982,7 +1954,7 @@
             }, 4800); 
         }
 
-        // --- NORMAL MENU NAVIGATION ---
+        // --- NORMAL MENU NAVIGATION (Schneller Wechsel) ---
         function switchPage(targetId) {
             if (currentState === STATE.SURGE || targetId === currentPageId || isTransitioning) return;
             
@@ -2020,88 +1992,20 @@
                     setTimeout(() => {
                         document.querySelectorAll('.rift-surge-system').forEach(p => p.classList.remove('system-surge'));
                         isTransitioning = false; 
-                        
-                        // Wenn die Galerie aufgerufen wird, lade die Bilder dynamisch!
-                        if(targetId === 'gallery') {
-                            renderGallery();
-                        }
                     }, 300);
 
                 }, 300); 
             }
         }
 
-        // --- LIGHTBOX FUNKTIONEN (Für Galerie Bilder in Groß) ---
-        function openLightbox(src, title) {
-            const modal = document.getElementById('lightbox-modal');
-            const img = document.getElementById('lightbox-img');
-            const titleEl = document.getElementById('lightbox-title');
-            
-            img.src = src;
-            titleEl.innerText = title;
-            
-            modal.classList.remove('hidden');
-            modal.classList.add('flex');
-            
-            // Verzögerung für saubere CSS Transition
-            requestAnimationFrame(() => {
-                modal.classList.remove('opacity-0');
-                img.classList.remove('scale-95');
-                img.classList.add('scale-100');
-            });
-        }
-
-        function closeLightbox() {
-            const modal = document.getElementById('lightbox-modal');
-            const img = document.getElementById('lightbox-img');
-            
-            modal.classList.add('opacity-0');
-            img.classList.remove('scale-100');
-            img.classList.add('scale-95');
-            
-            // Warten bis die Animation (300ms) fertig ist
-            setTimeout(() => {
-                modal.classList.add('hidden');
-                modal.classList.remove('flex');
-                img.src = '';
-            }, 300); 
-        }
-
-        // --- GALERIE RENDERER (Robuste Async Methode) ---
-        async function renderGallery() {
+        // --- GALERIE RENDERER ---
+        function renderGallery() {
             const grid = document.getElementById('gallery-grid');
-            if(!grid || grid.innerHTML.trim() !== '') return; 
-            
-            grid.className = "columns-1 md:columns-2 lg:columns-3 gap-8 space-y-8";
-            const maxImages = 100;
-            
-            // Diese Funktion testet, ob die Datei .jpg oder .png existiert
-            const checkImage = (index) => {
-                return new Promise((resolve) => {
-                    const imgJpg = new Image();
-                    imgJpg.onload = () => resolve({ index, src: imgJpg.src, title: `Vision ${index}` });
-                    imgJpg.onerror = () => {
-                        const imgPng = new Image();
-                        imgPng.onload = () => resolve({ index, src: imgPng.src, title: `Vision ${index}` });
-                        imgPng.onerror = () => resolve(null);
-                        imgPng.src = `image${index}.png`;
-                    };
-                    imgJpg.src = `image${index}.jpg`;
-                });
-            };
+            if(!grid) return;
+            grid.innerHTML = ''; 
 
-            // Feuert alle Suchen gleichzeitig im Hintergrund ab
-            const promises = [];
-            for (let i = 1; i <= maxImages; i++) {
-                promises.push(checkImage(i));
-            }
-            
-            const results = await Promise.all(promises);
-            // Filtern der gefundenen Bilder und streng nach Nummern sortieren
-            const validImages = results.filter(res => res !== null).sort((a, b) => a.index - b.index);
-            
-            if (validImages.length === 0) {
-                grid.className = "flex flex-col items-center justify-center min-h-[400px] w-full text-center p-12 border border-dashed border-rift-900 bg-[#050205]";
+            if(galleryConfig.files.length === 0) {
+                grid.className = "flex flex-col items-center justify-center min-h-[400px] w-full col-span-3 text-center p-12 border border-dashed border-rift-900 bg-[#050205]";
                 grid.innerHTML = `
                     <div class="relative mb-6">
                         <i data-lucide="hourglass" class="w-20 h-20 text-rift-900 absolute top-0 left-0 blur-sm animate-pulse"></i>
@@ -2110,28 +2014,24 @@
                     <h3 class="font-magic text-4xl text-rift-400 mb-4 tracking-[0.2em] uppercase text-glow-rift">Coming Soon</h3>
                     <p class="font-lore text-gray-400 text-xl italic">Der Staub formt langsam neue Echos...</p>
                 `;
-                if(typeof lucide !== 'undefined') lucide.createIcons();
-            } else {
-                validImages.forEach((item, idx) => {
-                    const card = document.createElement('div');
-                    // 'hidden' ist hier ABSICHTLICH NICHT drin. Die Karte wird durch die Animation sichtbar!
-                    card.className = 'holo-card break-inside-avoid shadow-2xl mb-8 cursor-pointer';
-                    // Inline Animation: Setzt opacity initial auf 0 und blendet es sanft ein
-                    card.style.opacity = '0';
-                    card.style.animation = `materialize 0.8s ease-out forwards ${(idx % 10) * 0.1}s`;
-                    
-                    // Klick-Event für die Lightbox (Vollbild)
-                    card.onclick = () => openLightbox(item.src, item.title);
-                    
-                    const imgEl = document.createElement('img');
-                    imgEl.src = item.src;
-                    imgEl.alt = item.title;
-                    imgEl.className = 'holo-img w-full h-auto block';
-                    
-                    card.appendChild(imgEl);
-                    grid.appendChild(card);
-                });
+                if(typeof lucide !== 'undefined') { lucide.createIcons(); }
+                return;
             }
+
+            galleryConfig.files.forEach((filename, index) => {
+                const card = document.createElement('div');
+                card.className = 'holo-card rounded-sm opacity-0'; 
+                card.style.animationDelay = `${index * 0.1}s`; 
+                const title = filename.split('.')[0].replace(/[-_]/g, ' '); 
+
+                card.innerHTML = `
+                    <img src="${galleryConfig.folder}${filename}" alt="${title}" class="holo-img" onerror="this.onerror=null; this.src='https://placehold.co/600x400/1c1917/a8a29e?text=Kein+Bild';">
+                    <div class="holo-overlay">
+                        <h4 class="font-magic text-white text-xl tracking-widest capitalize">${title}</h4>
+                    </div>
+                `;
+                grid.appendChild(card);
+            });
         }
 
         // --- LOOP ---
@@ -2209,24 +2109,24 @@
             requestAnimationFrame(animateCooldown);
         }
 
-        function openInfo(key) {
-            const fieldInfos = {
-                name: { title: "Name", text: "Der Name oder Rufname deiner Seele, mitsamt Titel falls zutreffend." },
-                alter: { title: "Alter", text: "Wähle das Alter passend zu deinem Volk (maximal 5000 Jahre). Bedenke: Ein altes Wesen sieht auch entsprechend aus und trägt alte Lasten." },
-                rasse: { title: "Blutlinie (Volk)", text: "Welchem Volk gehörst du an? Falls du von einer fremden Welt stammst, beschreibe deine Natur kurz." },
-                klasse: { title: "Pfad des Kampfes", text: "Die Art, wie du im gnadenlosen Staub überlebst und feindest." },
-                berufe: { title: "Handwerk", text: "Dein Beitrag zum Überleben der Gemeinschaft. Haupt-, Neben- und reine Erzähl-Berufe." },
-                heiler: { title: "Heiler", text: "Verfügst du über die Kunst, Wunden zu schließen und vom Tode zu retten? (Zusätzlich zu anderen Berufen möglich)." },
-                faehigkeit: { title: "Gabe", text: "Beherrschst du alte Magie, das Wandeln der Gestalt oder trägst du das Bluterbe der Vampire in dir?" },
-                staerken: { title: "Eiserner Wille", text: "Geistige und charakterliche Stärken deiner Persönlichkeit (keine Spiel-Mechaniken!)." },
-                schwaechen: { title: "Sprödes Fleisch", text: "Ängste, Schwächen und Fehler, die dich angreifbar machen." },
-                beschreibung: { title: "Das Antlitz", text: "Wie gibst du dich? Was sehen die anderen Wanderer, wenn sie dir im Staub begegnen?" },
-                hintergrund: { title: "Das alte Leben", text: "Wo kommst du her? Warum bist du durch den Riss geschritten? Erzähle von den Narben deiner Vergangenheit." },
-                steam: { title: "Aura-Signatur (Steam)", text: "Die 17-stellige Steam64 ID, um deine Existenz am Portal zu legitimieren." },
-                discord: { title: "Rufname (Discord)", text: "Dein Name in der Halle der Stimmen (Discord) zur Kommunikation mit den Architekten." },
-                neueRasse: { title: "Vergessenes Blut", text: "Beschreibe das Aussehen, die Herkunft und die Eigenheiten dieses unbekannten Volkes." }
-            };
+        const fieldInfos = {
+            name: { title: "Name", text: "Der Name oder Rufname deiner Seele, mitsamt Titel falls zutreffend." },
+            alter: { title: "Alter", text: "Wähle das Alter passend zu deinem Volk (maximal 5000 Jahre). Bedenke: Ein altes Wesen sieht auch entsprechend aus und trägt alte Lasten." },
+            rasse: { title: "Blutlinie (Volk)", text: "Welchem Volk gehörst du an? Falls du von einer fremden Welt stammst, beschreibe deine Natur kurz." },
+            klasse: { title: "Pfad des Kampfes", text: "Die Art, wie du im gnadenlosen Staub überlebst und feindest." },
+            berufe: { title: "Handwerk", text: "Dein Beitrag zum Überleben der Gemeinschaft. Haupt-, Neben- und reine Erzähl-Berufe." },
+            heiler: { title: "Heiler", text: "Verfügst du über die Kunst, Wunden zu schließen und vom Tode zu retten? (Zusätzlich zu anderen Berufen möglich)." },
+            faehigkeit: { title: "Gabe", text: "Beherrschst du alte Magie, das Wandeln der Gestalt oder trägst du das Bluterbe der Vampire in dir?" },
+            staerken: { title: "Eiserner Wille", text: "Geistige und charakterliche Stärken deiner Persönlichkeit (keine Spiel-Mechaniken!)." },
+            schwaechen: { title: "Sprödes Fleisch", text: "Ängste, Schwächen und Fehler, die dich angreifbar machen." },
+            beschreibung: { title: "Das Antlitz", text: "Wie gibst du dich? Was sehen die anderen Wanderer, wenn sie dir im Staub begegnen?" },
+            hintergrund: { title: "Das alte Leben", text: "Wo kommst du her? Warum bist du durch den Riss geschritten? Erzähle von den Narben deiner Vergangenheit." },
+            steam: { title: "Aura-Signatur (Steam)", text: "Die 17-stellige Steam64 ID, um deine Existenz am Portal zu legitimieren." },
+            discord: { title: "Rufname (Discord)", text: "Dein Name in der Halle der Stimmen (Discord) zur Kommunikation mit den Architekten." },
+            neueRasse: { title: "Vergessenes Blut", text: "Beschreibe das Aussehen, die Herkunft und die Eigenheiten dieses unbekannten Volkes." }
+        };
 
+        function openInfo(key) {
             const data = fieldInfos[key];
             if(!data) return;
             
@@ -2247,12 +2147,10 @@
         function toggleCustomRace() {
             const raceSelect = document.getElementById('charRace');
             const customContainer = document.getElementById('customRaceContainer');
-            if (raceSelect && customContainer) {
-                if (raceSelect.value === 'Neue Rasse') {
-                    customContainer.classList.remove('hidden');
-                } else {
-                    customContainer.classList.add('hidden');
-                }
+            if (raceSelect.value === 'Neue Rasse') {
+                customContainer.classList.remove('hidden');
+            } else {
+                customContainer.classList.add('hidden');
             }
         }
 
@@ -2312,9 +2210,12 @@
             }
         }
 
+        function val(id) {
+            const el = document.getElementById(id);
+            return el ? el.value : '';
+        }
+
         async function copyCharacter() {
-            const val = id => document.getElementById(id) ? document.getElementById(id).value : '';
-            
             let raceValue = val('charRace');
             if (raceValue === 'Neue Rasse') {
                 raceValue = `Unbekanntes Blut\n**Beschreibung:** ${val('charCustomRaceDesc')}`;
@@ -2394,6 +2295,7 @@ ${val('charStory')}
         window.addEventListener('load', () => { 
             if(typeof lucide !== 'undefined') { lucide.createIcons(); }
             initRouting();
+            renderGallery(); 
             requestAnimationFrame(updateLoop); 
         });
     </script>
