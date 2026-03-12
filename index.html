@@ -126,12 +126,12 @@
         .holo-card {
             position: relative; overflow: hidden;
             border: 1px solid rgba(168, 162, 158, 0.2); background: rgba(28, 25, 23, 0.8);
-            transition: all 0.4s ease; opacity: 0; animation: materialize 0.8s ease-out forwards;
+            transition: all 0.4s ease;
         }
         .holo-card:hover { border-color: #d946ef; box-shadow: 0 0 20px rgba(139, 92, 246, 0.2); transform: translateY(-5px); }
-        .holo-img { width: 100%; height: 200px; object-fit: cover; filter: grayscale(0.6) sepia(0.3) hue-rotate(250deg) brightness(0.7); transition: filter 0.5s; }
-        .holo-card:hover .holo-img { filter: grayscale(0.2) sepia(0) hue-rotate(0) brightness(1); }
-        .holo-overlay { position: absolute; bottom: 0; left: 0; width: 100%; background: linear-gradient(to top, #020617, transparent); padding: 1rem; }
+        .holo-img { width: 100%; height: 250px; object-fit: cover; filter: grayscale(0.6) sepia(0.3) hue-rotate(250deg) brightness(0.7); transition: all 0.7s ease; }
+        .holo-card:hover .holo-img { filter: grayscale(0.2) sepia(0) hue-rotate(0) brightness(1); transform: scale(1.1); }
+        .holo-overlay { position: absolute; bottom: 0; left: 0; width: 100%; background: linear-gradient(to top, #020617, transparent); padding: 1rem; z-index: 10; }
 
         /* Page Layout */
         .page-container {
@@ -1702,7 +1702,7 @@
     <script>
         // --- CONFIG & UTILS ---
         const galleryConfig = {
-            folder: './', // <-- GEÄNDERT: Sucht jetzt im selben Ordner wie die index.html
+            folder: '', // Sucht exakt im selben Ordner wie die index.html
             files: [
                 'image1.png',
                 'image2.png',
@@ -1711,9 +1711,6 @@
                 'image5.png',
                 'image6.png',
                 'image7.png'
-                // Füge hier einfach weitere Bilder hinzu:
-                // 'image3.png',
-                // 'image4.jpg'
             ] 
         };
 
@@ -2040,23 +2037,24 @@
 
             galleryConfig.files.forEach((filename, index) => {
                 const card = document.createElement('div');
-                card.className = 'holo-card rounded-sm opacity-0 cursor-pointer group'; 
+                // HIER DER FIX: "opacity-0" wurde entfernt, damit die Karten sichtbar sind!
+                card.className = 'holo-card rounded-sm cursor-pointer group shadow-lg'; 
                 card.style.animationDelay = `${index * 0.1}s`; 
                 const title = filename.split('.')[0].replace(/[-_]/g, ' '); 
-                const imgSrc = `${galleryConfig.folder}${filename}`;
+                const imgSrc = galleryConfig.folder ? `${galleryConfig.folder}${filename}` : filename;
 
                 // Klick-Event für die Großansicht
                 card.onclick = () => openImageModal(imgSrc, title);
 
                 card.innerHTML = `
-                    <div class="relative w-full h-full overflow-hidden">
-                        <img src="${imgSrc}" alt="${title}" class="holo-img transform group-hover:scale-110 transition-all duration-700" onerror="this.onerror=null; this.src='https://placehold.co/600x400/1c1917/a8a29e?text=Kein+Bild';">
-                        <div class="absolute inset-0 bg-rift-500/0 group-hover:bg-rift-500/20 transition-colors duration-500 flex items-center justify-center">
-                            <i data-lucide="zoom-in" class="text-white w-10 h-10 opacity-0 group-hover:opacity-100 transition-opacity duration-300 drop-shadow-[0_0_10px_rgba(0,0,0,0.8)]"></i>
+                    <div class="relative w-full h-full overflow-hidden bg-black/50">
+                        <img src="${imgSrc}" alt="${title}" class="holo-img" onerror="this.onerror=null; this.src='https://placehold.co/600x400/1c1917/a8a29e?text=Kein+Bild';">
+                        <div class="absolute inset-0 bg-rift-500/0 group-hover:bg-rift-500/20 transition-colors duration-500 flex items-center justify-center z-20">
+                            <i data-lucide="zoom-in" class="text-white w-12 h-12 opacity-0 group-hover:opacity-100 transition-opacity duration-300 drop-shadow-[0_0_10px_rgba(0,0,0,0.8)]"></i>
                         </div>
                     </div>
                     <div class="holo-overlay pointer-events-none">
-                        <h4 class="font-magic text-white text-xl tracking-widest capitalize">${title}</h4>
+                        <h4 class="font-magic text-white text-xl tracking-widest capitalize drop-shadow-md">${title}</h4>
                     </div>
                 `;
                 grid.appendChild(card);
