@@ -2270,6 +2270,19 @@
         }
 
         async function copyCharacter() {
+            // --- NEU: Formular-Validierung ---
+            if (!val('charName') || !val('steamID')) {
+                const msg = document.getElementById('copy-msg');
+                if(msg) {
+                    msg.innerText = ">> Bitte fülle mindestens deinen Namen und deine Steam-ID aus. <<";
+                    msg.className = "text-center text-red-500 font-magic tracking-widest text-lg mt-6 opacity-0 transition-opacity";
+                    msg.style.opacity = 1; 
+                    setTimeout(() => msg.style.opacity = 0, 4000);
+                }
+                return; // Bricht das Kopieren ab
+            }
+            // ---------------------------------
+
             let raceValue = val('charRace');
             if (raceValue === 'Neue Rasse') {
                 raceValue = `Unbekanntes Blut\n**Beschreibung:** ${val('charCustomRaceDesc')}`;
