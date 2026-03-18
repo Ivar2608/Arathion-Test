@@ -263,8 +263,8 @@
         </filter>
     </svg>
 
-    <div class="world-bg gpu-accel"></div>
-    <div class="dust-overlay gpu-accel"></div>
+    <div class="world-bg"></div>
+    <div class="dust-overlay"></div>
 
     <!-- FX Canvas (Asche & Funken - Optimiert) -->
     <canvas id="bg-canvas" class="fixed inset-0 z-0 opacity-80 pointer-events-none gpu-accel"></canvas>
@@ -375,11 +375,11 @@
         <!-- PORTAL (Eingangsseite - Erstbesuch) -->
         <div id="portal" class="page-container page-active">
             <div class="flex flex-col items-center justify-center w-full min-h-[90vh] px-6 sm:px-10 relative mt-10">
-                <div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-full max-w-3xl h-[600px] bg-rift-500/10 blur-[180px] rounded-full pointer-events-none z-0 gpu-accel"></div>
+                <div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-full max-w-3xl h-[600px] bg-rift-500/10 blur-[180px] rounded-full pointer-events-none z-0"></div>
                 
                 <div class="relative inline-block mb-8 group z-10">
                     <div class="absolute inset-0 bg-rift-500/20 blur-3xl rounded-full scale-110 animate-rift-pulse"></div>
-                    <img src="ARALOGO.png" alt="Arathion Logo" class="w-48 h-48 sm:w-64 sm:h-64 md:w-80 md:h-80 object-cover rounded-full mx-auto relative z-10 shadow-[0_0_60px_rgba(59,130,246,0.4)] border border-rift-800 gpu-accel">
+                    <img src="ARALOGO.png" alt="Arathion Logo" class="w-48 h-48 sm:w-64 sm:h-64 md:w-80 md:h-80 object-cover rounded-full mx-auto relative z-10 shadow-[0_0_60px_rgba(59,130,246,0.4)] border border-rift-800">
                 </div>
 
                 <h1 class="font-magic text-5xl sm:text-7xl md:text-9xl text-white text-glow-rift leading-tight mix-blend-overlay mb-2 z-10 tracking-widest text-center">ARATHION</h1>
@@ -1565,7 +1565,7 @@
         <!-- CONNECT -->
         <div id="connect" class="page-container">
             <div class="py-12 md:py-20 flex flex-col items-center px-4 relative">
-                <div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-full max-w-3xl h-[600px] bg-rift-500/10 blur-[180px] rounded-full pointer-events-none z-0 gpu-accel"></div>
+                <div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-full max-w-3xl h-[600px] bg-rift-500/10 blur-[180px] rounded-full pointer-events-none z-0"></div>
                 
                 <h2 class="font-magic text-6xl text-white mb-16 text-glow-rift text-center relative z-10">Das Erwachen</h2>
                 <div class="grid md:grid-cols-2 gap-10 max-w-4xl w-full relative z-10">
@@ -1670,7 +1670,7 @@
     </main>
 
     <!-- Footer -->
-    <footer id="main-footer" style="display: none;" class="fixed bottom-0 left-0 w-full h-10 bg-[#02040a] border-t border-bone-900 z-50 flex items-center justify-between px-6 text-[12px] uppercase font-magic tracking-widest text-gray-500 gpu-accel">
+    <footer id="main-footer" style="display: none;" class="fixed bottom-0 left-0 w-full h-10 bg-[#02040a] border-t border-bone-900 z-50 flex items-center justify-between px-6 text-[12px] uppercase font-magic tracking-widest text-gray-500">
         <div class="flex gap-6">
             <span>Olyndra: <span class="text-rift-500">Erwacht</span></span>
             <span class="hidden sm:inline">Portal: <span id="rift-val">Stabil</span></span>
@@ -1682,7 +1682,7 @@
     </footer>
 
     <!-- Storage Cookie Banner (Standard & Sachlich) -->
-    <div id="rift-cookie-banner" class="fixed bottom-14 right-4 md:bottom-16 md:right-8 max-w-md bg-gray-900 border border-gray-700 p-6 z-[60] rounded-md shadow-2xl transform translate-y-[150%] transition-transform duration-700 hidden font-sans gpu-accel">
+    <div id="rift-cookie-banner" class="fixed bottom-14 right-4 md:bottom-16 md:right-8 max-w-md bg-gray-900 border border-gray-700 p-6 z-[60] rounded-md shadow-2xl transform translate-y-[150%] transition-transform duration-700 hidden font-sans">
         <h3 class="font-bold text-white text-lg mb-2 flex items-center gap-2">
             <i data-lucide="info" class="w-5 h-5 text-gray-400"></i> Hinweis zum Datenschutz
         </h3>
