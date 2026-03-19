@@ -373,7 +373,7 @@
     <main class="relative w-full h-full z-10">
         
         <!-- PORTAL (Eingangsseite - Erstbesuch) -->
-        <div id="portal" class="page-container page-active">
+        <div id="portal" class="page-container">
             <div class="flex flex-col items-center justify-center w-full min-h-[90vh] px-6 sm:px-10 relative mt-10">
                 <div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-full max-w-3xl h-[600px] bg-rift-500/10 blur-[180px] rounded-full pointer-events-none z-0"></div>
                 
@@ -2359,9 +2359,11 @@ ${val('charStory')}
         }
 
         // Init
-        window.addEventListener('load', () => { 
+        document.addEventListener('DOMContentLoaded', () => { 
+            // Routing als allererstes ausführen, um Flackern zu verhindern!
+            initRouting(); 
+            
             if(typeof lucide !== 'undefined') { lucide.createIcons(); }
-            initRouting();
             renderGallery(); 
             requestAnimationFrame(updateLoop); 
         });
