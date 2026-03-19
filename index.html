@@ -286,7 +286,7 @@
     <!-- FIELD INFO MODAL (Dynamic Form Help) -->
     <div id="field-info-modal" class="info-modal-bg hidden-modal fixed inset-0 flex items-center justify-center p-4 z-[300]">
         <div class="rift-panel p-8 max-w-md w-full relative border-rift-800">
-            <button onclick="closeInfoModal()" class="absolute top-4 right-4 text-gray-500 hover:text-white transition-colors"><i data-lucide="x" class="w-6 h-6"></i></button>
+            <button aria-label="Schließen" onclick="closeInfoModal()" class="absolute top-4 right-4 text-gray-500 hover:text-white transition-colors"><i data-lucide="x" class="w-6 h-6"></i></button>
             <div class="flex items-center gap-3 mb-4 border-b border-rift-900 pb-4">
                 <i data-lucide="book-open" class="text-rift-400 w-6 h-6"></i>
                 <h3 id="info-modal-title" class="font-magic text-2xl text-white text-glow-rift m-0">Wissen</h3>
@@ -300,7 +300,7 @@
 
     <!-- IMAGE LIGHTBOX MODAL -->
     <div id="image-modal" class="info-modal-bg hidden-modal fixed inset-0 flex items-center justify-center p-4 z-[400]" onclick="closeImageModal()">
-        <button onclick="closeImageModal()" class="absolute top-6 right-6 text-gray-400 hover:text-white transition-colors z-50">
+        <button aria-label="Schließen" onclick="closeImageModal()" class="absolute top-6 right-6 text-gray-400 hover:text-white transition-colors z-50">
             <i data-lucide="x" class="w-10 h-10 drop-shadow-md"></i>
         </button>
         <div class="relative max-w-7xl w-full max-h-[90vh] flex flex-col items-center justify-center" onclick="event.stopPropagation()">
@@ -347,7 +347,7 @@
                     Erwachen
                 </button>
             </div>
-            <button onclick="toggleMobile()" class="md:hidden text-rift-400 hover:text-white">
+            <button aria-label="Menü öffnen" onclick="toggleMobile()" class="md:hidden text-rift-400 hover:text-white">
                 <i data-lucide="menu" class="w-8 h-8"></i>
             </button>
         </div>
@@ -366,7 +366,7 @@
         <div class="h-[1px] w-24 bg-bone-800"></div>
         <button onclick="navigateFromMobile('legal-imprint')" class="text-lg font-lore text-bone-500 hover:text-white">Impressum</button>
         <button onclick="navigateFromMobile('legal-privacy')" class="text-lg font-lore text-bone-500 hover:text-white">Datenschutz</button>
-        <button onclick="toggleMobile()" class="absolute top-6 right-6 text-gray-500 hover:text-white"><i data-lucide="x" class="w-8 h-8"></i></button>
+        <button aria-label="Menü schließen" onclick="toggleMobile()" class="absolute top-6 right-6 text-gray-500 hover:text-white"><i data-lucide="x" class="w-8 h-8"></i></button>
     </div>
 
     <!-- MAIN -->
@@ -1200,7 +1200,7 @@
                                     <ul class="list-disc pl-6 space-y-1 marker:text-bone-600">
                                         <li>Lichtquelle platzieren</li>
                                         <li>„e“ gedrückt halten und auf scripted light klicken, der Name, den ihr dort dann eintragt, ist Nachtlicht</li>
-                                        <li>Wenn ihr die Lichtquelle verschieben wollt, müsst ihr das Scriptet Light zerstören und es danach erneut erstellen</li>
+                                        <li>Wenn ihr die Lichtquelle verschieben wollt, müsst ihr das Scripted Light zerstören und es danach erneut erstellen</li>
                                         <li>Alle 5 Minuten gibt es eine Abfrage, ob Abend ist oder Tag</li>
                                     </ul>
                                 </div>
@@ -1221,7 +1221,7 @@
                             </summary>
                             <div class="p-8 text-gray-300 leading-relaxed border-t border-bone-800 bg-[#050205]">
                                 <p class="mb-4">Ob durch lange Reisen, gelehrte Meister oder tiefe Bande zu einem fremden Volk – wer eine Sprache erlernen will, muss sich ihr mit Hingabe widmen. Nur jene, die Zeit, Mühe und den wahren Willen zur Verständigung aufbringen, werden sich die Worte eines fremden Volkes zu eigen machen können. – der Weg zur Verständigung ist nicht leicht. Doch wer ihn beschreitet gewinnt nicht nur Wissen sondern auch Respekt.</p>
-                                <p class="mb-4 text-rift-400 italic">Außerdem noch ein mal ein kleiner Hinweis: Vier unserer Sprachen sind keine normalen Sprachen. Diese können weder geschrieben werden, noch sind sie humanoider Natur. Diese zu erlernen ist also anders, als bei den anderen Sprachen. Es könnte leichter sein. Oder aber auch so schwer, dass man sein ganzes Leben dafür benötigt.</p>
+                                <p class="mb-4 text-rift-400 italic">Außerdem noch einmal ein kleiner Hinweis: Vier unserer Sprachen sind keine normalen Sprachen. Diese können weder geschrieben werden, noch sind sie humanoider Natur. Diese zu erlernen ist also anders, als bei den anderen Sprachen. Es könnte leichter sein. Oder aber auch so schwer, dass man sein ganzes Leben dafür benötigt.</p>
                                 <ul class="list-none space-y-4">
                                     <li><strong class="text-white font-magic tracking-wide">Lupin:</strong> Die Sprache der Hundeartigen (Sie bellen, knurren und machen jedwede Laute dieser Art)</li>
                                     <li><strong class="text-white font-magic tracking-wide">Felorisch:</strong> Die Sprache der Katzenartigen (Sie mauzen, schnurren und machen jedwede Laute dieser Art)</li>
@@ -1262,8 +1262,8 @@
                                     3x ist schon mittelschwer verletzt - Knochenbrüche und tiefere Schnittwunden<br>
                                     4x ist schwer verletzt - Bewusstlosigkeit mit enormen Verletzungen<br>
                                     5x ist Enginetod<br><br>
-                                    Kategorie 3x: KrankenRP auch noch am Folgetag<br>
-                                    Kategorie 4x: KrankenRP für zwei Folgetage<br><br>
+                                    Kategorie 3x: Kranken-RP auch noch am Folgetag<br>
+                                    Kategorie 4x: Kranken-RP für zwei Folgetage<br><br>
                                     Solltet ihr schwerere Verletzungen als euren Knock ausspielen, dann bedenkt auch die Konsequenzen und haltet euch an die Folgetage. Spielt ihr zu wenige Knocks aus, dann ist den Heilern gestattet euch zu powern. An dieser Stelle verweisen wir auf die oberste Serverregel. Achtet euer Leben. Denn ja, es hat seinen Wert.</p>
                                 </div>
                                 <div>
@@ -1579,7 +1579,7 @@
                         <p class="text-gray-400 font-lore text-xl mb-6">Trage diese Runen in dein Spiel ein, um Olyndra zu betreten.</p>
                         <div class="bg-black p-4 border border-bone-800 font-lore text-2xl text-bone-300 mb-6 flex justify-between items-center tracking-widest">
                             <span>178.63.47.190:7777</span>
-                            <button onclick="copyIP()" class="hover:text-white transition-colors"><i data-lucide="copy" class="w-5 h-5"></i></button>
+                            <button aria-label="IP kopieren" onclick="copyIP()" class="hover:text-white transition-colors"><i data-lucide="copy" class="w-5 h-5"></i></button>
                         </div>
                         <p id="ip-msg" class="text-sm font-magic tracking-widest text-bone-600 opacity-0 h-5 transition-opacity uppercase">In den Geist geschrieben</p>
                     </div>
@@ -1992,6 +1992,7 @@
                     currentPage.style.opacity = '1'; 
                     
                     targetPage.style.display = 'block'; 
+                    targetPage.scrollTop = 0;
                     requestAnimationFrame(() => targetPage.classList.add('page-active'));
                     currentPageId = targetId;
 
@@ -2159,7 +2160,7 @@
             name: { title: "Name", text: "Der Name oder Rufname deiner Seele, mitsamt Titel falls zutreffend." },
             alter: { title: "Alter", text: "Wähle das Alter passend zu deinem Volk (maximal 5000 Jahre). Bedenke: Ein altes Wesen sieht auch entsprechend aus und trägt alte Lasten." },
             rasse: { title: "Blutlinie (Volk)", text: "Welchem Volk gehörst du an? Falls du von einer fremden Welt stammst, beschreibe deine Natur kurz." },
-            klasse: { title: "Pfad des Kampfes", text: "Die Art, wie du im gnadenlosen Staub überlebst und feindest." },
+            klasse: { title: "Pfad des Kampfes", text: "Die Art, wie du im gnadenlosen Staub überlebst und kämpfst." },
             berufe: { title: "Handwerk", text: "Dein Beitrag zum Überleben der Gemeinschaft. Haupt-, Neben- und reine Erzähl-Berufe." },
             heiler: { title: "Heiler", text: "Verfügst du über die Kunst, Wunden zu schließen und vom Tode zu retten? (Zusätzlich zu anderen Berufen möglich)." },
             faehigkeit: { title: "Gabe", text: "Beherrschst du alte Magie, das Wandeln der Gestalt oder trägst du das Bluterbe der Vampire in dir?" },
