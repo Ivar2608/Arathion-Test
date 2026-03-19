@@ -304,8 +304,7 @@
             <i data-lucide="x" class="w-10 h-10 drop-shadow-md"></i>
         </button>
         <div class="relative max-w-7xl w-full max-h-[90vh] flex flex-col items-center justify-center" onclick="event.stopPropagation()">
-            <img id="modal-img" src="" alt="Großansicht" class="max-w-full max-h-[80vh] object-contain border border-rift-800 shadow-[0_0_50px_rgba(139,92,246,0.3)] bg-black/50">
-            <h4 id="modal-title" class="font-magic text-white text-2xl md:text-3xl tracking-widest mt-6 capitalize text-glow-rift"></h4>
+           <img id="modal-img" src="" alt="Großansicht" class="max-w-full max-h-[80vh] object-contain border border-rift-800 shadow-[0_0_50px_rgba(139,92,246,0.3)] bg-black/50">
         </div>
     </div>
 
@@ -2045,10 +2044,7 @@
                         <div class="absolute inset-0 bg-rift-500/0 group-hover:bg-rift-500/20 transition-colors duration-500 flex items-center justify-center z-20">
                             <i data-lucide="zoom-in" class="text-white w-12 h-12 opacity-0 group-hover:opacity-100 transition-opacity duration-300 drop-shadow-[0_0_10px_rgba(0,0,0,0.8)]"></i>
                         </div>
-                    </div>
-                    <div class="holo-overlay pointer-events-none">
-                        <h4 class="font-magic text-white text-xl tracking-widest capitalize drop-shadow-md">${title}</h4>
-                    </div>
+                        </div>
                 `;
                 grid.appendChild(card);
             });
@@ -2061,10 +2057,8 @@
         function openImageModal(src, title) {
             const modal = document.getElementById('image-modal');
             const img = document.getElementById('modal-img');
-            const titleEl = document.getElementById('modal-title');
 
             img.src = src;
-            titleEl.innerText = title;
 
             modal.classList.remove('hidden-modal', 'pointer-events-none');
             modal.classList.add('opacity-100', 'pointer-events-auto');
