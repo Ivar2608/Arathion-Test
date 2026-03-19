@@ -1347,17 +1347,16 @@
 
                     <form class="space-y-10 font-lore text-lg">
                         
-                        <!-- Row 1: System IDs -->
                         <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
                             <div class="relative group">
-                                <label class="text-sm font-magic tracking-widest text-rift-400 mb-2 flex justify-between items-center uppercase">
+                                <label for="steamID" class="text-sm font-magic tracking-widest text-rift-400 mb-2 flex justify-between items-center uppercase">
                                     Aura-Signatur (Steam64)
                                     <button type="button" onclick="openInfo('steam')" class="hover:text-white transition-colors opacity-50 hover:opacity-100"><i data-lucide="info" class="w-4 h-4"></i></button>
                                 </label>
                                 <input type="text" id="steamID" class="w-full p-3 bg-transparent border-b border-bone-800 text-white focus:border-rift-500 transition-colors">
                             </div>
                             <div class="relative group">
-                                <label class="text-sm font-magic tracking-widest text-rift-400 mb-2 flex justify-between items-center uppercase">
+                                <label for="discordID" class="text-sm font-magic tracking-widest text-rift-400 mb-2 flex justify-between items-center uppercase">
                                     Rufname (Discord Tag)
                                     <button type="button" onclick="openInfo('discord')" class="hover:text-white transition-colors opacity-50 hover:opacity-100"><i data-lucide="info" class="w-4 h-4"></i></button>
                                 </label>
@@ -1367,17 +1366,16 @@
 
                         <div class="w-full h-px bg-bone-900/50 my-8"></div>
 
-                        <!-- Row 2: Basic Info -->
                         <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
                             <div class="relative group">
-                                <label class="text-sm font-magic tracking-widest text-bone-300 mb-2 flex justify-between items-center uppercase">
+                                <label for="charName" class="text-sm font-magic tracking-widest text-bone-300 mb-2 flex justify-between items-center uppercase">
                                     Der Name
                                     <button type="button" onclick="openInfo('name')" class="hover:text-white transition-colors opacity-50 hover:opacity-100"><i data-lucide="info" class="w-4 h-4"></i></button>
                                 </label>
                                 <input type="text" id="charName" class="w-full p-3 bg-transparent border-b border-bone-800 text-white focus:border-bone-400 transition-colors" placeholder="Wie wurdest du gerufen?">
                             </div>
                             <div class="relative group">
-                                <label class="text-sm font-magic tracking-widest text-bone-300 mb-2 flex justify-between items-center uppercase">
+                                <label for="charAge" class="text-sm font-magic tracking-widest text-bone-300 mb-2 flex justify-between items-center uppercase">
                                     Gezeichnete Jahre (Alter)
                                     <button type="button" onclick="openInfo('alter')" class="hover:text-white transition-colors opacity-50 hover:opacity-100"><i data-lucide="info" class="w-4 h-4"></i></button>
                                 </label>
@@ -1385,10 +1383,9 @@
                             </div>
                         </div>
 
-                        <!-- Row 3: Character Specifics -->
                         <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
                             <div class="relative group">
-                                <label class="text-sm font-magic tracking-widest text-bone-300 mb-2 flex justify-between items-center uppercase">
+                                <label for="charRace" class="text-sm font-magic tracking-widest text-bone-300 mb-2 flex justify-between items-center uppercase">
                                     Blut (Volk)
                                     <button type="button" onclick="openInfo('rasse')" class="hover:text-white transition-colors opacity-50 hover:opacity-100"><i data-lucide="info" class="w-4 h-4"></i></button>
                                 </label>
@@ -1426,7 +1423,7 @@
                                 </select>
                             </div>
                             <div class="relative group">
-                                <label class="text-sm font-magic tracking-widest text-bone-300 mb-2 flex justify-between items-center uppercase">
+                                <label for="charClass" class="text-sm font-magic tracking-widest text-bone-300 mb-2 flex justify-between items-center uppercase">
                                     Pfad (Klasse)
                                     <button type="button" onclick="openInfo('klasse')" class="hover:text-white transition-colors opacity-50 hover:opacity-100"><i data-lucide="info" class="w-4 h-4"></i></button>
                                 </label>
@@ -1442,16 +1439,15 @@
                                 </select>
                             </div>
                             <div class="relative group">
-                                <label class="text-sm font-magic tracking-widest text-bone-300 mb-2 flex justify-between items-center uppercase">
+                                <label for="charAbility" class="text-sm font-magic tracking-widest text-bone-300 mb-2 flex justify-between items-center uppercase">
                                     Gabe (Fähigkeit)
                                     <button type="button" onclick="openInfo('faehigkeit')" class="hover:text-white transition-colors opacity-50 hover:opacity-100"><i data-lucide="info" class="w-4 h-4"></i></button>
                                 </label>
                                 <input type="text" id="charAbility" class="w-full p-3 bg-transparent border-b border-bone-800 text-white focus:border-bone-400 transition-colors" placeholder="Verborgene Mächte...">
                             </div>
 
-                            <!-- Custom Race Textarea -->
                             <div id="customRaceContainer" class="hidden md:col-span-3 bg-[#1e1b4b]/20 border-l-2 border-rift-500 p-6 mt-4">
-                                <label class="text-sm font-magic tracking-widest text-rift-400 mb-4 flex justify-between items-center uppercase">
+                                <label for="charCustomRaceDesc" class="text-sm font-magic tracking-widest text-rift-400 mb-4 flex justify-between items-center uppercase">
                                     Notizen zum Vergessenen Blut
                                     <button type="button" onclick="openInfo('neueRasse')" class="hover:text-white transition-colors opacity-50 hover:opacity-100"><i data-lucide="info" class="w-4 h-4"></i></button>
                                 </label>
@@ -1459,10 +1455,9 @@
                             </div>
                         </div>
 
-                        <!-- Row 4: Professions -->
                         <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
                             <div class="relative group">
-                                <label class="text-sm font-magic tracking-widest text-bone-500 mb-2 flex justify-between items-center uppercase">
+                                <label for="charMainProf" class="text-sm font-magic tracking-widest text-bone-500 mb-2 flex justify-between items-center uppercase">
                                     Handwerk
                                     <button type="button" onclick="openInfo('berufe')" class="hover:text-white transition-colors opacity-50 hover:opacity-100"><i data-lucide="info" class="w-4 h-4"></i></button>
                                 </label>
@@ -1476,7 +1471,7 @@
                                 </select>
                             </div>
                             <div class="relative group">
-                                <label class="text-sm font-magic tracking-widest text-bone-500 mb-2 flex justify-between items-center uppercase">
+                                <label for="charSubProf" class="text-sm font-magic tracking-widest text-bone-500 mb-2 flex justify-between items-center uppercase">
                                     Tätigkeit
                                     <button type="button" onclick="openInfo('berufe')" class="hover:text-white transition-colors opacity-50 hover:opacity-100"><i data-lucide="info" class="w-4 h-4"></i></button>
                                 </label>
@@ -1490,7 +1485,7 @@
                                 </select>
                             </div>
                             <div class="relative group">
-                                <label class="text-sm font-magic tracking-widest text-bone-500 mb-2 flex justify-between items-center uppercase">
+                                <label for="charRpProf" class="text-sm font-magic tracking-widest text-bone-500 mb-2 flex justify-between items-center uppercase">
                                     Ruf
                                     <button type="button" onclick="openInfo('berufe')" class="hover:text-white transition-colors opacity-50 hover:opacity-100"><i data-lucide="info" class="w-4 h-4"></i></button>
                                 </label>
@@ -1504,7 +1499,7 @@
                                 </select>
                             </div>
                             <div class="relative group">
-                                <label class="text-sm font-magic tracking-widest text-red-700 mb-2 flex justify-between items-center uppercase">
+                                <label for="charHealer" class="text-sm font-magic tracking-widest text-red-700 mb-2 flex justify-between items-center uppercase">
                                     Heiler
                                     <button type="button" onclick="openInfo('heiler')" class="hover:text-red-400 transition-colors opacity-50 hover:opacity-100"><i data-lucide="info" class="w-4 h-4"></i></button>
                                 </label>
@@ -1517,17 +1512,16 @@
 
                         <div class="w-full h-px bg-bone-900/50 my-8"></div>
 
-                        <!-- Row 5: Strengths & Weaknesses -->
                         <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
                             <div class="relative group">
-                                <label class="text-sm font-magic tracking-widest text-gray-500 mb-3 flex justify-between items-center uppercase">
+                                <label for="charStrengths" class="text-sm font-magic tracking-widest text-gray-500 mb-3 flex justify-between items-center uppercase">
                                     Eiserner Wille (Stärken)
                                     <button type="button" onclick="openInfo('staerken')" class="hover:text-white transition-colors opacity-50 hover:opacity-100"><i data-lucide="info" class="w-4 h-4"></i></button>
                                 </label>
                                 <textarea id="charStrengths" rows="3" class="w-full p-4 bg-black/20 border border-bone-800 text-white focus:border-bone-400 transition-colors"></textarea>
                             </div>
                             <div class="relative group">
-                                <label class="text-sm font-magic tracking-widest text-gray-500 mb-3 flex justify-between items-center uppercase">
+                                <label for="charWeaknesses" class="text-sm font-magic tracking-widest text-gray-500 mb-3 flex justify-between items-center uppercase">
                                     Sprödes Fleisch (Schwächen)
                                     <button type="button" onclick="openInfo('schwaechen')" class="hover:text-white transition-colors opacity-50 hover:opacity-100"><i data-lucide="info" class="w-4 h-4"></i></button>
                                 </label>
@@ -1535,18 +1529,16 @@
                             </div>
                         </div>
 
-                        <!-- Row 6: Description -->
                         <div class="relative group">
-                            <label class="text-sm font-magic tracking-widest text-gray-500 mb-3 flex justify-between items-center uppercase">
+                            <label for="charDescription" class="text-sm font-magic tracking-widest text-gray-500 mb-3 flex justify-between items-center uppercase">
                                 Das Antlitz (Charakterbeschreibung)
                                 <button type="button" onclick="openInfo('beschreibung')" class="hover:text-white transition-colors opacity-50 hover:opacity-100"><i data-lucide="info" class="w-4 h-4"></i></button>
                             </label>
                             <textarea id="charDescription" rows="4" class="w-full p-4 bg-black/20 border border-bone-800 text-white focus:border-bone-400 transition-colors"></textarea>
                         </div>
 
-                        <!-- Row 7: Story / Background -->
                         <div class="relative group">
-                            <label class="text-sm font-magic tracking-widest text-gray-500 mb-3 flex justify-between items-center uppercase">
+                            <label for="charStory" class="text-sm font-magic tracking-widest text-gray-500 mb-3 flex justify-between items-center uppercase">
                                 Das alte Leben (Hintergrund)
                                 <button type="button" onclick="openInfo('hintergrund')" class="hover:text-white transition-colors opacity-50 hover:opacity-100"><i data-lucide="info" class="w-4 h-4"></i></button>
                             </label>
@@ -2245,6 +2237,8 @@
                 } else {
                     const el = document.createElement('textarea');
                     el.value = ip;
+                    el.style.position = 'absolute';
+                    el.style.left = '-9999px';
                     document.body.appendChild(el);
                     el.select();
                     document.execCommand('copy');
@@ -2319,6 +2313,8 @@ ${val('charStory')}
                 } else {
                     const el = document.createElement('textarea');
                     el.value = text;
+                    el.style.position = 'absolute';
+                    el.style.left = '-9999px';
                     document.body.appendChild(el);
                     el.select();
                     document.execCommand('copy');
@@ -2362,8 +2358,6 @@ ${val('charStory')}
         document.addEventListener('DOMContentLoaded', () => { 
             // Routing als allererstes ausführen, um Flackern zu verhindern!
             initRouting(); 
-            
-            if(typeof lucide !== 'undefined') { lucide.createIcons(); }
             renderGallery(); 
             requestAnimationFrame(updateLoop); 
         });
