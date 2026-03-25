@@ -2121,13 +2121,30 @@
             }, 300);
         }
 
-        // --- LOOP ---
+        // --- LOOP & PERFORMANCE OPTIMIERUNG ---
+        let animationFrameId;
+        let isTabActive = true;
+
+        // Prüft, ob der Browser-Tab gerade sichtbar ist
+        document.addEventListener("visibilitychange", () => {
+            if (document.hidden) {
+                isTabActive = false;
+                cancelAnimationFrame(animationFrameId); // Animation stoppen
+            } else {
+                isTabActive = true;
+                lastRandomChange = performance.now(); // Timer zurücksetzen, damit nichts springt
+                updateLoop(performance.now()); // Animation wieder starten
+            }
+        });
+
         function updateLoop(timestamp) {
+            if (!isTabActive) return; // Sicherheits-Check
+
             drawParticles();
             if (currentState === STATE.IDLE) {
                 updateIdle(timestamp);
             }
-            requestAnimationFrame(updateLoop);
+            animationFrameId = requestAnimationFrame(updateLoop);
         }
         
         function updateIdle(timestamp) {
