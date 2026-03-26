@@ -582,31 +582,32 @@ function val(id) {
 }
 
 async function copyCharacter() {
-            const steamIdVal = val('steamID').trim();
-            
-            // 1. Prüfung: Wurde überhaupt etwas in beide Felder eingetragen?
-            if (!val('charName') || !steamIdVal) {
-                const msg = document.getElementById('copy-msg');
-                if(msg) {
-                    msg.innerText = ">> Bitte fülle mindestens deinen Namen und deine Steam-ID aus. <<";
-                    msg.className = "text-center text-red-500 font-magic tracking-widest text-lg mt-6 opacity-0 transition-opacity";
-                    msg.style.opacity = 1; 
-                    setTimeout(() => msg.style.opacity = 0, 4000);
-                }
-                return; // Bricht ab
-            }
+    const steamIdVal = val('steamID').trim();
+    const charNameVal = val('charName').trim();
+    
+    // 1. Prüfung: Wurde überhaupt etwas in beide Felder eingetragen?
+    if (!charNameVal || !steamIdVal) {
+        const msg = document.getElementById('copy-msg');
+        if(msg) {
+            msg.innerText = ">> Bitte fülle mindestens deinen Namen und deine Steam-ID aus. <<";
+            msg.className = "text-center text-red-500 font-magic tracking-widest text-lg mt-6 opacity-0 transition-opacity";
+            msg.style.opacity = 1; 
+            setTimeout(() => msg.style.opacity = 0, 4000);
+        }
+        return; // Bricht ab
+    }
 
-            // 2. Prüfung: Ist die Steam-ID wirklich exakt 17 Zahlen lang?
-            if (!/^\d{17}$/.test(steamIdVal)) {
-                const msg = document.getElementById('copy-msg');
-                if(msg) {
-                    msg.innerText = ">> Die Aura-Signatur (SteamID) muss exakt 17 Zahlen lang sein! <<";
-                    msg.className = "text-center text-red-500 font-magic tracking-widest text-lg mt-6 opacity-0 transition-opacity";
-                    msg.style.opacity = 1; 
-                    setTimeout(() => msg.style.opacity = 0, 5000);
-                }
-                return; // Bricht ab
-            }
+    // 2. Prüfung: Ist die Steam-ID wirklich exakt 17 Zahlen lang?
+    if (!/^\d{17}$/.test(steamIdVal)) {
+        const msg = document.getElementById('copy-msg');
+        if(msg) {
+            msg.innerText = ">> Die Aura-Signatur (SteamID) muss exakt 17 Zahlen lang sein! <<";
+            msg.className = "text-center text-red-500 font-magic tracking-widest text-lg mt-6 opacity-0 transition-opacity";
+            msg.style.opacity = 1; 
+            setTimeout(() => msg.style.opacity = 0, 5000);
+        }
+        return; // Bricht ab
+    }
 
             // Prüfe ob SteamID exakt 17 Ziffern hat
             if (!/^\d{17}$/.test(steamIdVal)) {
