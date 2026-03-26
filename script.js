@@ -114,50 +114,74 @@ function drawParticles() {
 }
 
 // --- ROUTING SYSTEM ---
-function initRouting() {
-    const hasEntered = localStorage.getItem('hasEnteredRift') === 'true';
-    const nav = document.getElementById('main-nav');
-    const footer = document.getElementById('main-footer');
-    const portalPage = document.getElementById('portal');
-    const homePage = document.getElementById('home');
-    const welcomeTitle = document.getElementById('welcome-title');
-    
-    let visits = parseInt(localStorage.getItem('visitCount') || '0');
-
-    if (!hasEntered) {
-        nav.style.display = 'none';
-        footer.style.display = 'none';
-        portalPage.style.display = 'flex';
-        portalPage.classList.add('page-active');
-        homePage.style.display = 'none';
-        homePage.classList.remove('page-active');
-        currentPageId = 'portal';
-    } else {
-        nav.style.display = 'flex'; 
-        footer.style.display = 'flex';
-        portalPage.style.display = 'none';
-        portalPage.classList.remove('page-active');
-        homePage.style.display = 'block';
-        homePage.classList.add('page-active');
-        currentPageId = 'home';
-        
-        visits++;
-        localStorage.setItem('visitCount', visits);
-        
-        if (visits > 1) {
-            welcomeTitle.innerText = "Willkommen zurück";
-        } else {
-            welcomeTitle.innerText = "Willkommen";
-        }
-        
-        document.querySelectorAll('.nav-btn').forEach(btn => {
-            if(btn.dataset.target === 'home') {
-                btn.classList.add('text-rift-400', 'border-rift-500'); 
-                btn.classList.remove('text-gray-400', 'border-transparent');
+// --- ROUTING SYSTEM & HASH URLs ---
+        window.addEventListener('hashchange', () => {
+            const hash = window.location.hash.replace('#', '');
+            if (hash && document.getElementById(hash) && localStorage.getItem('hasEnteredRift') === 'true') {
+                if (hash !== currentPageId) switchPage(hash, true);
             }
         });
-    }
-}
+
+        function initRouting() {
+            const hasEntered = localStorage.getItem('hasEnteredRift') === 'true';
+            const nav = document.getElementById('main-nav');
+            const footer = document.getElementById('main-footer');
+            const portalPage = document.getElementById('portal');
+            const homePage = document.getElementById('home');
+            const welcomeTitle = document.getElementById('welcome-title');
+            
+            let visits = parseInt(localStorage.getItem('visitCount') || '0');
+
+            if (!hasEntered) {
+                nav.style.display = 'none';
+                footer.style.display = 'none';
+                portalPage.style.display = 'flex';
+                portalPage.classList.add('page-active');
+                homePage.style.display = 'none';
+                homePage.classList.remove('page-active');
+                currentPageId = 'portal';
+            } else {
+                nav.style.display = 'flex'; 
+                footer.style.display = 'flex';
+                portalPage.style.display = 'none';
+                portalPage.classList.remove('page-active');
+                
+                // Prüfe URL Hash
+                let targetHash = window.location.hash.replace('#', '');
+                if(!targetHash || !document.getElementById(targetHash)) {
+                    targetHash = 'home';
+                }
+                
+                const startPage = document.getElementById(targetHash) || homePage;
+                startPage.style.display = 'block';
+                startPage.classList.add('page-active');
+                currentPageId = targetHash;
+                
+                visits++;
+                localStorage.setItem('visitCount', visits);
+                
+                if (visits > 1) {
+                    welcomeTitle.innerText = "Willkommen zurück";
+                } else {
+                    welcomeTitle.innerText = "Willkommen";
+                }
+                
+                // Buttons aktualisieren
+                document.querySelectorAll('.nav-btn').forEach(btn => {
+                    const isBone = btn.dataset.target === 'char';
+                    const activeColor = isBone ? 'text-bone-400' : 'text-rift-400';
+                    const activeBorder = isBone ? 'border-bone-500' : 'border-rift-500';
+                    
+                    if(btn.dataset.target === targetHash) {
+                        btn.classList.add(activeColor, activeBorder); 
+                        btn.classList.remove('text-gray-400', 'border-transparent');
+                    } else {
+                        btn.classList.remove(activeColor, activeBorder); 
+                        btn.classList.add('text-gray-400', 'border-transparent');
+                    }
+                });
+            }
+        }
 
 // --- EPIC PORTAL ENTRY ---
 function enterRift() {
@@ -252,10 +276,15 @@ function enterRift() {
 }
 
 // --- NORMAL MENU NAVIGATION ---
-function switchPage(targetId) {
-    if (currentState === STATE.SURGE || targetId === currentPageId || isTransitioning) return;
-    
-    isTransitioning = true;
+        function switchPage(targetId, fromHashChange = false) {
+            if (currentState === STATE.SURGE || targetId === currentPageId || isTransitioning) return;
+            
+            // URL in der Adressleiste anpassen
+            if (!fromHashChange && localStorage.getItem('hasEnteredRift') === 'true') {
+                history.pushState(null, null, '#' + targetId);
+            }
+
+            isTransitioning = true;
     const currentPage = document.getElementById(currentPageId);
     const targetPage = document.getElementById(targetId);
 
@@ -329,7 +358,7 @@ function renderGallery() {
 
         card.innerHTML = `
             <div class="relative w-full h-full overflow-hidden bg-black/50">
-                <img src="${imgSrc}" alt="${title}" class="holo-img" onerror="this.onerror=null; this.src='https://placehold.co/600x400/1c1917/a8a29e?text=Kein+Bild';">
+                <img src="${imgSrc}" alt="${title}" loading="lazy" class="holo-img" onerror="this.onerror=null; this.src='https://placehold.co/600x400/1c1917/a8a29e?text=Kein+Bild';">
                 <div class="absolute inset-0 bg-rift-500/0 group-hover:bg-rift-500/20 transition-colors duration-500 flex items-center justify-center z-20">
                     <i data-lucide="zoom-in" class="text-white w-12 h-12 opacity-0 group-hover:opacity-100 transition-opacity duration-300 drop-shadow-[0_0_10px_rgba(0,0,0,0.8)]"></i>
                 </div>
@@ -553,16 +582,32 @@ function val(id) {
 }
 
 async function copyCharacter() {
-    if (!val('charName') || !val('steamID')) {
-        const msg = document.getElementById('copy-msg');
-        if(msg) {
-            msg.innerText = ">> Bitte fülle mindestens deinen Namen und deine Steam-ID aus. <<";
-            msg.className = "text-center text-red-500 font-magic tracking-widest text-lg mt-6 opacity-0 transition-opacity";
-            msg.style.opacity = 1; 
-            setTimeout(() => msg.style.opacity = 0, 4000);
-        }
-        return;
-    }
+            // --- NEU: Smarte Formular-Validierung ---
+            const steamIdVal = val('steamID').trim();
+            
+            if (!val('charName') || !steamIdVal) {
+                const msg = document.getElementById('copy-msg');
+                if(msg) {
+                    msg.innerText = ">> Bitte fülle mindestens deinen Namen und deine Steam-ID aus. <<";
+                    msg.className = "text-center text-red-500 font-magic tracking-widest text-lg mt-6 opacity-0 transition-opacity";
+                    msg.style.opacity = 1; 
+                    setTimeout(() => msg.style.opacity = 0, 4000);
+                }
+                return; // Bricht ab
+            }
+
+            // Prüfe ob SteamID exakt 17 Ziffern hat
+            if (!/^\d{17}$/.test(steamIdVal)) {
+                const msg = document.getElementById('copy-msg');
+                if(msg) {
+                    msg.innerText = ">> Die Aura-Signatur (SteamID) muss exakt 17 Ziffern lang sein! <<";
+                    msg.className = "text-center text-red-500 font-magic tracking-widest text-lg mt-6 opacity-0 transition-opacity";
+                    msg.style.opacity = 1; 
+                    setTimeout(() => msg.style.opacity = 0, 5000);
+                }
+                return; // Bricht ab
+            }
+            // ---------------------------------
 
     let raceValue = val('charRace');
     if (raceValue === 'Neue Rasse') {
