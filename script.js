@@ -645,7 +645,6 @@ ${val('charStory')}
 **Aura-Signatur (Steam64):** ${val('steamID')}
 **Rufname (Discord):** ${val('discordID')}`;
     
-    const msg = document.getElementById('copy-msg'); 
     try {
         if (navigator.clipboard && navigator.clipboard.writeText) {
             await navigator.clipboard.writeText(text);
