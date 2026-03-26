@@ -581,27 +581,40 @@ async function copyCharacter() {
     const steamIdVal = val('steamID').trim();
     const charNameVal = val('charName').trim();
     
-    if (!charNameVal || !steamIdVal) {
-        const msg = document.getElementById('copy-msg');
-        if(msg) {
-            msg.innerText = ">> Bitte fülle mindestens deinen Namen und deine Steam-ID aus. <<";
-            msg.className = "text-center text-red-500 font-magic tracking-widest text-lg mt-6 opacity-0 transition-opacity";
-            msg.style.opacity = 1; 
-            setTimeout(() => msg.style.opacity = 0, 4000);
-        }
-        return;
-    }
+    const msg = document.getElementById('copy-msg');
 
-    if (!/^\d{17}$/.test(steamIdVal)) {
-        const msg = document.getElementById('copy-msg');
-        if(msg) {
-            msg.innerText = ">> Die Aura-Signatur (SteamID) muss exakt 17 Zahlen lang sein! <<";
-            msg.className = "text-center text-red-500 font-magic tracking-widest text-lg mt-6 opacity-0 transition-opacity";
-            msg.style.opacity = 1; 
-            setTimeout(() => msg.style.opacity = 0, 5000);
+        // 1. Prüfung: Fehlt die Steam-ID?
+        if (!steamIdVal) {
+            if(msg) {
+                msg.innerText = ">> Die Aura-Signatur (Steam64) fehlt! <<";
+                msg.className = "text-center text-red-500 font-magic tracking-widest text-lg mt-6 opacity-0 transition-opacity";
+                msg.style.opacity = 1; 
+                setTimeout(() => msg.style.opacity = 0, 4000);
+            }
+            return;
         }
-        return; 
-    }
+
+        // 2. Prüfung: Fehlt der Name?
+        if (!charNameVal) {
+            if(msg) {
+                msg.innerText = ">> Der Name deines Charakters fehlt! <<";
+                msg.className = "text-center text-red-500 font-magic tracking-widest text-lg mt-6 opacity-0 transition-opacity";
+                msg.style.opacity = 1; 
+                setTimeout(() => msg.style.opacity = 0, 4000);
+            }
+            return;
+        }
+
+        // 3. Prüfung: Ist die Steam-ID exakt 17 Zahlen lang?
+        if (!/^\d{17}$/.test(steamIdVal)) {
+            if(msg) {
+                msg.innerText = ">> Die Aura-Signatur (SteamID) muss exakt 17 Zahlen lang sein! Keine Buchstaben! <<";
+                msg.className = "text-center text-red-500 font-magic tracking-widest text-lg mt-6 opacity-0 transition-opacity";
+                msg.style.opacity = 1; 
+                setTimeout(() => msg.style.opacity = 0, 5000);
+            }
+            return;
+        }
 
     let raceValue = val('charRace');
     if (raceValue === 'Neue Rasse') {
@@ -749,11 +762,16 @@ function clearCharacterDraft() {
 // --- DATENSCHUTZ: ALLES LÖSCHEN ---
 function resetAllLocalStorage() {
     if (confirm("Möchtest du wirklich ALLE lokalen Daten löschen? Dies entfernt die Cookie-Zustimmung, überspringt das Portal beim nächsten Mal nicht mehr und löscht deinen ungespeicherten Charakter-Entwurf unwiderruflich!")) {
-        localStorage.clear(); 
-        window.location.reload(); 
+        try {
+            localStorage.clear(); // Löscht rigoros alles von dieser Domain
+            window.location.hash = ''; // Setzt den Hash zurück, um das Portal zu garantieren
+            window.location.reload(); // Lädt die Seite hart neu
+        } catch (e) {
+            console.error("Speicherfehler:", e);
+            alert("Fehler beim Löschen. Dein Browser blockiert möglicherweise den Zugriff auf den lokalen Speicher (z.B. durch strenge Datenschutzeinstellungen oder weil die Seite lokal ohne Server geöffnet wurde).");
+        }
     }
 }
-
 // Init
 document.addEventListener('DOMContentLoaded', () => { 
     initRouting(); 
