@@ -609,19 +609,6 @@ async function copyCharacter() {
         return; // Bricht ab
     }
 
-            // Prüfe ob SteamID exakt 17 Ziffern hat
-            if (!/^\d{17}$/.test(steamIdVal)) {
-                const msg = document.getElementById('copy-msg');
-                if(msg) {
-                    msg.innerText = ">> Die Aura-Signatur (SteamID) muss exakt 17 Ziffern lang sein! <<";
-                    msg.className = "text-center text-red-500 font-magic tracking-widest text-lg mt-6 opacity-0 transition-opacity";
-                    msg.style.opacity = 1; 
-                    setTimeout(() => msg.style.opacity = 0, 5000);
-                }
-                return; // Bricht ab
-            }
-            // ---------------------------------
-
     let raceValue = val('charRace');
     if (raceValue === 'Neue Rasse') {
         raceValue = `Unbekanntes Blut\n**Beschreibung:** ${val('charCustomRaceDesc')}`;
@@ -772,3 +759,10 @@ document.addEventListener('DOMContentLoaded', () => {
     loadCharacterDraft(); 
     requestAnimationFrame(updateLoop); 
 });
+// --- DATENSCHUTZ: ALLES LÖSCHEN ---
+function resetAllLocalStorage() {
+    if (confirm("Möchtest du wirklich ALLE lokalen Daten löschen? Dies entfernt die Cookie-Zustimmung, überspringt das Portal beim nächsten Mal nicht mehr und löscht deinen ungespeicherten Charakter-Entwurf unwiderruflich!")) {
+        localStorage.clear(); // Der absolute Holzhammer: Löscht rigoros alles von dieser Domain
+        window.location.reload(); // Lädt die Seite hart neu (wirft den Spieler zurück vors Portal)
+    }
+}
