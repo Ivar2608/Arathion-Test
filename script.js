@@ -113,75 +113,72 @@ function drawParticles() {
     });
 }
 
-// --- ROUTING SYSTEM ---
 // --- ROUTING SYSTEM & HASH URLs ---
-        window.addEventListener('hashchange', () => {
-            const hash = window.location.hash.replace('#', '');
-            if (hash && document.getElementById(hash) && localStorage.getItem('hasEnteredRift') === 'true') {
-                if (hash !== currentPageId) switchPage(hash, true);
+window.addEventListener('hashchange', () => {
+    const hash = window.location.hash.replace('#', '');
+    if (hash && document.getElementById(hash) && localStorage.getItem('hasEnteredRift') === 'true') {
+        if (hash !== currentPageId) switchPage(hash, true);
+    }
+});
+
+function initRouting() {
+    const hasEntered = localStorage.getItem('hasEnteredRift') === 'true';
+    const nav = document.getElementById('main-nav');
+    const footer = document.getElementById('main-footer');
+    const portalPage = document.getElementById('portal');
+    const homePage = document.getElementById('home');
+    const welcomeTitle = document.getElementById('welcome-title');
+    
+    let visits = parseInt(localStorage.getItem('visitCount') || '0');
+
+    if (!hasEntered) {
+        nav.style.display = 'none';
+        footer.style.display = 'none';
+        portalPage.style.display = 'flex';
+        portalPage.classList.add('page-active');
+        homePage.style.display = 'none';
+        homePage.classList.remove('page-active');
+        currentPageId = 'portal';
+    } else {
+        nav.style.display = 'flex'; 
+        footer.style.display = 'flex';
+        portalPage.style.display = 'none';
+        portalPage.classList.remove('page-active');
+        
+        let targetHash = window.location.hash.replace('#', '');
+        if(!targetHash || !document.getElementById(targetHash)) {
+            targetHash = 'home';
+        }
+        
+        const startPage = document.getElementById(targetHash) || homePage;
+        startPage.style.display = 'block';
+        startPage.classList.add('page-active');
+        currentPageId = targetHash;
+        
+        visits++;
+        localStorage.setItem('visitCount', visits);
+        
+        if (visits > 1) {
+            welcomeTitle.innerText = "Willkommen zurück";
+        } else {
+            welcomeTitle.innerText = "Willkommen";
+        }
+        
+        document.querySelectorAll('.nav-btn').forEach(btn => {
+            const isBone = btn.dataset.target === 'char';
+            const activeColor = isBone ? 'text-bone-400' : 'text-rift-400';
+            const activeBorder = isBone ? 'border-bone-500' : 'border-rift-500';
+            
+            if(btn.dataset.target === targetHash) {
+                btn.classList.add(activeColor, activeBorder); 
+                btn.classList.remove('text-gray-400', 'border-transparent');
+            } else {
+                btn.classList.remove(activeColor, activeBorder); 
+                btn.classList.add('text-gray-400', 'border-transparent');
             }
         });
-
-        function initRouting() {
-            const hasEntered = localStorage.getItem('hasEnteredRift') === 'true';
-            const nav = document.getElementById('main-nav');
-            const footer = document.getElementById('main-footer');
-            const portalPage = document.getElementById('portal');
-            const homePage = document.getElementById('home');
-            const welcomeTitle = document.getElementById('welcome-title');
-            
-            let visits = parseInt(localStorage.getItem('visitCount') || '0');
-
-            if (!hasEntered) {
-                nav.style.display = 'none';
-                footer.style.display = 'none';
-                portalPage.style.display = 'flex';
-                portalPage.classList.add('page-active');
-                homePage.style.display = 'none';
-                homePage.classList.remove('page-active');
-                currentPageId = 'portal';
-            } else {
-                nav.style.display = 'flex'; 
-                footer.style.display = 'flex';
-                portalPage.style.display = 'none';
-                portalPage.classList.remove('page-active');
-                
-                // Prüfe URL Hash
-                let targetHash = window.location.hash.replace('#', '');
-                if(!targetHash || !document.getElementById(targetHash)) {
-                    targetHash = 'home';
-                }
-                
-                const startPage = document.getElementById(targetHash) || homePage;
-                startPage.style.display = 'block';
-                startPage.classList.add('page-active');
-                currentPageId = targetHash;
-                
-                visits++;
-                localStorage.setItem('visitCount', visits);
-                
-                if (visits > 1) {
-                    welcomeTitle.innerText = "Willkommen zurück";
-                } else {
-                    welcomeTitle.innerText = "Willkommen";
-                }
-                
-                // Buttons aktualisieren
-                document.querySelectorAll('.nav-btn').forEach(btn => {
-                    const isBone = btn.dataset.target === 'char';
-                    const activeColor = isBone ? 'text-bone-400' : 'text-rift-400';
-                    const activeBorder = isBone ? 'border-bone-500' : 'border-rift-500';
-                    
-                    if(btn.dataset.target === targetHash) {
-                        btn.classList.add(activeColor, activeBorder); 
-                        btn.classList.remove('text-gray-400', 'border-transparent');
-                    } else {
-                        btn.classList.remove(activeColor, activeBorder); 
-                        btn.classList.add('text-gray-400', 'border-transparent');
-                    }
-                });
-            }
-        }
+    }
+}
 
 // --- EPIC PORTAL ENTRY ---
 function enterRift() {
@@ -276,15 +273,14 @@ function enterRift() {
 }
 
 // --- NORMAL MENU NAVIGATION ---
-        function switchPage(targetId, fromHashChange = false) {
-            if (currentState === STATE.SURGE || targetId === currentPageId || isTransitioning) return;
-            
-            // URL in der Adressleiste anpassen
-            if (!fromHashChange && localStorage.getItem('hasEnteredRift') === 'true') {
-                history.pushState(null, null, '#' + targetId);
-            }
+function switchPage(targetId, fromHashChange = false) {
+    if (currentState === STATE.SURGE || targetId === currentPageId || isTransitioning) return;
+    
+    if (!fromHashChange && localStorage.getItem('hasEnteredRift') === 'true') {
+        history.pushState(null, null, '#' + targetId);
+    }
 
-            isTransitioning = true;
+    isTransitioning = true;
     const currentPage = document.getElementById(currentPageId);
     const targetPage = document.getElementById(targetId);
 
@@ -585,7 +581,6 @@ async function copyCharacter() {
     const steamIdVal = val('steamID').trim();
     const charNameVal = val('charName').trim();
     
-    // 1. Prüfung: Wurde überhaupt etwas in beide Felder eingetragen?
     if (!charNameVal || !steamIdVal) {
         const msg = document.getElementById('copy-msg');
         if(msg) {
@@ -594,10 +589,9 @@ async function copyCharacter() {
             msg.style.opacity = 1; 
             setTimeout(() => msg.style.opacity = 0, 4000);
         }
-        return; // Bricht ab
+        return;
     }
 
-    // 2. Prüfung: Ist die Steam-ID wirklich exakt 17 Zahlen lang?
     if (!/^\d{17}$/.test(steamIdVal)) {
         const msg = document.getElementById('copy-msg');
         if(msg) {
@@ -606,7 +600,7 @@ async function copyCharacter() {
             msg.style.opacity = 1; 
             setTimeout(() => msg.style.opacity = 0, 5000);
         }
-        return; // Bricht ab
+        return; 
     }
 
     let raceValue = val('charRace');
@@ -752,6 +746,14 @@ function clearCharacterDraft() {
     if(typeof lucide !== 'undefined') lucide.createIcons();
 }
 
+// --- DATENSCHUTZ: ALLES LÖSCHEN ---
+function resetAllLocalStorage() {
+    if (confirm("Möchtest du wirklich ALLE lokalen Daten löschen? Dies entfernt die Cookie-Zustimmung, überspringt das Portal beim nächsten Mal nicht mehr und löscht deinen ungespeicherten Charakter-Entwurf unwiderruflich!")) {
+        localStorage.clear(); 
+        window.location.reload(); 
+    }
+}
+
 // Init
 document.addEventListener('DOMContentLoaded', () => { 
     initRouting(); 
@@ -759,10 +761,3 @@ document.addEventListener('DOMContentLoaded', () => {
     loadCharacterDraft(); 
     requestAnimationFrame(updateLoop); 
 });
-// --- DATENSCHUTZ: ALLES LÖSCHEN ---
-function resetAllLocalStorage() {
-    if (confirm("Möchtest du wirklich ALLE lokalen Daten löschen? Dies entfernt die Cookie-Zustimmung, überspringt das Portal beim nächsten Mal nicht mehr und löscht deinen ungespeicherten Charakter-Entwurf unwiderruflich!")) {
-        localStorage.clear(); // Der absolute Holzhammer: Löscht rigoros alles von dieser Domain
-        window.location.reload(); // Lädt die Seite hart neu (wirft den Spieler zurück vors Portal)
-    }
-}
